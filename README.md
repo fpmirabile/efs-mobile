@@ -2,8 +2,9 @@
 
 ## Installation
 
-Important: You will need to use [Node12](https://nodejs.org/es/download/) or greater
-Important2: You will need to install [watchmen](https://facebook.github.io/watchman/docs/install.html) in case you are on a MacOS.
+### Important
+You will need to use [Node12](https://nodejs.org/es/download/) or greater
+You will need to install [watchmen](https://facebook.github.io/watchman/docs/install.html) in case you are on a MacOS.
 
 1. Do a `npm install` before everything
 2. Run `npm start` and you should see the expo page in your default browser

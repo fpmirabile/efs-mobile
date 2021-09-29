@@ -1,20 +1,23 @@
-import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, View } from '../../components/Themed';
-import { RootTabScreenProps } from '../../../types';
-import Colors from '../../../constants/Colors';
+import * as React from "react";
+import { StyleSheet, TextInput, Text, View } from "react-native";
+import { BasicStackComponentProps } from "../../../types";
+import Button from "../../components/common/button";
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function Login({ navigation }: BasicStackComponentProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <Text style={styles.title}>EFS | Login Page</Text>
+      <View style={styles.separator} />
+      <View style={styles.formGroup}>
+        <Text style={styles.formTitle}>Email</Text>
+        <TextInput style={styles.formInput}></TextInput>
+      </View>
+      <View style={styles.formGroup}>
+        <Text style={styles.formTitle}>Password</Text>
+        <TextInput style={styles.formInput} textAlign='center' secureTextEntry textContentType="password"></TextInput>
+      </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => { navigation.push('Home') }} style={styles.button}>
-          <Text style={styles.title} lightColor={Colors.light.tint}>
-            Tap here if your app doesn't automatically update after making changes
-          </Text>
-        </TouchableOpacity>
+        <Button text="Login" onPress={() => { navigation.push("Home") }} style={{ container: styles.button}} />
       </View>
     </View>
   );
@@ -23,25 +26,51 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+  },
+  formGroup: {
+    flexDirection: 'column',
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 2,
+    marginVertical: 1,
+  },
+  formTitle: {
+    alignSelf: 'flex-start',
+    margin: 0,
+    width: 200
+  },
+  formInput: {
+    margin: 0,
+    width: 200,
+    height: 44,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'black'
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    width: 200,
+    backgroundColor: 'lightblue',
+    marginTop: 10
   },
   button: {
-    color: 'white',
-    backgroundColor: 'black'
+    width: '100%'
+  },
+  buttonText: {
+
   }
 });

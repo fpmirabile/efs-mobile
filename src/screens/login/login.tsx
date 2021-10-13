@@ -9,7 +9,7 @@ export default function Login({ navigation }: BasicStackComponentProps) {
       <Text style={styles.title}>EFS | Login Page</Text>
       <View style={styles.separator} />
       <View style={styles.formGroup}>
-        <Text style={styles.formTitle}>Email</Text>
+        <Text style={styles.formTitle}>Email o Username</Text>
         <TextInput style={styles.formInput}></TextInput>
       </View>
       <View style={styles.formGroup}>
@@ -17,7 +17,7 @@ export default function Login({ navigation }: BasicStackComponentProps) {
         <TextInput style={styles.formInput} textAlign='center' secureTextEntry textContentType="password"></TextInput>
       </View>
       <View style={styles.buttonContainer}>
-        <Button text="Login" onPress={() => { navigation.push("Home") }} style={{ container: styles.button}} />
+        <Button text="Login" onPress={() => { navigation.push("Profile") }} style={{ container: styles.button}} />
       </View>
     </View>
   );

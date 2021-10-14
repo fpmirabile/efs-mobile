@@ -17,7 +17,7 @@ export default function Login({ navigation }: BasicStackComponentProps) {
         <TextInput style={styles.formInput} textAlign='center' secureTextEntry textContentType="password"></TextInput>
       </View>
       <View style={styles.buttonContainer}>
-        <Button text="Login" onPress={() => { navigation.push("Profile") }} style={{ container: styles.button}} />
+        <Button text="Login" onPress={() => { navigation.push("Register") }} style={{ container: styles.button}} />
       </View>
     </View>
   );

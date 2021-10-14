@@ -6,8 +6,8 @@ import Button from "../../components/common/button";
 import Input from "../../components/common/input/input";
 import WhiteBackgroundView from "../../components/common/white-background-view/white-background-view";
 
-export default function Register({ navigation }: BasicStackComponentProps) {
-  const [buttonDisabled, setButtonDisabled] = React.useState(true);
+export default function Register({}: BasicStackComponentProps) {
+  const [buttonDisabled] = React.useState(true);
   const buttonContainerStyles = buttonDisabled
     ? [styles.registerButtonContainer]
     : [styles.registerButtonContainer, styles.registerButtonContainerEnabled];
@@ -110,29 +110,29 @@ const styles = StyleSheet.create({
     borderColor: "#e0e0e0",
   },
   termsAndCondsContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
   },
   termsAndCondsTitle: {
-    color: '#667180',
-    fontWeight: '500',
+    color: "#667180",
+    fontWeight: "500",
     fontSize: 10,
     lineHeight: 16,
-    letterSpacing: 0.4
+    letterSpacing: 0.4,
   },
   termsAndCondButtonContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    maxHeight: 12
+    alignItems: "center",
+    justifyContent: "center",
+    maxHeight: 12,
   },
   termsAndCondButtonText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: "500",
     lineHeight: 16,
     letterSpacing: 0.4,
-    color: '#FF6035',
-    textTransform: 'lowercase'
+    color: "#FF6035",
+    textTransform: "lowercase",
   },
   registerButtonContainer: {
     borderWidth: 1,

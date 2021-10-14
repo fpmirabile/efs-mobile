@@ -1,5 +1,11 @@
 import * as React from "react";
-import { StyleSheet, View, TextInput, ColorValue, KeyboardTypeOptions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  ColorValue,
+  KeyboardTypeOptions,
+} from "react-native";
 
 type Props = {
   inputStyles?: TextInput["props"]["style"];
@@ -27,7 +33,7 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 0.3,
     borderColor: "#000",
-    borderRadius: 4
+    borderRadius: 4,
   },
   input: {
     height: 48,
@@ -35,6 +41,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     letterSpacing: 0.15,
     color: "#000",
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
   },
 });

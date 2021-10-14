@@ -14,10 +14,21 @@ export default function Login({ navigation }: BasicStackComponentProps) {
       </View>
       <View style={styles.formGroup}>
         <Text style={styles.formTitle}>Password</Text>
-        <TextInput style={styles.formInput} textAlign='center' secureTextEntry textContentType="password"></TextInput>
+        <TextInput
+          style={styles.formInput}
+          textAlign="center"
+          secureTextEntry
+          textContentType="password"
+        ></TextInput>
       </View>
       <View style={styles.buttonContainer}>
-        <Button text="Login" onPress={() => { navigation.push("Register") }} style={{ container: styles.button}} />
+        <Button
+          text="Login"
+          onPress={() => {
+            navigation.push("Register");
+          }}
+          style={{ container: styles.button }}
+        />
       </View>
     </View>
   );
@@ -34,16 +45,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   formGroup: {
-    flexDirection: 'column',
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 2,
     marginVertical: 1,
   },
   formTitle: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     margin: 0,
-    width: 200
+    width: 200,
   },
   formInput: {
     margin: 0,
@@ -51,7 +62,7 @@ const styles = StyleSheet.create({
     height: 44,
     padding: 10,
     borderWidth: 1,
-    borderColor: 'black'
+    borderColor: "black",
   },
   separator: {
     marginVertical: 30,
@@ -64,13 +75,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     width: 200,
-    backgroundColor: 'lightblue',
-    marginTop: 10
+    backgroundColor: "lightblue",
+    marginTop: 10,
   },
   button: {
-    width: '100%'
+    width: "100%",
   },
-  buttonText: {
-
-  }
+  buttonText: {},
 });

@@ -17,15 +17,15 @@ export default function BlueTitle(props: BlueTitleProps) {
 
 const styles = StyleSheet.create({
   view: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%'
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
   title: {
     fontSize: 34,
     lineHeight: 36,
-    textAlign: 'center',
-    color: '#160266'
-  }
+    textAlign: "center",
+    color: "#160266",
+  },
 });

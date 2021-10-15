@@ -24,7 +24,7 @@ import {
 } from "../../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import Profile from "../screens/profile-test/profile";
-import Register from "../screens/registration/register";
+import Register from "../screens/registration";
 
 export default function Navigation() {
   return (

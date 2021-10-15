@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#160266',
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
   },
   formGroup: {

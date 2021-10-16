@@ -1,30 +1,13 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
-import { RadioButton, Toolbar } from "react-native-material-ui";
+import { RadioButton } from "react-native-material-ui";
 import Container from "../container";
 
-type RadioProps = {
-  radioProps: RadioButton["props"];
-  onToolbarClick: () => void;
-};
+type RadioProps =  RadioButton["props"];
+ 
 
 export default function RadioButtonComponent(props: RadioProps) {
-  return (
-    <Container>
-      <Toolbar
-        leftElement="arrow-back"
-        onLeftElementPress={() => props.onToolbarClick()}
-        centerElement="Radio button"
-      />
-      <View style={styles.container}>
-        <RadioButton {...props.radioProps} />
-      </View>
-    </Container>
-  );
+  return <RadioButton {...props} />
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 4,
-  },
-});
+

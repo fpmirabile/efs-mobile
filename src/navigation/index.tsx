@@ -43,7 +43,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+       <Stack.Screen
         name="Root"
         component={Login}
         options={{ headerShown: false }}
@@ -57,7 +57,7 @@ function RootNavigator() {
         name="Home"
         component={BottomTabNavigator}
         options={{ headerShown: false }}
-      />
+      /> 
       <Stack.Screen
         name="Profile"
         component={Profile}

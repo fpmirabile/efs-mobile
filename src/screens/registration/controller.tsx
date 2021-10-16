@@ -1,5 +1,6 @@
 import * as React from "react";
 import { BasicStackComponentProps } from "../../../types";
+import { RegisterUser } from "../../api/models/user";
 import {
   isValidAge,
   isValidEmail,
@@ -8,7 +9,9 @@ import {
 } from "../../util/validator";
 import RegisterView from "./register-view";
 
-export interface Props extends BasicStackComponentProps {}
+export interface Props extends BasicStackComponentProps {
+  onUserRegister: (newUser: RegisterUser) =>  Promise<void>; 
+}
 
 export interface Value {
   email: string;
@@ -153,9 +156,24 @@ class RegisterController extends React.PureComponent<Props, State> {
     });
   };
 
-  handleRegisterPress = () => {
+  handleRegisterPress = async () => {
     if (this.handleFormValidation()) {
-      console.log("send api request");
+      const { navigation, onUserRegister } = this.props;
+      try {
+        const { value } = this.state;
+        const newUser: RegisterUser = {
+          email: value.email,
+          name: value.nameAndLastName,
+          age: Number(value.age),
+          sex: value.sex,
+          password: value.password,
+        };
+        await onUserRegister(newUser);
+        navigation.navigate("NotFound"); // TODO: Move to correct page
+      } catch {
+        // TODO: We need to handle an error here
+        navigation.navigate("NotFound");
+      }
     }
   };
 

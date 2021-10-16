@@ -10,7 +10,7 @@ import {
 import RegisterView from "./register-view";
 
 export interface Props extends BasicStackComponentProps {
-  onUserRegister: (newUser: RegisterUser) => void; 
+  onUserRegister: (newUser: RegisterUser) =>  Promise<void>; 
 }
 
 export interface Value {
@@ -168,7 +168,7 @@ class RegisterController extends React.PureComponent<Props, State> {
           sex: value.sex,
           password: value.password,
         };
-        onUserRegister(newUser);
+        await onUserRegister(newUser);
         navigation.navigate("NotFound"); // TODO: Move to correct page
       } catch {
         // TODO: We need to handle an error here

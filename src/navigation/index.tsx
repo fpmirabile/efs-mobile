@@ -15,7 +15,6 @@ import useColorScheme from "../../hooks/useColorScheme";
 import ModalScreen from "../screens/modal/ModalScreen";
 import Login from "../screens/login/login";
 import NotFoundScreen from "../screens/common/NotFoundScreen";
-import TabOneScreen from "../screens/first-tab/TabOneScreen";
 import TabTwoScreen from "../screens/second-tab/TabTwoScreen";
 import {
   RootStackParamList,
@@ -25,6 +24,7 @@ import {
 import LinkingConfiguration from "./LinkingConfiguration";
 import Profile from "../screens/profile-test/profile";
 import Register from "../screens/registration";
+import Reels from "../screens/reel-list";
 
 export default function Navigation() {
   return (
@@ -86,40 +86,45 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Reels"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
     >
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
-          title: "Tab One",
+        name="Reels"
+        component={Reels}
+        options={({ navigation }: RootTabScreenProps<"Reels">) => ({
+          title: "Reels",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate("Modal")}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
+          headerShown: false,
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Simulador"
         component={TabTwoScreen}
         options={{
-          title: "Tab Two",
+          title: "Simulador",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false,
+        }}
+      />
+      <BottomTab.Screen
+        name="Favoritos"
+        component={TabTwoScreen}
+        options={{
+          title: "Favoritos",
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false,
+        }}
+      />
+      <BottomTab.Screen
+        name="Configuracion"
+        component={TabTwoScreen}
+        options={{
+          title: "Configuración",
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false,
         }}
       />
     </BottomTab.Navigator>

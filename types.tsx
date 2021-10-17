@@ -20,6 +20,7 @@ export type RootStackParamList = {
   Profile: undefined;
   Modal: undefined;
   TermsAndConditions: undefined;
+  Reels: undefined;
   NotFound: undefined;
 };
 
@@ -29,8 +30,10 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 >;
 
 export type RootTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
+  Reels: undefined;
+  Simulador: undefined;
+  Favoritos: undefined;
+  Configuracion: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

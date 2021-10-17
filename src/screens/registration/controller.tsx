@@ -169,7 +169,7 @@ class RegisterController extends React.PureComponent<Props, State> {
           password: value.password,
         };
         await onUserRegister(newUser);
-        navigation.navigate("NotFound"); // TODO: Move to correct page
+        navigation.navigate("Home"); // TODO: Move to correct page
       } catch {
         // TODO: We need to handle an error here
         navigation.navigate("NotFound");

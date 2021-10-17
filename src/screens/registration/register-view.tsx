@@ -196,7 +196,8 @@ const styles = StyleSheet.create({
   termsAndCondButtonContainer: {
     alignItems: "center",
     justifyContent: "center",
-    maxHeight: 12,
+    maxHeight: 15,
+    marginVertical: 1
   },
   termsAndCondButtonText: {
     fontSize: 12,

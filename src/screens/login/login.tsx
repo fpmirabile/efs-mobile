@@ -25,7 +25,7 @@ export default function Login({ navigation }: BasicStackComponentProps) {
         <Button
           text="Login"
           onPress={() => {
-            navigation.push("Profile");
+            navigation.push("Home");
           }}
           style={{ container: styles.button }}
         />

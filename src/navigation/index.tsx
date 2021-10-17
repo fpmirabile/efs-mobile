@@ -15,7 +15,6 @@ import useColorScheme from "../../hooks/useColorScheme";
 import ModalScreen from "../screens/modal/ModalScreen";
 import Login from "../screens/login/login";
 import NotFoundScreen from "../screens/common/NotFoundScreen";
-import TabTwoScreen from "../screens/second-tab/TabTwoScreen";
 import {
   RootStackParamList,
   RootTabParamList,
@@ -102,7 +101,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Simulador"
-        component={TabTwoScreen}
+        component={Reels}
         options={{
           title: "Simulador",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
@@ -111,7 +110,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Favoritos"
-        component={TabTwoScreen}
+        component={Reels}
         options={{
           title: "Favoritos",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
@@ -120,7 +119,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Configuracion"
-        component={TabTwoScreen}
+        component={Reels}
         options={{
           title: "Configuración",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,

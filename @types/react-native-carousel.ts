@@ -17,12 +17,13 @@ declare module 'react-native-anchor-carousel' {
     bounces?: boolean,
     showsHorizontalScrollIndicator?: boolean,
     keyExtractor: (item: any, index: number) => string,
-    renderItem: () => void;
+    renderItem: (item: { item: any, index: number }) => JSX.Element;
     onScrollEnd?: () => void,
     onScrollBeginDrag?: () => void,
     onScrollEndDrag?: () => void,
   }
+  
   export default class Carousel extends React.Component<Props> {
-
+    scrollToIndex(index: number): void;
   }
 }

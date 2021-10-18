@@ -8,7 +8,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Pressable } from "react-native";
+import { Image, ImageSourcePropType, Pressable } from "react-native";
 
 import Colors from "../../constants/Colors";
 import useColorScheme from "../../hooks/useColorScheme";
@@ -95,7 +95,7 @@ function BottomTabNavigator() {
         component={Reels}
         options={({ navigation }: RootTabScreenProps<"Reels">) => ({
           title: "Reels",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon source={require('../../assets/images/tabs/play.png')} color={color} />,
           headerShown: false,
         })}
       />
@@ -104,7 +104,7 @@ function BottomTabNavigator() {
         component={Reels}
         options={{
           title: "Simulador",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon source={require('../../assets/images/tabs/simulador.png')} color={color} />,
           headerShown: false,
         }}
       />
@@ -113,7 +113,7 @@ function BottomTabNavigator() {
         component={Reels}
         options={{
           title: "Favoritos",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon source={require('../../assets/images/tabs/favoritos.png')} color={color} />,
           headerShown: false,
         }}
       />
@@ -122,7 +122,7 @@ function BottomTabNavigator() {
         component={Reels}
         options={{
           title: "Configuración",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon source={require('../../assets/images/tabs/config.png')} color={color} />,
           headerShown: false,
         }}
       />
@@ -134,8 +134,10 @@ function BottomTabNavigator() {
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
+  // name: React.ComponentProps<typeof FontAwesome>["name"];
+  source: ImageSourcePropType,
   color: string;
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <Image source={props.source} style={{ tintColor: props.color }} />
+  // return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }

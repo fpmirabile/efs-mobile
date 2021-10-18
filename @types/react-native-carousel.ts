@@ -18,7 +18,7 @@ declare module 'react-native-anchor-carousel' {
     showsHorizontalScrollIndicator?: boolean,
     keyExtractor: (item: any, index: number) => string,
     renderItem: (item: { item: any, index: number }) => JSX.Element;
-    onScrollEnd?: () => void,
+    onScrollEnd?: (data: any, index: number) => void,
     onScrollBeginDrag?: () => void,
     onScrollEndDrag?: () => void,
   }

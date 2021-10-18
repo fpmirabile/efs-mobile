@@ -10,7 +10,7 @@ export interface Props {
 
 export default function SectionReel(props: Props) {
   return (
-    <View style={[styles.container, props.containerStyle]}>
+    <View style={[props.containerStyle]}>
       <Text style={[styles.title, props.titleStyle]}>
         {props.title}
       </Text>
@@ -20,10 +20,6 @@ export default function SectionReel(props: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "flex-start",
-  },
   title: {
     fontSize: 20,
     lineHeight: 24,

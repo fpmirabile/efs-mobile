@@ -4,8 +4,6 @@ import Carousel from "react-native-anchor-carousel";
 
 interface Props {
   data: Array<any>;
-  onRenderItem: (item: { item: any, index: number }) => JSX.Element;
-  onKeyExtractor: (item: any, index: number) => string;
   itemWidth?: number;
   separatorWidth?: number;
   inActiveScale?: number;
@@ -13,17 +11,21 @@ interface Props {
   containerWidth?: number;
   carouselStyle?: ViewStyle;
   containerStyle?: ViewStyle;
-  ref?: React.MutableRefObject<null>;
-  onScrollEnd?: () => void;
+  carouselRef?: React.RefObject<Carousel>;
+  onKeyExtractor: (item: any, index: number) => string;
+  onRenderItem: (item: { item: any, index: number }) => JSX.Element;
+  onScrollEnd?: (data: any, index: number) => void;
+  onScrollEndDrag?: () => void;
 }
 
-export default function Slider(props: Props) {
+export default function RightCarousel(props: Props) {
   return (
     <View style={[props.containerStyle]}>
       <Carousel
         renderItem={props.onRenderItem}
         keyExtractor={props.onKeyExtractor}
         style={props.carouselStyle}
+        ref={props.carouselRef}
         {...props}
       />
     </View>

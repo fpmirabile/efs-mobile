@@ -5,6 +5,7 @@ import Button from "../../../../components/common/button";
 
 interface Props {
   currentIndex?: number;
+  onPressedItem: (index: number) => () => void;
 }
 
 interface ItemProps {
@@ -27,6 +28,7 @@ export default (props: Props) => (itemProps: ItemProps) => {
         container: containerStyles,
         text: styles.filterButton,
       }}
+      onPress={props.onPressedItem(itemProps.index)}
     />
   );
 }
@@ -45,6 +47,7 @@ const styles = StyleSheet.create({
     elevation: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingVertical: 12
   },
   filterButton: {
     color: "#FF6035",
@@ -52,7 +55,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     letterSpacing: 0.15,
     marginHorizontal: 9,
-    marginVertical: 12,
     textTransform: "capitalize",
   },
   filterButtonSelected: {

@@ -3,11 +3,8 @@ import { View, StyleSheet } from "react-native";
 import { RadioButton } from "react-native-material-ui";
 import Container from "../container";
 
-type RadioProps =  RadioButton["props"];
- 
+type RadioProps = RadioButton["props"];
 
 export default function RadioButtonComponent(props: RadioProps) {
-  return <RadioButton {...props} />
+  return <RadioButton {...props} />;
 }
-
-

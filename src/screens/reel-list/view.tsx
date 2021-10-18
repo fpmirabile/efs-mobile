@@ -37,36 +37,41 @@ const filters = [
 
 const popu = [
   {
-    id: '1',
-    imageUri: 'https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg',
-    title: 'Como funcionan los plazos fijos',
-    likesQuantity: '15001'
+    id: "1",
+    imageUri:
+      "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
+    title: "Como funcionan los plazos fijos",
+    likesQuantity: "15001",
   },
   {
-    id: '5',
-    imageUri: 'https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg',
-    title: 'Como funcionan los plazos fijos',
-    likesQuantity: '15001'
+    id: "5",
+    imageUri:
+      "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
+    title: "Como funcionan los plazos fijos",
+    likesQuantity: "15001",
   },
   {
-    id: '2',
-    imageUri: 'https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg',
-    title: 'Como funcionan los plazos fijos',
-    likesQuantity: '15001'
+    id: "2",
+    imageUri:
+      "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
+    title: "Como funcionan los plazos fijos",
+    likesQuantity: "15001",
   },
   {
-    id: '3',
-    imageUri: 'https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg',
-    title: 'Como funcionan los plazos fijos',
-    likesQuantity: '15001'
+    id: "3",
+    imageUri:
+      "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
+    title: "Como funcionan los plazos fijos",
+    likesQuantity: "15001",
   },
   {
-    id: '4',
-    imageUri: 'https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg',
-    title: 'Como funcionan los plazos fijos',
-    likesQuantity: '15001'
-  }
-]
+    id: "4",
+    imageUri:
+      "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
+    title: "Como funcionan los plazos fijos",
+    likesQuantity: "15001",
+  },
+];
 
 export default function ReelsView({
   currentIndex,
@@ -102,7 +107,7 @@ export default function ReelsView({
         title="Tasas de interés"
         containerStyle={styles.sectionContainer}
       >
-        <RightCarousel 
+        <RightCarousel
           data={popu}
           onRenderItem={VideoItem({ onImageLoadError })}
           onKeyExtractor={(item: any, _: number) => item.id}

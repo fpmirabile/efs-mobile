@@ -10,9 +10,7 @@ export interface Props {
 export default function PageTitle(props: Props) {
   return (
     <View style={[styles.container, props.containerStyle]}>
-      <Text style={[styles.title, props.titleStyle]}>
-        {props.title}
-      </Text>
+      <Text style={[styles.title, props.titleStyle]}>{props.title}</Text>
     </View>
   );
 }
@@ -23,8 +21,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   title: {
-    color: '#160266',
+    color: "#160266",
     fontSize: 34,
-    lineHeight: 36
-  }
+    lineHeight: 36,
+  },
 });

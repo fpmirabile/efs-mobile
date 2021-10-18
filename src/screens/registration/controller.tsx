@@ -10,7 +10,7 @@ import {
 import RegisterView from "./register-view";
 
 export interface Props extends BasicStackComponentProps {
-  onUserRegister: (newUser: RegisterUser) =>  Promise<void>; 
+  onUserRegister: (newUser: RegisterUser) => Promise<void>;
 }
 
 export interface Value {

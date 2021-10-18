@@ -42,7 +42,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-       <Stack.Screen
+      <Stack.Screen
         name="Root"
         component={Login}
         options={{ headerShown: false }}
@@ -56,7 +56,7 @@ function RootNavigator() {
         name="Home"
         component={BottomTabNavigator}
         options={{ headerShown: false }}
-      /> 
+      />
       <Stack.Screen
         name="Profile"
         component={Profile}
@@ -95,7 +95,12 @@ function BottomTabNavigator() {
         component={Reels}
         options={({ navigation }: RootTabScreenProps<"Reels">) => ({
           title: "Reels",
-          tabBarIcon: ({ color }) => <TabBarIcon source={require('../../assets/images/tabs/play.png')} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon
+              source={require("../../assets/images/tabs/play.png")}
+              color={color}
+            />
+          ),
           headerShown: false,
         })}
       />
@@ -104,7 +109,12 @@ function BottomTabNavigator() {
         component={Reels}
         options={{
           title: "Simulador",
-          tabBarIcon: ({ color }) => <TabBarIcon source={require('../../assets/images/tabs/simulador.png')} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon
+              source={require("../../assets/images/tabs/simulador.png")}
+              color={color}
+            />
+          ),
           headerShown: false,
         }}
       />
@@ -113,7 +123,12 @@ function BottomTabNavigator() {
         component={Reels}
         options={{
           title: "Favoritos",
-          tabBarIcon: ({ color }) => <TabBarIcon source={require('../../assets/images/tabs/favoritos.png')} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon
+              source={require("../../assets/images/tabs/favoritos.png")}
+              color={color}
+            />
+          ),
           headerShown: false,
         }}
       />
@@ -122,7 +137,12 @@ function BottomTabNavigator() {
         component={Reels}
         options={{
           title: "Configuración",
-          tabBarIcon: ({ color }) => <TabBarIcon source={require('../../assets/images/tabs/config.png')} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon
+              source={require("../../assets/images/tabs/config.png")}
+              color={color}
+            />
+          ),
           headerShown: false,
         }}
       />
@@ -135,9 +155,9 @@ function BottomTabNavigator() {
  */
 function TabBarIcon(props: {
   // name: React.ComponentProps<typeof FontAwesome>["name"];
-  source: ImageSourcePropType,
+  source: ImageSourcePropType;
   color: string;
 }) {
-  return <Image source={props.source} style={{ tintColor: props.color }} />
+  return <Image source={props.source} style={{ tintColor: props.color }} />;
   // return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }

@@ -42,7 +42,9 @@ class ReelsController extends React.PureComponent<Props, State> {
         currentIndex={currentIndex}
         onFilterScrollEnd={this.handleFilterScrollEnd}
         onPressedItem={this.handleItemPress}
-        onImageLoadError={() => {return ""}}
+        onImageLoadError={() => {
+          return "";
+        }}
       />
     );
   }

@@ -20,7 +20,7 @@ export default (props: Props) => (itemProps: ItemProps) => {
     containerStyles.push(styles.filterButtonContainerSelected);
     buttonStyles.push(styles.filterButtonSelected);
   }
-  
+
   return (
     <Button
       text={itemProps.item.name}
@@ -31,7 +31,7 @@ export default (props: Props) => (itemProps: ItemProps) => {
       onPress={props.onPressedItem(itemProps.index)}
     />
   );
-}
+};
 
 const styles = StyleSheet.create({
   filterButtonContainer: {
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     elevation: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 12
+    paddingVertical: 12,
   },
   filterButton: {
     color: "#FF6035",
@@ -58,9 +58,9 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
   },
   filterButtonSelected: {
-    color: '#FFFFFF'
+    color: "#FFFFFF",
   },
   filterButtonContainerSelected: {
-    backgroundColor: '#160266'
-  }
+    backgroundColor: "#160266",
+  },
 });

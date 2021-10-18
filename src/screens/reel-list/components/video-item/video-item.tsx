@@ -17,8 +17,8 @@ interface Props {
 
 interface ItemProps {
   item: any;
-            // imageUri: string;
-            // title: string;
+  // imageUri: string;
+  // title: string;
   index: number;
 }
 
@@ -41,15 +41,15 @@ export default (props: Props) => (itemProps: ItemProps) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     borderRadius: 8,
   },
   imageBackground: {
     flex: 1,
     height: 139,
     width: 140,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   textContainer: {
     flexDirection: "row",
@@ -57,12 +57,12 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     backgroundColor: "#C4C4C4",
     paddingHorizontal: 8,
-    paddingVertical: 11
+    paddingVertical: 11,
   },
   title: {
     lineHeight: 16,
     fontSize: 12,
     letterSpacing: 0.4,
-    color: "#000000"
+    color: "#000000",
   },
 });

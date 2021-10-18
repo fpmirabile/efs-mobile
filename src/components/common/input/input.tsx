@@ -48,7 +48,9 @@ export default function Input(props: Props) {
         />
       </View>
       {props.showError && (
-        <Text style={[styles.errorText, props.errorStyles]}>{props.errorText}</Text>
+        <Text style={[styles.errorText, props.errorStyles]}>
+          {props.errorText}
+        </Text>
       )}
     </View>
   );

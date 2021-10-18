@@ -11,9 +11,7 @@ export interface Props {
 export default function SectionReel(props: Props) {
   return (
     <View style={[props.containerStyle]}>
-      <Text style={[styles.title, props.titleStyle]}>
-        {props.title}
-      </Text>
+      <Text style={[styles.title, props.titleStyle]}>{props.title}</Text>
       {props.children}
     </View>
   );
@@ -23,7 +21,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     lineHeight: 24,
-    color: '#160266',
-    fontWeight: 'bold'
-  }
+    color: "#160266",
+    fontWeight: "bold",
+  },
 });

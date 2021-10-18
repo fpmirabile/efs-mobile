@@ -1,4 +1,3 @@
-
 // TODO: Refactor for react native. Not working now
 type StorageKey = "store.jwt" | "store.refresh";
 interface AuthSession {

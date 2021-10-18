@@ -26,12 +26,12 @@ export default function PageWithScroll(props: Props) {
 
 const styles = StyleSheet.create({
   scrollView: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#F5F6FB'
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#F5F6FB",
   },
   containerView: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: "column",
   },
 });

@@ -35,7 +35,7 @@ export default function RegisterView({
 
   const blurField = (field: keyof RegisterValue) => () => {
     onBlurField(field);
-  }
+  };
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -58,7 +58,7 @@ export default function RegisterView({
             onChangeText={fieldChanged("email")}
             errorText="El email ingresado no es correcto."
             showError={value.invalidEmail}
-            onBlur={blurField('email')}
+            onBlur={blurField("email")}
           />
           <Input
             placeholder="Nombre y apellido"
@@ -68,7 +68,7 @@ export default function RegisterView({
             onChangeText={fieldChanged("nameAndLastName")}
             errorText="Debe completar este campo."
             showError={value.invalidName}
-            onBlur={blurField('nameAndLastName')}
+            onBlur={blurField("nameAndLastName")}
           />
           <Input
             placeholder="Edad"
@@ -79,7 +79,7 @@ export default function RegisterView({
             onChangeText={fieldChanged("age")}
             errorText="La edad ingresada no es correcta."
             showError={value.invalidAge}
-            onBlur={blurField('age')}
+            onBlur={blurField("age")}
           />
           <Input
             placeholder="Sexo"
@@ -88,7 +88,7 @@ export default function RegisterView({
             errorText="Debe seleccionar un sexo."
             onChangeText={fieldChanged("sex")}
             showError={value.invalidSex}
-            onBlur={blurField('sex')}
+            onBlur={blurField("sex")}
           />
           <Input
             placeholder="Contraseña"
@@ -99,7 +99,7 @@ export default function RegisterView({
             onChangeText={fieldChanged("password")}
             errorText="La password no cumple con los criterios. Al menos 1 caracter especial, 1 letra mayuscula, 1 minuscula, 1 numero."
             showError={value.invalidPassword}
-            onBlur={blurField('password')}
+            onBlur={blurField("password")}
           />
           <Input
             placeholder="Confirmar contraseña"
@@ -110,7 +110,7 @@ export default function RegisterView({
             onChangeText={fieldChanged("confirmPassword")}
             errorText="La password ingresada no es identica a la anterior."
             showError={value.invalidConfirmPassword}
-            onBlur={blurField('confirmPassword')}
+            onBlur={blurField("confirmPassword")}
           />
         </WhiteBackgroundView>
         <View style={styles.termsAndCondsContainer}>
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     borderColor: "#e0e0e0",
   },
   errorText: {
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   termsAndCondsContainer: {
     justifyContent: "center",
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     maxHeight: 15,
-    marginVertical: 1
+    marginVertical: 1,
   },
   termsAndCondButtonText: {
     fontSize: 12,

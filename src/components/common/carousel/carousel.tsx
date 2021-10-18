@@ -13,7 +13,7 @@ interface Props {
   containerStyle?: ViewStyle;
   carouselRef?: React.RefObject<Carousel>;
   onKeyExtractor: (item: any, index: number) => string;
-  onRenderItem: (item: { item: any, index: number }) => JSX.Element;
+  onRenderItem: (item: { item: any; index: number }) => JSX.Element;
   onScrollEnd?: (data: any, index: number) => void;
   onScrollEndDrag?: () => void;
 }

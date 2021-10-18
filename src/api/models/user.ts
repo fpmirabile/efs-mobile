@@ -12,5 +12,5 @@ export interface RegisterUser extends User {
 }
 
 export default {
-  register: (newUser: RegisterUser) => authenticatedPost('/usuario', newUser),
-}
+  register: (newUser: RegisterUser) => authenticatedPost("/usuario", newUser),
+};

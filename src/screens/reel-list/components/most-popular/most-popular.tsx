@@ -19,9 +19,9 @@ interface Props {
 
 interface ItemProps {
   item: any;
-            // imageUri: string;
-            // title: string;
-            // likesQuantity: string;
+  // imageUri: string;
+  // title: string;
+  // likesQuantity: string;
   index: number;
 }
 
@@ -38,7 +38,10 @@ export default (props: Props) => (itemProps: ItemProps) => {
           {itemProps.item.title}
         </Text>
         <View style={styles.likesContainer}>
-          <Image source={require('../../../../../assets/images/misc/thumb_up.png')} style={styles.likeIcon} />
+          <Image
+            source={require("../../../../../assets/images/misc/thumb_up.png")}
+            style={styles.likeIcon}
+          />
           <Text style={styles.popularText}>{itemProps.item.likesQuantity}</Text>
         </View>
       </View>
@@ -48,15 +51,15 @@ export default (props: Props) => (itemProps: ItemProps) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 8
+    width: "100%",
+    height: "100%",
+    borderRadius: 8,
   },
   imageBackground: {
     flex: 1,
     height: 146,
     width: 276,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   textContainer: {
     flexDirection: "row",
@@ -64,14 +67,14 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     backgroundColor: "rgba(22, 2, 102, 0.7)",
     paddingHorizontal: 8,
-    paddingVertical: 11
+    paddingVertical: 11,
   },
   popularText: {
     lineHeight: 16,
     fontSize: 14,
     letterSpacing: 0.1,
     color: "#FFFFFF",
-    maxWidth: 156
+    maxWidth: 156,
   },
   likesContainer: {
     flexDirection: "column",
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
   likeIcon: {
     height: 24,
     width: 24,
-    tintColor: '#FFFFFF',
-    marginBottom: 4
+    tintColor: "#FFFFFF",
+    marginBottom: 4,
   },
 });

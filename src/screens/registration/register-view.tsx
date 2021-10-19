@@ -1,5 +1,6 @@
 import * as React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
+import SelectDropdown from 'react-native-select-dropdown'
 import { TextStyle, ViewStyle } from "react-native-material-ui";
 import BlueTitle from "../../components/common/blue-title/blue-title";
 import Button from "../../components/common/button";
@@ -8,6 +9,7 @@ import WhiteBackgroundView from "../../components/common/white-background-view/w
 import { Value as RegisterValue } from "./controller";
 
 interface Props {
+  isLoading: boolean;
   value: RegisterValue;
   onFieldChange: (field: keyof RegisterValue, value: string) => void;
   onBlurField: (field: keyof RegisterValue) => void;
@@ -16,6 +18,7 @@ interface Props {
 }
 
 export default function RegisterView({
+  isLoading,
   value,
   onFieldChange,
   onBlurField,
@@ -31,6 +34,10 @@ export default function RegisterView({
 
   const fieldChanged = (field: keyof RegisterValue) => (text: string) => {
     onFieldChange(field, text);
+  };
+
+  const onSelectDropdown = (selectedItem: string) => {
+    fieldChanged('sex')(selectedItem);
   };
 
   const blurField = (field: keyof RegisterValue) => () => {
@@ -81,14 +88,19 @@ export default function RegisterView({
             showError={value.invalidAge}
             onBlur={blurField("age")}
           />
-          <Input
-            placeholder="Sexo"
-            viewStyles={styles.inputContainer}
-            errorStyles={styles.errorText}
-            errorText="Debe seleccionar un sexo."
-            onChangeText={fieldChanged("sex")}
-            showError={value.invalidSex}
-            onBlur={blurField("sex")}
+          <SelectDropdown 
+            data={['Masculino', 'Femenino', 'No binario']}
+            onSelect={onSelectDropdown}
+            buttonTextAfterSelection={(selectedItem: string) => {
+              return selectedItem;
+            }}
+            rowTextForSelection={(item: string) => {
+              return item;
+            }}
+            buttonStyle={styles.dropdown}
+            defaultButtonText={'Sexo'}
+            buttonTextStyle={styles.dropdownText}
+            dropdownIconPosition="right"
           />
           <Input
             placeholder="Contraseña"
@@ -128,7 +140,7 @@ export default function RegisterView({
         </View>
         <Button
           disabled={!value.registerButtonEnabled}
-          text="Registrarse"
+          text={isLoading ? "Registrando..." : "Registrarse"}
           style={{
             container: buttonContainerStyles,
             text: buttonTextStyles,
@@ -229,4 +241,21 @@ const styles = StyleSheet.create({
   registerButtonContainerEnabled: {
     backgroundColor: "#160266",
   },
+  dropdown: {
+    width: '90%',
+    borderColor: "#e0e0e0",
+    borderRadius: 3.5,
+    borderWidth: 0.3,
+    height: 46,
+    backgroundColor: 'transparent',
+    marginHorizontal: 8,
+    paddingHorizontal: 16,
+    justifyContent: 'flex-start'
+  },
+  dropdownText: {
+    color: '#000000DE',
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: 0.16,
+  }
 });

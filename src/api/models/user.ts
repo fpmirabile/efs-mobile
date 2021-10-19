@@ -1,10 +1,10 @@
 import { authenticatedPost } from "../calls";
 
 export interface User {
-  name: string;
+  nombreApellido: string;
   email: string;
-  sex: string;
-  age: number;
+  edad: number;
+  sexo: string;
 }
 
 export interface RegisterUser extends User {

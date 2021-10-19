@@ -31,10 +31,12 @@ export interface Value {
 
 interface State {
   value: Value;
+  loading: boolean;
 }
 
 class RegisterController extends React.PureComponent<Props, State> {
   state: State = {
+    loading: false,
     value: {
       email: "",
       invalidEmail: false,
@@ -159,13 +161,16 @@ class RegisterController extends React.PureComponent<Props, State> {
   handleRegisterPress = async () => {
     if (this.handleFormValidation()) {
       const { navigation, onUserRegister } = this.props;
+      this.setState({
+        loading: true,
+      });
       try {
         const { value } = this.state;
         const newUser: RegisterUser = {
           email: value.email,
-          name: value.nameAndLastName,
-          age: Number(value.age),
-          sex: value.sex,
+          nombreApellido: value.nameAndLastName,
+          edad: Number(value.age),
+          sexo: value.sex,
           password: value.password,
         };
         await onUserRegister(newUser);
@@ -173,6 +178,10 @@ class RegisterController extends React.PureComponent<Props, State> {
       } catch {
         // TODO: We need to handle an error here
         navigation.navigate("NotFound");
+      } finally {
+        this.setState({
+          loading: false,
+        });
       }
     }
   };
@@ -214,13 +223,14 @@ class RegisterController extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { value } = this.state;
+    const { value, loading } = this.state;
     return (
       <RegisterView
         onFieldChange={this.handleFieldChange}
         onRegisterPress={this.handleRegisterPress}
         onTermsAndCondPress={this.handleTermsAndConditionPress}
         onBlurField={this.handleBlurField}
+        isLoading={loading}
         value={value}
       />
     );

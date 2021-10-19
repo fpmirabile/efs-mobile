@@ -1,6 +1,6 @@
 export const getEndpoints = () => {
   return {
-    api: process.env.API_URL || "http://localhost:3000",
+    api: process.env.API_URL || "https://efs-bck.herokuapp.com",
     // web: window.location.href,
   };
 };

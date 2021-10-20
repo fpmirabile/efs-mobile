@@ -29,6 +29,7 @@ interface Props {
   onBlur?: (e: NativeSyntheticEvent<TargetedEvent>) => void;
   errorText?: string;
   showError?: boolean;
+  disabled?: boolean;
 }
 
 export default function Input(props: Props) {
@@ -44,6 +45,7 @@ export default function Input(props: Props) {
         <TextInput
           style={inputStyles}
           placeholderTextColor={placeholderColor}
+          editable={!props.disabled}
           {...props}
         />
       </View>

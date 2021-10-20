@@ -1,11 +1,11 @@
 import { authenticatedGet, authenticatedPost } from "../calls";
 
-interface Grupo {
+export interface Grupo {
   id: number;
   titulo: string;
 }
 
-interface Seccion {
+export interface Seccion {
   id: number;
   titulo: string;
   grupo: Grupo;

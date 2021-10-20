@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import SelectDropdown from 'react-native-select-dropdown'
+import { Picker } from "@react-native-picker/picker";
 import { TextStyle, ViewStyle } from "react-native-material-ui";
 import BlueTitle from "../../components/common/blue-title/blue-title";
 import Button from "../../components/common/button";
@@ -37,7 +37,7 @@ export default function RegisterView({
   };
 
   const onSelectDropdown = (selectedItem: string) => {
-    fieldChanged('sex')(selectedItem);
+    fieldChanged("sex")(selectedItem);
   };
 
   const blurField = (field: keyof RegisterValue) => () => {
@@ -66,6 +66,7 @@ export default function RegisterView({
             errorText="El email ingresado no es correcto."
             showError={value.invalidEmail}
             onBlur={blurField("email")}
+            disabled={isLoading}
           />
           <Input
             placeholder="Nombre y apellido"
@@ -76,6 +77,7 @@ export default function RegisterView({
             errorText="Debe completar este campo."
             showError={value.invalidName}
             onBlur={blurField("nameAndLastName")}
+            disabled={isLoading}
           />
           <Input
             placeholder="Edad"
@@ -87,21 +89,24 @@ export default function RegisterView({
             errorText="La edad ingresada no es correcta."
             showError={value.invalidAge}
             onBlur={blurField("age")}
+            disabled={isLoading}
           />
-          <SelectDropdown 
-            data={['Masculino', 'Femenino', 'No binario']}
-            onSelect={onSelectDropdown}
-            buttonTextAfterSelection={(selectedItem: string) => {
-              return selectedItem;
-            }}
-            rowTextForSelection={(item: string) => {
-              return item;
-            }}
-            buttonStyle={styles.dropdown}
-            defaultButtonText={'Sexo'}
-            buttonTextStyle={styles.dropdownText}
-            dropdownIconPosition="right"
-          />
+          <View style={styles.dropdownContainer}>
+            <Picker
+              onValueChange={onSelectDropdown}
+              selectedValue={value.sex}
+              enabled={!isLoading}
+              style={styles.dropdown}
+              mode="dropdown"
+              dropdownIconColor="#000000"
+              itemStyle={styles.dropdownText}
+            >
+              <Picker.Item label="Sexo" value="" enabled={false} />
+              <Picker.Item label="Masculino" value="Masculino" />
+              <Picker.Item label="Femenino" value="Femenino" />
+              <Picker.Item label="No binario" value="No binario" />
+            </Picker>
+          </View>
           <Input
             placeholder="Contraseña"
             viewStyles={styles.inputContainer}
@@ -112,6 +117,7 @@ export default function RegisterView({
             errorText="La password no cumple con los criterios. Al menos 1 caracter especial, 1 letra mayuscula, 1 minuscula, 1 numero."
             showError={value.invalidPassword}
             onBlur={blurField("password")}
+            disabled={isLoading}
           />
           <Input
             placeholder="Confirmar contraseña"
@@ -123,6 +129,7 @@ export default function RegisterView({
             errorText="La password ingresada no es identica a la anterior."
             showError={value.invalidConfirmPassword}
             onBlur={blurField("confirmPassword")}
+            disabled={isLoading}
           />
         </WhiteBackgroundView>
         <View style={styles.termsAndCondsContainer}>
@@ -241,21 +248,21 @@ const styles = StyleSheet.create({
   registerButtonContainerEnabled: {
     backgroundColor: "#160266",
   },
-  dropdown: {
-    width: '90%',
+  dropdownContainer: {
     borderColor: "#e0e0e0",
     borderRadius: 3.5,
     borderWidth: 0.3,
-    height: 46,
-    backgroundColor: 'transparent',
     marginHorizontal: 8,
-    paddingHorizontal: 16,
-    justifyContent: 'flex-start'
+    paddingHorizontal: 5,
+  },
+  dropdown: {
+    width: "100%",
+    height: 48,
   },
   dropdownText: {
-    color: '#000000DE',
+    color: "#000000DE",
     fontSize: 16,
     lineHeight: 24,
     letterSpacing: 0.16,
-  }
+  },
 });

@@ -1,12 +1,22 @@
 import * as React from "react";
 import Carousel from "react-native-anchor-carousel";
 import { BasicStackComponentProps } from "../../../types";
+import { Grupo, Reel } from "../../api/models/reels";
 import ReelsView from "./view";
 
-export interface Props extends BasicStackComponentProps {}
+export interface Props extends BasicStackComponentProps {
+  onGetGroups: () => Promise<Grupo[]>;
+  onGetReelsByGroup: (groupId: number) => Promise<Reel[]>;
+  onGetPopularReels: (groupId: number) => Promise<Reel[]>;
+  onFavoriteReel: (reelId: number) => Promise<void>;
+  onLikeReel: (reelId: number, liked: boolean) => Promise<void>;
+}
 
 interface State {
   currentIndex: number;
+  filterGroups: Grupo[];
+  popularReels: Reel[];
+  reels: Reel[];
 }
 
 class ReelsController extends React.PureComponent<Props, State> {
@@ -14,7 +24,14 @@ class ReelsController extends React.PureComponent<Props, State> {
 
   state: State = {
     currentIndex: 0,
+    filterGroups: [],
+    popularReels: [],
+    reels: [],
   };
+
+  componentDidMount() {
+
+  }
 
   handleChangedIndex = (index: number) => {};
 

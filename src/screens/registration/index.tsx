@@ -3,5 +3,11 @@ import RegisterController, { Props as RegisterProps } from "./controller";
 import userApi from "../../api/models/user";
 
 export default function RegisterModule(props: RegisterProps) {
-  return <RegisterController {...props} onUserRegister={userApi.register} />;
+  return (
+    <RegisterController
+      {...props}
+      onUserRegister={userApi.register}
+      onLoginUser={userApi.login}
+    />
+  );
 }

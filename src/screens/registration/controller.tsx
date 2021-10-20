@@ -1,6 +1,7 @@
 import * as React from "react";
 import { BasicStackComponentProps } from "../../../types";
-import { RegisterUser } from "../../api/models/user";
+import { LoginToken, RegisterUser } from "../../api/models/user";
+import { setSession } from "../../api/session";
 import {
   isValidAge,
   isValidEmail,
@@ -11,6 +12,7 @@ import RegisterView from "./register-view";
 
 export interface Props extends BasicStackComponentProps {
   onUserRegister: (newUser: RegisterUser) => Promise<void>;
+  onLoginUser: (email: string, password: string) => Promise<LoginToken>;
 }
 
 export interface Value {
@@ -160,7 +162,7 @@ class RegisterController extends React.PureComponent<Props, State> {
 
   handleRegisterPress = async () => {
     if (this.handleFormValidation()) {
-      const { navigation, onUserRegister } = this.props;
+      const { navigation, onUserRegister, onLoginUser } = this.props;
       this.setState({
         loading: true,
       });
@@ -174,9 +176,12 @@ class RegisterController extends React.PureComponent<Props, State> {
           password: value.password,
         };
         await onUserRegister(newUser);
+        const token = await onLoginUser(newUser.email, newUser.password);
+        setSession({ jwt: token.token, refresh: token.refreshToken });
         navigation.navigate("Home"); // TODO: Move to correct page
-      } catch {
+      } catch (exception) {
         // TODO: We need to handle an error here
+        console.log(exception)
         navigation.navigate("NotFound");
       } finally {
         this.setState({

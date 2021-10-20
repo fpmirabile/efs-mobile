@@ -29,8 +29,37 @@ class ReelsController extends React.PureComponent<Props, State> {
     reels: [],
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { onGetGroups, onGetPopularReels, onGetReelsByGroup } = this.props;
+    const { currentIndex } = this.state;
 
+    try {
+      const allFilters = await onGetGroups();
+      console.log(`all filters: ${allFilters}`)
+      if (allFilters.length) {
+        const currentFilter = allFilters.at(currentIndex);
+        if (!currentFilter) {
+          return;
+        }
+
+        const popularReels = await onGetPopularReels(currentFilter.grupoId);
+        const reels = await onGetReelsByGroup(currentFilter.grupoId);
+        this.setState(
+          {
+            reels,
+            popularReels,
+            filterGroups: allFilters,
+          },
+          () => {
+            console.log(
+              `Loaded... reels: ${reels.length}. Popular: ${popularReels.length}. Groups: ${allFilters.length}`
+            );
+          }
+        );
+      }
+    } catch (exception) {
+      console.log(exception);
+    }
   }
 
   handleChangedIndex = (index: number) => {};

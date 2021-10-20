@@ -1,8 +1,9 @@
 import { authenticatedGet, authenticatedPost } from "../calls";
 
 export interface Grupo {
-  id: number;
+  grupoId: number;
   titulo: string;
+  perfil: number;
 }
 
 export interface Seccion {

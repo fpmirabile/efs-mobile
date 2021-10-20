@@ -102,9 +102,9 @@ export default function RegisterView({
               itemStyle={styles.dropdownText}
             >
               <Picker.Item label="Sexo" value="" enabled={false} />
-              <Picker.Item label="Masculino" value="Masculino" />
-              <Picker.Item label="Femenino" value="Femenino" />
-              <Picker.Item label="No binario" value="No binario" />
+              <Picker.Item label="Masculino" value="M" />
+              <Picker.Item label="Femenino" value="F" />
+              <Picker.Item label="No binario" value="NB" />
             </Picker>
           </View>
           <Input

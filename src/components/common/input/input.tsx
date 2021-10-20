@@ -35,13 +35,14 @@ interface Props {
 export default function Input(props: Props) {
   const placeholderColor = props.placeholderColor || "#000";
   const inputStyles: StyleProp<TextStyle> = [styles.input, props.inputStyles];
+  const viewStyles = [props.viewStyles];
   if (props.showError) {
-    inputStyles.push(styles.inputError);
+    viewStyles.push(styles.inputError);
   }
 
   return (
     <View>
-      <View style={[styles.container, props.viewStyles]}>
+      <View style={[styles.container, viewStyles]}>
         <TextInput
           style={inputStyles}
           placeholderTextColor={placeholderColor}
@@ -74,6 +75,7 @@ const styles = StyleSheet.create({
   },
   inputError: {
     borderColor: "#ED2939",
+    borderWidth: 1,
   },
   errorText: {
     fontSize: 10,

@@ -13,7 +13,7 @@ import { Image, ImageSourcePropType, Pressable } from "react-native";
 import Colors from "../../constants/Colors";
 import useColorScheme from "../../hooks/useColorScheme";
 import ModalScreen from "../screens/modal/ModalScreen";
-import Login from "../screens/login/login";
+import Login from "../screens/login";
 import NotFoundScreen from "../screens/common/NotFoundScreen";
 import {
   RootStackParamList,

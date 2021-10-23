@@ -1,11 +1,13 @@
 import * as React from "react";
-import { StyleSheet, TextInput, Text, View, Image } from "react-native";
+import { StyleSheet, TextInput, Text, View, Image, StatusBar } from "react-native";
 import { Value } from "./controller";
 import Button from "../../components/common/button";
 import WhiteBackgroundView from "../../components/common/white-background-view/white-background-view";
 import Input from "../../components/common/input/input";
 import { TextStyle, ViewStyle } from "react-native-material-ui";
 import ButtonWithLoading from "../../components/common/button-with-loading/button-with-loading";
+import Colors from "../../constants/colors";
+import ErrorText from "../../components/common/error-text/error-text";
 
 interface Props {
   onFieldChange: (key: keyof Value, newValue: string) => void;
@@ -13,6 +15,7 @@ interface Props {
   onRegisterPress: () => void;
   onBlurField: (key: keyof Value) => void;
   isLoading: boolean;
+  invalidCredentials: boolean;
   value: Value;
 }
 
@@ -22,6 +25,7 @@ export default function Login({
   onRegisterPress,
   onBlurField,
   isLoading,
+  invalidCredentials,
   value,
 }: Props) {
   const buttonContainerStyles: ViewStyle = [styles.loginButtonContainer];
@@ -68,6 +72,7 @@ export default function Login({
           errorText="Debe completar el campo password para ingresar."
           errorStyles={styles.inputError}
         />
+        {invalidCredentials && <ErrorText errorText="Credenciales ingresadas no son válidas" />}
         <Button
           text="¿Olvidaste tu contraseña?"
           style={{
@@ -85,15 +90,6 @@ export default function Login({
           disabled={value.invalidEmail || value.invalidPassword}
           isLoading={isLoading}
         />
-        {/* <Button
-          text={isLoading ? "Ingresando..." : "Ingresar"}
-          style={{
-            container: buttonContainerStyles,
-            text: buttonTextStyles,
-          }}
-          onPress={onLoginPress}
-          disabled={value.invalidEmail || value.invalidPassword}
-        /> */}
         <View style={styles.separator} />
         <Button
           text="Google"
@@ -132,7 +128,7 @@ const styles = StyleSheet.create({
     fontSize: 34,
     lineHeight: 36,
     fontWeight: "bold",
-    color: "#160266",
+    color: Colors.blue,
     marginVertical: 75,
   },
   whiteBackgroundContainer: {
@@ -156,7 +152,7 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
   },
   forgotPasswordText: {
-    color: "#FF6035",
+    color: Colors.orange,
     fontSize: 12,
     lineHeight: 16,
     letterSpacing: 0.4,
@@ -165,7 +161,7 @@ const styles = StyleSheet.create({
   },
   loginButtonContainer: {
     borderWidth: 1,
-    borderColor: "#667180",
+    borderColor: Colors.gray,
     borderRadius: 4,
     alignItems: "center",
     justifyContent: "center",
@@ -175,17 +171,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 16,
     fontWeight: "bold",
-    color: "#667180",
+    color: Colors.gray,
   },
   loginButtonTextEnabled: {
-    color: "#FFFFFF",
+    color: Colors.white,
   },
   loginButtonContainerEnabled: {
-    backgroundColor: "#160266",
+    backgroundColor: Colors.blue,
   },
   separator: {
     borderTopWidth: 1,
-    borderColor: "#979797",
+    borderColor: Colors.grayAlmostBlack,
     marginTop: 24,
     marginBottom: 16,
   },
@@ -201,7 +197,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 16,
     fontWeight: "bold",
-    color: "#667180",
+    color: Colors.gray,
     marginHorizontal: 16,
   },
   bottomContainer: {
@@ -217,7 +213,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   noAccountText: {
-    color: "#160266",
+    color: Colors.blue,
     letterSpacing: 0.1,
     fontSize: 14,
     fontWeight: "500",
@@ -227,7 +223,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
   },
   noAccountButtonText: {
-    color: "#FF6035",
+    color: Colors.orange,
     fontSize: 14,
     lineHeight: 24,
     letterSpacing: 0.1,

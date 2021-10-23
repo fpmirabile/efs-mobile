@@ -6,9 +6,15 @@ export interface AuthenticatedApiOptions {
   token?: string;
 }
 
+export interface ErrorResponse {
+  response: Response;
+  url: string;
+}
+
 export type DeleteResponse = {
   operation: boolean;
 };
+
 
 export type ResponseHandler = (response: Response) => Promise<Response>;
 export const getHeaders = {
@@ -51,8 +57,8 @@ export const authenticatedApi = async (
   const { checkTokenExpiration, token } = options || {};
   args.headers = await withAuthenticationToken(args.headers || {}, token);
 
-  return api(url, args, checkTokenExpiration).catch((err) => {
-    console.log("error during calling", err);
+  return api(url, args, checkTokenExpiration).catch((err: ErrorResponse) => {
+    console.log("error during calling", JSON.stringify(err));
   });
 };
 

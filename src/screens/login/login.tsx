@@ -1,5 +1,12 @@
 import * as React from "react";
-import { StyleSheet, TextInput, Text, View, Image, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  Text,
+  View,
+  Image,
+  StatusBar,
+} from "react-native";
 import { Value } from "./controller";
 import Button from "../../components/common/button";
 import WhiteBackgroundView from "../../components/common/white-background-view/white-background-view";
@@ -8,6 +15,7 @@ import { TextStyle, ViewStyle } from "react-native-material-ui";
 import ButtonWithLoading from "../../components/common/button-with-loading/button-with-loading";
 import Colors from "../../constants/colors";
 import ErrorText from "../../components/common/error-text/error-text";
+import TextButton from "../../components/common/text-button/text-button";
 
 interface Props {
   onFieldChange: (key: keyof Value, newValue: string) => void;
@@ -72,13 +80,12 @@ export default function Login({
           errorText="Debe completar el campo password para ingresar."
           errorStyles={styles.inputError}
         />
-        {invalidCredentials && <ErrorText errorText="Credenciales ingresadas no son válidas" />}
-        <Button
+        {invalidCredentials && (
+          <ErrorText errorText="Credenciales ingresadas no son válidas" />
+        )}
+        <TextButton
+          containerStyle={styles.forgotPasswordContainer}
           text="¿Olvidaste tu contraseña?"
-          style={{
-            container: styles.forgotPasswordContainer,
-            text: styles.forgotPasswordText,
-          }}
         />
         <ButtonWithLoading
           text="Ingresar"
@@ -105,12 +112,9 @@ export default function Login({
       <View style={styles.bottomContainer}>
         <View style={styles.noAccountContainer}>
           <Text style={styles.noAccountText}>¿No tenés cuenta?</Text>
-          <Button
+          <TextButton
+            containerStyle={styles.noAccountButtonContainer}
             text="Registrate"
-            style={{
-              container: styles.noAccountButtonContainer,
-              text: styles.noAccountButtonText,
-            }}
             onPress={onRegisterPress}
           />
         </View>
@@ -147,17 +151,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   forgotPasswordContainer: {
-    alignSelf: "flex-start",
-    marginLeft: 0,
-    paddingLeft: 0,
-  },
-  forgotPasswordText: {
-    color: Colors.orange,
-    fontSize: 12,
-    lineHeight: 16,
-    letterSpacing: 0.4,
-    textTransform: "capitalize",
-    fontWeight: "bold",
+    marginBottom: 24,
   },
   loginButtonContainer: {
     borderWidth: 1,
@@ -221,12 +215,5 @@ const styles = StyleSheet.create({
   },
   noAccountButtonContainer: {
     paddingLeft: 5,
-  },
-  noAccountButtonText: {
-    color: Colors.orange,
-    fontSize: 14,
-    lineHeight: 24,
-    letterSpacing: 0.1,
-    textTransform: "capitalize",
   },
 });

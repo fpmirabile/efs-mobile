@@ -103,6 +103,11 @@ class LoginController extends React.PureComponent<Props, State> {
   };
 
   handleLoginPress = async () => {
+    const { value } = this.state;
+    if (!value.email || !value.password) {
+      return;
+    }
+
     if (this.handleFormValidation()) {
       const { navigation, onLoginUser } = this.props;
       this.setState({

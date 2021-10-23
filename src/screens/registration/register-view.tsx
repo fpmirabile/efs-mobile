@@ -9,6 +9,7 @@ import WhiteBackgroundView from "../../components/common/white-background-view/w
 import { Value as RegisterValue } from "./controller";
 import ButtonWithLoading from "../../components/common/button-with-loading/button-with-loading";
 import Colors from "../../constants/colors";
+import TextButton from "../../components/common/text-button/text-button";
 
 interface Props {
   isLoading: boolean;
@@ -138,11 +139,9 @@ export default function RegisterView({
           <Text style={styles.termsAndCondsTitle}>
             *Al registrarse, usted acepta nuestros
           </Text>
-          <Button
-            style={{
-              container: styles.termsAndCondButtonContainer,
-              text: styles.termsAndCondButtonText,
-            }}
+          <TextButton
+            textStyle={styles.termsAndCondButtonText}
+            containerStyle={styles.termsAndCondButtonContainer}
             text="Términos y condiciones"
             onPress={onTermsAndCondPress}
           />
@@ -166,7 +165,7 @@ const styles = StyleSheet.create({
   scrollView: {
     width: "100%",
     height: "100%",
-    marginVertical: 35,
+    marginTop: 15,
   },
   view: {
     flex: 1,
@@ -226,8 +225,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     lineHeight: 16,
     letterSpacing: 0.4,
-    color: Colors.orange,
-    textTransform: "lowercase",
   },
   registerButtonContainer: {
     borderWidth: 1,

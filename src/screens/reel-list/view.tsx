@@ -71,7 +71,11 @@ export default function ReelsView({
   }
 
   return (
-    <PageWithScroll title="Reels" viewStyles={styles.page}>
+    <PageWithScroll
+      title="Reels"
+      viewStyles={styles.page}
+      titleStyles={{ title: styles.title }}
+    >
       <FlatList
         ref={filterRef}
         data={filters}
@@ -110,8 +114,11 @@ const styles = StyleSheet.create({
     height: 150,
   },
   page: {
-    marginTop: 59, // 35px tiene la topbar, asi que 35+24 = 59
+    marginTop: 24,
     marginHorizontal: 16,
+  },
+  title: {
+    marginBottom: 15,
   },
   sectionContainer: {
     marginVertical: 12,

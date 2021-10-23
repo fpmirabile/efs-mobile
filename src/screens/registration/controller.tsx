@@ -193,7 +193,7 @@ class RegisterController extends React.PureComponent<Props, State> {
 
   handleTermsAndConditionPress = () => {
     const { navigation } = this.props;
-    navigation.push("TermsAndConditions");
+    navigation.navigate("TermsAndConditions");
   };
 
   handleBlurField = (field: keyof Value) => {

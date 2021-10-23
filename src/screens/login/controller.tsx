@@ -19,11 +19,13 @@ export interface Value {
 interface State {
   value: Value;
   loading: boolean;
+  invalidCredentials: boolean;
 }
 
-class RegisterController extends React.PureComponent<Props, State> {
+class LoginController extends React.PureComponent<Props, State> {
   state: State = {
     loading: false,
+    invalidCredentials: false,
     value: {
       email: "",
       invalidEmail: false,
@@ -91,6 +93,7 @@ class RegisterController extends React.PureComponent<Props, State> {
   handleFieldChange = (field: keyof Value, newValue: string) => {
     this.setState((state) => {
       return {
+        invalidCredentials: false,
         value: {
           ...state.value,
           [field]: newValue,
@@ -100,14 +103,27 @@ class RegisterController extends React.PureComponent<Props, State> {
   };
 
   handleLoginPress = async () => {
+    const { value } = this.state;
+    if (!value.email || !value.password) {
+      return;
+    }
+
     if (this.handleFormValidation()) {
       const { navigation, onLoginUser } = this.props;
       this.setState({
         loading: true,
+        invalidCredentials: false,
       });
       try {
         const { value } = this.state;
         const token = await onLoginUser(value.email, value.password);
+        if (!token) {
+          this.setState({
+            invalidCredentials: true,
+          });
+          return;
+        }
+
         setSession({ jwt: token.token, refresh: token.refreshToken });
         navigation.navigate("Home"); // TODO: Move to correct page
       } catch (exception) {
@@ -144,7 +160,7 @@ class RegisterController extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { value, loading } = this.state;
+    const { value, loading, invalidCredentials } = this.state;
     return (
       <LoginView
         onFieldChange={this.handleFieldChange}
@@ -153,9 +169,10 @@ class RegisterController extends React.PureComponent<Props, State> {
         onBlurField={this.handleBlurField}
         isLoading={loading}
         value={value}
+        invalidCredentials={invalidCredentials}
       />
     );
   }
 }
 
-export default RegisterController;
+export default LoginController;

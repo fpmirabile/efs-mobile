@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { ReelPopular } from "../../../../api/models/reels";
+import Colors from "../../../../constants/colors";
 
 interface Props {
   backgroundImageStyle?: ViewStyle;
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     fontSize: 14,
     letterSpacing: 0.1,
-    color: "#FFFFFF",
+    color: Colors.white,
     maxWidth: 156,
   },
   likesContainer: {
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
   likeIcon: {
     height: 24,
     width: 24,
-    tintColor: "#FFFFFF",
+    tintColor: Colors.white,
     marginBottom: 4,
   },
 });

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
+import Colors from "../../../../constants/colors";
 
 export interface Props {
   containerStyle?: View["props"]["style"];
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     lineHeight: 24,
-    color: "#160266",
+    color: Colors.blue,
     fontWeight: "bold",
   },
 });

@@ -3,6 +3,7 @@ import { ListRenderItem, StyleSheet } from "react-native";
 import { TextStyle, ViewStyle } from "react-native-material-ui";
 import { Grupo } from "../../../../api/models/reels";
 import Button from "../../../../components/common/button";
+import Colors from "../../../../constants/colors";
 
 interface Props {
   currentIndex?: number;
@@ -32,7 +33,7 @@ export default (props: Props): ListRenderItem<Grupo> => ({ item, index }) => {
 const styles = StyleSheet.create({
   filterButtonContainer: {
     height: 48,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: Colors.white,
     borderRadius: 8,
     shadowOffset: {
       height: 2,
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     marginRight: 8
   },
   filterButton: {
-    color: "#FF6035",
+    color: Colors.orange,
     fontSize: 16,
     lineHeight: 24,
     letterSpacing: 0.15,
@@ -55,9 +56,9 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
   },
   filterButtonSelected: {
-    color: "#FFFFFF",
+    color: Colors.white,
   },
   filterButtonContainerSelected: {
-    backgroundColor: "#160266",
+    backgroundColor: Colors.blue,
   },
 });

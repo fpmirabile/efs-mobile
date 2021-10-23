@@ -12,6 +12,7 @@ import {
   TextInputEndEditingEventData,
   TargetedEvent,
 } from "react-native";
+import ErrorText from "../error-text/error-text";
 
 interface Props {
   inputStyles?: TextInput["props"]["style"];
@@ -50,10 +51,8 @@ export default function Input(props: Props) {
           {...props}
         />
       </View>
-      {props.showError && (
-        <Text style={[styles.errorText, props.errorStyles]}>
-          {props.errorText}
-        </Text>
+      {props.showError && props.errorText && (
+        <ErrorText textStyles={props.errorStyles} errorText={props.errorText} />
       )}
     </View>
   );
@@ -76,10 +75,5 @@ const styles = StyleSheet.create({
   inputError: {
     borderColor: "#ED2939",
     borderWidth: 1,
-  },
-  errorText: {
-    fontSize: 10,
-    lineHeight: 14,
-    color: "#ED2939",
-  },
+  }
 });

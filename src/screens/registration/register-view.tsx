@@ -8,6 +8,8 @@ import Input from "../../components/common/input/input";
 import WhiteBackgroundView from "../../components/common/white-background-view/white-background-view";
 import { Value as RegisterValue } from "./controller";
 import ButtonWithLoading from "../../components/common/button-with-loading/button-with-loading";
+import Colors from "../../constants/colors";
+import TextButton from "../../components/common/text-button/text-button";
 
 interface Props {
   isLoading: boolean;
@@ -137,11 +139,9 @@ export default function RegisterView({
           <Text style={styles.termsAndCondsTitle}>
             *Al registrarse, usted acepta nuestros
           </Text>
-          <Button
-            style={{
-              container: styles.termsAndCondButtonContainer,
-              text: styles.termsAndCondButtonText,
-            }}
+          <TextButton
+            textStyle={styles.termsAndCondButtonText}
+            containerStyle={styles.termsAndCondButtonContainer}
             text="Términos y condiciones"
             onPress={onTermsAndCondPress}
           />
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   scrollView: {
     width: "100%",
     height: "100%",
-    marginVertical: 35,
+    marginTop: 15,
   },
   view: {
     flex: 1,
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     maxWidth: 328,
     fontSize: 16,
     lineHeight: 26,
-    color: "#3F4751",
+    color: Colors.lightGray,
     marginBottom: 9,
   },
   registerBox: {
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginVertical: 7,
     marginHorizontal: 8,
-    borderColor: "#e0e0e0",
+    borderColor: Colors.inputBorder,
   },
   errorText: {
     marginHorizontal: 10,
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   termsAndCondsTitle: {
-    color: "#667180",
+    color: Colors.gray,
     fontWeight: "500",
     fontSize: 10,
     lineHeight: 16,
@@ -225,12 +225,10 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     lineHeight: 16,
     letterSpacing: 0.4,
-    color: "#FF6035",
-    textTransform: "lowercase",
   },
   registerButtonContainer: {
     borderWidth: 1,
-    borderColor: "#667180",
+    borderColor: Colors.gray,
     borderRadius: 4,
     alignItems: "center",
     justifyContent: "center",
@@ -242,16 +240,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 16,
     fontWeight: "bold",
-    color: "#667180",
+    color: Colors.gray,
   },
   registerButtonTextEnabled: {
-    color: "#FFFFFF",
+    color: Colors.white,
   },
   registerButtonContainerEnabled: {
-    backgroundColor: "#160266",
+    backgroundColor: Colors.blue,
   },
   dropdownContainer: {
-    borderColor: "#e0e0e0",
+    borderColor: Colors.inputBorder,
     borderRadius: 3.5,
     borderWidth: 0.3,
     marginHorizontal: 8,
@@ -262,7 +260,7 @@ const styles = StyleSheet.create({
     height: 48,
   },
   dropdownText: {
-    color: "#000000DE",
+    color: Colors.black,
     fontSize: 16,
     lineHeight: 24,
     letterSpacing: 0.16,

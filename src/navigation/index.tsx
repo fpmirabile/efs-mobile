@@ -4,15 +4,12 @@
  *
  */
 import * as React from "react";
-import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Image, ImageSourcePropType, Pressable } from "react-native";
+import { Image, ImageSourcePropType } from "react-native";
 
-import Colors from "../../constants/Colors";
-import useColorScheme from "../../hooks/useColorScheme";
-import ModalScreen from "../screens/modal/ModalScreen";
+import Colors from "../constants/colors";
 import Login from "../screens/login";
 import NotFoundScreen from "../screens/common/NotFoundScreen";
 import {
@@ -73,9 +70,9 @@ function RootNavigator() {
         component={NotFoundScreen}
         options={{ title: "Oops!" }}
       />
-      <Stack.Group screenOptions={{ presentation: "modal" }}>
+      {/* <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
+      </Stack.Group> */}
     </Stack.Navigator>
   );
 }
@@ -87,13 +84,11 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
-
   return (
     <BottomTab.Navigator
       initialRouteName="Reels"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: Colors.lightBlue,
       }}
     >
       <BottomTab.Screen
@@ -156,14 +151,9 @@ function BottomTabNavigator() {
   );
 }
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
 function TabBarIcon(props: {
-  // name: React.ComponentProps<typeof FontAwesome>["name"];
   source: ImageSourcePropType;
   color: string;
 }) {
   return <Image source={props.source} style={{ tintColor: props.color }} />;
-  // return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }

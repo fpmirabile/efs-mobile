@@ -7,8 +7,8 @@ interface Props {
   viewStyles?: View["props"]["style"];
   title?: string;
   titleStyles?: {
-    container: PageTitleProps["containerStyle"];
-    title: PageTitleProps["titleStyle"];
+    container?: PageTitleProps["containerStyle"];
+    title?: PageTitleProps["titleStyle"];
   };
   children: React.ReactNode;
 }
@@ -17,7 +17,7 @@ export default function PageWithScroll(props: Props) {
   return (
     <ScrollView style={[styles.scrollView, props.scrollViewStyles]}>
       <View style={[styles.containerView, props.viewStyles]}>
-        {props.title && <PageTitle title={props.title} />}
+        {props.title && <PageTitle title={props.title} titleStyle={[props.titleStyles?.title]} />}
         {props.children}
       </View>
     </ScrollView>

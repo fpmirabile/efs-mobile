@@ -5,6 +5,7 @@ import Button from "../../components/common/button";
 import WhiteBackgroundView from "../../components/common/white-background-view/white-background-view";
 import Input from "../../components/common/input/input";
 import { TextStyle, ViewStyle } from "react-native-material-ui";
+import ButtonWithLoading from "../../components/common/button-with-loading/button-with-loading";
 
 interface Props {
   onFieldChange: (key: keyof Value, newValue: string) => void;
@@ -74,7 +75,17 @@ export default function Login({
             text: styles.forgotPasswordText,
           }}
         />
-        <Button
+        <ButtonWithLoading
+          text="Ingresar"
+          style={{
+            container: buttonContainerStyles,
+            text: buttonTextStyles,
+          }}
+          onPress={onLoginPress}
+          disabled={value.invalidEmail || value.invalidPassword}
+          isLoading={isLoading}
+        />
+        {/* <Button
           text={isLoading ? "Ingresando..." : "Ingresar"}
           style={{
             container: buttonContainerStyles,
@@ -82,7 +93,7 @@ export default function Login({
           }}
           onPress={onLoginPress}
           disabled={value.invalidEmail || value.invalidPassword}
-        />
+        /> */}
         <View style={styles.separator} />
         <Button
           text="Google"
@@ -150,7 +161,7 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     letterSpacing: 0.4,
     textTransform: "capitalize",
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   loginButtonContainer: {
     borderWidth: 1,
@@ -194,8 +205,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   bottomContainer: {
-    alignItems: 'flex-end',
-    justifyContent: 'center',
+    alignItems: "flex-end",
+    justifyContent: "center",
     flexDirection: "row",
     flex: 1,
   },
@@ -206,20 +217,20 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   noAccountText: {
-    color: '#160266',
+    color: "#160266",
     letterSpacing: 0.1,
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
     lineHeight: 16,
   },
   noAccountButtonContainer: {
     paddingLeft: 5,
   },
   noAccountButtonText: {
-    color: '#FF6035',
-    fontSize:14,
+    color: "#FF6035",
+    fontSize: 14,
     lineHeight: 24,
     letterSpacing: 0.1,
-    textTransform: 'capitalize'
+    textTransform: "capitalize",
   },
 });

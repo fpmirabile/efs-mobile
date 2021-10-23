@@ -1,28 +1,29 @@
 import * as React from "react";
-import Carousel from "react-native-anchor-carousel";
+import { FlatList } from "react-native";
 import { BasicStackComponentProps } from "../../../types";
-import { Grupo, Reel } from "../../api/models/reels";
+import { Grupo, ReelPopular, Seccion } from "../../api/models/reels";
 import ReelsView from "./view";
 
 export interface Props extends BasicStackComponentProps {
   onGetGroups: () => Promise<Grupo[]>;
-  onGetReelsByGroup: (groupId: number) => Promise<Reel[]>;
-  onGetPopularReels: (groupId: number) => Promise<Reel[]>;
+  onGetReelsByGroup: (groupId: number) => Promise<Seccion[]>;
+  onGetPopularReels: (groupId: number) => Promise<ReelPopular[]>;
   onFavoriteReel: (reelId: number) => Promise<void>;
   onLikeReel: (reelId: number, liked: boolean) => Promise<void>;
 }
 
 interface State {
+  isLoading: boolean;
   currentIndex: number;
   filterGroups: Grupo[];
-  popularReels: Reel[];
-  reels: Reel[];
+  popularReels: ReelPopular[];
+  reels: Seccion[];
 }
 
 class ReelsController extends React.PureComponent<Props, State> {
-  carouselRef = React.createRef<Carousel>();
-
+  filterRef: React.RefObject<FlatList<Grupo>> = React.createRef();
   state: State = {
+    isLoading: true,
     currentIndex: 0,
     filterGroups: [],
     popularReels: [],
@@ -35,62 +36,78 @@ class ReelsController extends React.PureComponent<Props, State> {
 
     try {
       const allFilters = await onGetGroups();
-      console.log(`all filters: ${allFilters}`)
-      if (allFilters.length) {
-        const currentFilter = allFilters.at(currentIndex);
+      if (allFilters && allFilters.length) {
+        const currentFilter = allFilters[currentIndex];
         if (!currentFilter) {
           return;
         }
 
         const popularReels = await onGetPopularReels(currentFilter.grupoId);
         const reels = await onGetReelsByGroup(currentFilter.grupoId);
-        this.setState(
-          {
-            reels,
-            popularReels,
-            filterGroups: allFilters,
-          },
-          () => {
-            console.log(
-              `Loaded... reels: ${reels.length}. Popular: ${popularReels.length}. Groups: ${allFilters.length}`
-            );
-          }
-        );
+        this.setState({
+          reels,
+          popularReels,
+          filterGroups: allFilters,
+          isLoading: false,
+        });
       }
     } catch (exception) {
+      // TODO: Set an error message or page.
       console.log(exception);
     }
   }
 
-  handleChangedIndex = (index: number) => {};
+  handleFilterChanged = async (index: number) => {
+    this.setState({
+      isLoading: true,
+    });
+
+    const { filterGroups } = this.state;
+    const { onGetReelsByGroup } = this.props;
+    const groupReels = await onGetReelsByGroup(filterGroups[index].grupoId);
+
+    this.setState({
+      currentIndex: index,
+      reels: groupReels,
+      isLoading: false,
+    });
+  };
 
   handleFilterScrollEnd = (data: any, index: number) => {
     if (isNaN(index)) {
       return;
     }
 
-    this.setState({
-      currentIndex: index,
-    });
-    this.handleChangedIndex(index);
+    this.handleFilterChanged(index);
   };
 
   handleItemPress = (index: number) => () => {
-    this.carouselRef.current?.scrollToIndex(index);
-    this.handleChangedIndex(index);
+    this.filterRef.current?.scrollToIndex({ index, animated: true });
+    this.handleFilterChanged(index);
   };
 
+  handlePressVideo = () => {
+    const { navigation } = this.props;
+    navigation.navigate("Video");
+  }
+
   render() {
-    const { currentIndex } = this.state;
+    const { currentIndex, filterGroups, reels, popularReels, isLoading } =
+      this.state;
     return (
       <ReelsView
-        filterCarouselRef={this.carouselRef}
+        filterRef={this.filterRef}
         currentIndex={currentIndex}
         onFilterScrollEnd={this.handleFilterScrollEnd}
         onPressedItem={this.handleItemPress}
+        onPressVideo={this.handlePressVideo}
         onImageLoadError={() => {
           return "";
         }}
+        filters={filterGroups}
+        seccionReels={reels}
+        popularReels={popularReels}
+        isLoading={isLoading}
       />
     );
   }

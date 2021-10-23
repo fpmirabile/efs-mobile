@@ -1,125 +1,114 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
-import Carousel from "react-native-anchor-carousel";
+import { FlatList, StyleSheet, View } from "react-native";
 import RightCarousel from "../../components/common/carousel/carousel";
 import PageWithScroll from "../../components/common/page-with-scroll/page-with-scroll";
 import FilterItem from "./components/filter-item/filter-item";
 import MostPopularItem from "./components/most-popular/most-popular";
 import VideoItem from "./components/video-item/video-item";
 import SectionReel from "./components/section/section";
+import { Grupo, Reel, ReelPopular, Seccion } from "../../api/models/reels";
+import LoadingBanner from "../../components/common/loading-banner/loading-banner";
 
 interface Props {
-  filterCarouselRef: React.RefObject<Carousel>;
   currentIndex: number;
   onFilterScrollEnd: (data: any, index: number) => void;
   onPressedItem: (index: number) => () => void;
+  onPressVideo: () => void;
   onImageLoadError: () => string;
+  filters: Grupo[];
+  popularReels: ReelPopular[];
+  seccionReels: Seccion[];
+  filterRef: React.LegacyRef<FlatList>;
+  isLoading: boolean;
 }
 
-const filters = [
+const renderSection = (
+  sectionReels: Seccion[],
   {
-    id: "1",
-    name: "principiantes",
-  },
-  {
-    id: "2",
-    name: "fci",
-  },
-  {
-    id: "3",
-    name: "Acciones",
-  },
-  {
-    id: "4",
-    name: "Ahorro",
-  },
-];
-
-const popu = [
-  {
-    id: "1",
-    imageUri:
-      "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
-    title: "Como funcionan los plazos fijos",
-    likesQuantity: "15001",
-  },
-  {
-    id: "5",
-    imageUri:
-      "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
-    title: "Como funcionan los plazos fijos",
-    likesQuantity: "15001",
-  },
-  {
-    id: "2",
-    imageUri:
-      "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
-    title: "Como funcionan los plazos fijos",
-    likesQuantity: "15001",
-  },
-  {
-    id: "3",
-    imageUri:
-      "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
-    title: "Como funcionan los plazos fijos",
-    likesQuantity: "15001",
-  },
-  {
-    id: "4",
-    imageUri:
-      "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
-    title: "Como funcionan los plazos fijos",
-    likesQuantity: "15001",
-  },
-];
+    onImageLoadError,
+    onPressVideo,
+  }: {
+    onImageLoadError: Props["onImageLoadError"];
+    onPressVideo: Props["onPressVideo"];
+  }
+) => {
+  return sectionReels.map((seccion) => {
+    return (
+      <SectionReel
+        title={seccion.titulo}
+        containerStyle={styles.sectionContainer}
+        key={seccion.seccionId}
+      >
+        <RightCarousel
+          data={seccion.reels}
+          onRenderItem={VideoItem({ onImageLoadError, onPressVideo })}
+          onKeyExtractor={(item: Reel, _: number) => item.reelId.toString()}
+          separatorWidth={15}
+          itemWidth={140}
+        />
+      </SectionReel>
+    );
+  });
+};
 
 export default function ReelsView({
   currentIndex,
-  onFilterScrollEnd,
   onPressedItem,
+  onPressVideo,
   onImageLoadError,
-  filterCarouselRef,
+  filters,
+  seccionReels,
+  popularReels,
+  filterRef,
+  isLoading,
 }: Props) {
+  if (isLoading) {
+    return (
+      <View style={styles.loadingPage}>
+        <LoadingBanner style={styles.loadingBanner} />
+      </View>
+    );
+  }
+
   return (
     <PageWithScroll title="Reels" viewStyles={styles.page}>
-      <RightCarousel
-        carouselRef={filterCarouselRef}
+      <FlatList
+        ref={filterRef}
         data={filters}
-        onRenderItem={FilterItem({ currentIndex, onPressedItem })}
-        onKeyExtractor={(item: any, _: number) => item.id}
-        separatorWidth={15}
-        itemWidth={150}
-        onScrollEnd={onFilterScrollEnd}
+        renderItem={FilterItem({ currentIndex, onPressedItem })}
+        keyExtractor={(item) => item.grupoId.toString()}
+        horizontal
+        showsHorizontalScrollIndicator={false}
       />
       <SectionReel
         title="Los más populares"
         containerStyle={styles.sectionContainer}
       >
         <RightCarousel
-          data={popu}
-          onRenderItem={MostPopularItem({ onImageLoadError })}
-          onKeyExtractor={(item: any, _: number) => item.id}
+          data={popularReels}
+          onRenderItem={MostPopularItem({ onImageLoadError, onPressVideo })}
+          onKeyExtractor={(item: ReelPopular, _: number) =>
+            item.reelId.toString()
+          }
           separatorWidth={15}
           itemWidth={276}
         />
       </SectionReel>
-      <SectionReel
-        title="Tasas de interés"
-        containerStyle={styles.sectionContainer}
-      >
-        <RightCarousel
-          data={popu}
-          onRenderItem={VideoItem({ onImageLoadError })}
-          onKeyExtractor={(item: any, _: number) => item.id}
-          separatorWidth={15}
-          itemWidth={140}
-        />
-      </SectionReel>
+      {renderSection(seccionReels, { onImageLoadError, onPressVideo })}
     </PageWithScroll>
   );
 }
 
 const styles = StyleSheet.create({
+  loadingPage: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
+  loadingBanner: {
+    width: 150,
+    height: 150,
+  },
   page: {
     marginTop: 59, // 35px tiene la topbar, asi que 35+24 = 59
     marginHorizontal: 16,

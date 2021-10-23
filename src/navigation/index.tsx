@@ -24,6 +24,7 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import Profile from "../screens/profile-test/profile";
 import Register from "../screens/registration";
 import Reels from "../screens/reel-list";
+import VideoPlayer from "../screens/video-player";
 
 export default function Navigation() {
   return (
@@ -60,6 +61,11 @@ function RootNavigator() {
       <Stack.Screen
         name="Profile"
         component={Profile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Video"
+        component={VideoPlayer}
         options={{ headerShown: false }}
       />
       <Stack.Screen

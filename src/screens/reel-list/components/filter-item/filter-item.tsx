@@ -1,6 +1,7 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { ListRenderItem, StyleSheet } from "react-native";
 import { TextStyle, ViewStyle } from "react-native-material-ui";
+import { Grupo } from "../../../../api/models/reels";
 import Button from "../../../../components/common/button";
 
 interface Props {
@@ -8,46 +9,42 @@ interface Props {
   onPressedItem: (index: number) => () => void;
 }
 
-interface ItemProps {
-  item: any;
-  index: number;
-}
-
-export default (props: Props) => (itemProps: ItemProps) => {
+export default (props: Props): ListRenderItem<Grupo> => ({ item, index }) => {
   const containerStyles: ViewStyle = [styles.filterButtonContainer];
   const buttonStyles: TextStyle = [styles.filterButton];
-  if (props.currentIndex === itemProps.index) {
+  if (props.currentIndex === index) {
     containerStyles.push(styles.filterButtonContainerSelected);
     buttonStyles.push(styles.filterButtonSelected);
   }
 
   return (
     <Button
-      text={itemProps.item.name}
+      text={item.titulo}
       style={{
         container: containerStyles,
-        text: styles.filterButton,
+        text: buttonStyles,
       }}
-      onPress={props.onPressedItem(itemProps.index)}
+      onPress={props.onPressedItem(index)}
     />
   );
 };
 
 const styles = StyleSheet.create({
   filterButtonContainer: {
-    minHeight: 48,
+    height: 48,
     backgroundColor: "#FFFFFF",
     borderRadius: 8,
     shadowOffset: {
-      height: 0,
-      width: 0,
+      height: 2,
+      width: 0
     },
     shadowRadius: 8,
     shadowOpacity: 0.14,
-    elevation: 1,
+    elevation: 6,
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 12,
+    marginRight: 8
   },
   filterButton: {
     color: "#FF6035",

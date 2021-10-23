@@ -30,8 +30,8 @@ const formatResponse = (response: Response) => {
   return response;
 };
 
-const withAuthenticationToken = (headers: HeadersInit, token?: string) => {
-  const session = getSession();
+const withAuthenticationToken = async (headers: HeadersInit, token?: string) => {
+  const session = await getSession();
   const jwt = token || (session && session.jwt);
   if (!jwt) {
     return headers;
@@ -43,13 +43,13 @@ const withAuthenticationToken = (headers: HeadersInit, token?: string) => {
   };
 };
 
-export const authenticatedApi = (
+export const authenticatedApi = async (
   url: string,
   args: RequestInit = {},
   options: AuthenticatedApiOptions = {}
 ) => {
   const { checkTokenExpiration, token } = options || {};
-  args.headers = withAuthenticationToken(args.headers || {}, token);
+  args.headers = await withAuthenticationToken(args.headers || {}, token);
 
   return api(url, args, checkTokenExpiration).catch((err) => {
     console.log("error during calling", err);
@@ -80,8 +80,8 @@ export const api = (
     });
 };
 
-export const refreshToken = () => {
-  const token = getSession();
+export const refreshToken = async () => {
+  const token = await getSession();
   const options = {
     method: "PUT",
     headers: postHeaders,
@@ -109,7 +109,7 @@ export const refreshToken = () => {
 };
 
 const checkTokenExpiration = async (response: Response) => {
-  const token = getSession();
+  const token = await getSession();
   // La api aun no devuelve esto
   if (
     response.headers &&

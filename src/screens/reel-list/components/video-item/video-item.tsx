@@ -7,35 +7,42 @@ import {
   TextStyle,
   Text,
 } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { Reel } from "../../../../api/models/reels";
 
 interface Props {
   backgroundImageStyle?: ViewStyle;
   textContainerStyle?: ViewStyle;
   titleStyle?: TextStyle;
   onImageLoadError: () => string;
+  onPressVideo: () => void;
 }
 
 interface ItemProps {
-  item: any;
-  // imageUri: string;
-  // title: string;
+  item: Reel;
   index: number;
 }
 
 export default (props: Props) => (itemProps: ItemProps) => {
   return (
-    <ImageBackground
-      imageStyle={styles.image}
-      source={{ uri: itemProps.item.imageUri }}
-      style={[styles.imageBackground, props.backgroundImageStyle]}
-      onError={props.onImageLoadError}
-    >
-      <View style={[styles.textContainer, props.textContainerStyle]}>
-        <Text style={[styles.title, props.titleStyle]}>
-          {itemProps.item.title}
-        </Text>
-      </View>
-    </ImageBackground>
+    <TouchableWithoutFeedback onPress={props.onPressVideo}>
+      <ImageBackground
+        imageStyle={styles.image}
+        source={{
+          uri:
+            itemProps.item.imageUri ||
+            "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
+        }}
+        style={[styles.imageBackground, props.backgroundImageStyle]}
+        onError={props.onImageLoadError}
+      >
+        <View style={[styles.textContainer, props.textContainerStyle]}>
+          <Text style={[styles.title, props.titleStyle]}>
+            {itemProps.item.titulo}
+          </Text>
+        </View>
+      </ImageBackground>
+    </TouchableWithoutFeedback>
   );
 };
 

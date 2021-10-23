@@ -7,26 +7,27 @@ export interface Grupo {
 }
 
 export interface Seccion {
-  id: number;
+  seccionId: number;
   titulo: string;
-  grupo: Grupo;
+  reels: Reel[];
 }
 
 export interface Reel {
-  id: number;
+  reelId: number;
   titulo: string;
-  likes: number;
-  url: string;
-  favorito: boolean;
-  like: boolean;
-  seccion: Seccion;
+  imageUri?: string;
+}
+
+export interface ReelPopular extends Reel {
+  grupoId: number;
+  cantidadLikes: number;
 }
 
 export default {
   getReel: (reelId: number): Promise<Reel> => authenticatedGet(`/reel/${reelId}`),
   getAllGroups: (): Promise<Grupo[]> => authenticatedGet('/reels/grupos'),
-  getReelsByGroup: (groupId: number): Promise<Reel[]> => authenticatedGet(`/reels/grupo/${groupId}`),
-  getPopularReelsByGroup: (groupId: number): Promise<Reel[]> => authenticatedGet(`/reels/${groupId}`),
+  getSectionWithReelsByGroup: (groupId: number): Promise<Seccion[]> => authenticatedGet(`/reels/grupo/${groupId}`),
+  getPopularReelsByGroup: (groupId: number): Promise<ReelPopular[]> => authenticatedGet(`/reels/populares/${groupId}`),
   likeReel: (reelId: number, like: boolean): Promise<void> => authenticatedPost('/reel/like', { reelId, like }),
   favoriteReel: (reelId: number): Promise<void> => authenticatedPost('', { reelId })
 };

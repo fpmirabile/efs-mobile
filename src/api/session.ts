@@ -1,3 +1,5 @@
+import { setItemAsync, getItemAsync } from "expo-secure-store";
+
 // TODO: Refactor for react native. Not working now
 type StorageKey = "store.jwt" | "store.refresh";
 interface AuthSession {
@@ -6,9 +8,9 @@ interface AuthSession {
 }
 
 interface TokenStorage {
-  getItem: (key: StorageKey) => string | null;
+  getItem: (key: StorageKey) => Promise<string | null> | null;
   setItem: (key: StorageKey, value: string) => void;
-  removeItem: (key: StorageKey) => void;
+  // removeItem: (key: StorageKey) => void;
 }
 
 interface TokenStorageMap {
@@ -28,16 +30,16 @@ const tryOrNull = <T>(f: () => T) => {
 // En realidad, solo usar un [key: string]: TokenStorage y listo
 const STORAGE: TokenStorageMap = {
   session: {
-    getItem: (k) => tryOrNull(() => sessionStorage.getItem(k)),
-    setItem: (k, v) => tryOrNull(() => sessionStorage.setItem(k, v)),
-    removeItem: (k) => tryOrNull(() => sessionStorage.removeItem(k)),
+    getItem: (k) => tryOrNull(async () => await getItemAsync(k)),
+    setItem: (k, v) => tryOrNull(() => setItemAsync(k, v)),
+    // removeItem: (k) => tryOrNull(() => sessionStorage.removeItem(k)),
   },
 };
 
-export const getSession = (): AuthSession | false => {
+export const getSession = async (): Promise<AuthSession | false> => {
   const { getItem } = getTokenStorage();
-  const jwt = getItem("store.jwt");
-  const refresh = getItem("store.refresh");
+  const jwt = await getItem("store.jwt");
+  const refresh = await getItem("store.refresh");
   if (!jwt || !refresh) {
     return false;
   }
@@ -49,8 +51,8 @@ const getTokenStorage = () => {
   return STORAGE.session;
 };
 
-export const setSession = ({ jwt, refresh }: AuthSession): boolean => {
-  const current = getSession();
+export const setSession = async ({ jwt, refresh }: AuthSession): Promise<boolean> => {
+  const current = await getSession();
   if (current && current.jwt === jwt && current.refresh === refresh) {
     return false;
   }
@@ -66,14 +68,14 @@ export const setSession = ({ jwt, refresh }: AuthSession): boolean => {
   return true;
 };
 
-export const removeSession = () => {
-  const storage = getTokenStorage();
-  if (!storage) {
-    return;
-  }
+// export const removeSession = () => {
+//   const storage = getTokenStorage();
+//   if (!storage) {
+//     return;
+//   }
 
-  const { removeItem } = storage;
+//   const { removeItem } = storage;
 
-  removeItem("store.jwt");
-  removeItem("store.refresh");
-};
+//   removeItem("store.jwt");
+//   removeItem("store.refresh");
+// };

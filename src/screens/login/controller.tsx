@@ -1,17 +1,11 @@
 import * as React from "react";
 import { BasicStackComponentProps } from "../../../types";
-import { LoginToken, RegisterUser } from "../../api/models/user";
+import { LoginToken } from "../../api/models/user";
 import { setSession } from "../../api/session";
-import {
-  isValidAge,
-  isValidEmail,
-  isValidPassword,
-  isValidSex,
-} from "../../util/validator";
+import { isValidEmail, isValidPassword } from "../../util/validator";
 import LoginView from "./login";
 
 export interface Props extends BasicStackComponentProps {
-  onUserRegister: (newUser: RegisterUser) => Promise<void>;
   onLoginUser: (email: string, password: string) => Promise<LoginToken>;
 }
 
@@ -107,7 +101,7 @@ class RegisterController extends React.PureComponent<Props, State> {
 
   handleLoginPress = async () => {
     if (this.handleFormValidation()) {
-      const { navigation, onUserRegister, onLoginUser } = this.props;
+      const { navigation, onLoginUser } = this.props;
       this.setState({
         loading: true,
       });

@@ -7,6 +7,7 @@ import Button from "../../components/common/button";
 import Input from "../../components/common/input/input";
 import WhiteBackgroundView from "../../components/common/white-background-view/white-background-view";
 import { Value as RegisterValue } from "./controller";
+import ButtonWithLoading from "../../components/common/button-with-loading/button-with-loading";
 
 interface Props {
   isLoading: boolean;
@@ -145,14 +146,15 @@ export default function RegisterView({
             onPress={onTermsAndCondPress}
           />
         </View>
-        <Button
+        <ButtonWithLoading
           disabled={!value.registerButtonEnabled}
-          text={isLoading ? "Registrando..." : "Registrarse"}
+          text="Registrarse"
           style={{
             container: buttonContainerStyles,
             text: buttonTextStyles,
           }}
           onPress={onRegisterPress}
+          isLoading={isLoading}
         />
       </View>
     </ScrollView>

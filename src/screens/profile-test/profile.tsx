@@ -1,32 +1,51 @@
 import * as React from "react";
 import { StyleSheet, SafeAreaView, Text, View } from "react-native";
-import RadioButton from "../../components/common/radio-button";
 import Button from "../../components/common/button";
-import { getsurveyQuestions } from "../../util/profile";
+import { getsurveyQuestions, QuestionState } from "../../util/profile";
+import { useEffect, useRef, useState } from "react";
+import  QuestionComp  from "../../components/questions/Question";
+import Answer from "../../components/questions/Answer";
 
 const Profile = () => {
-  const [loading, setLoading] = React.useState(false);
-  const [questions, setQuestion] = React.useState([]);
-  const [userAnswers, setUserAnswers] = React.useState([]);
-  const [score, setScore] = React.useState(0);
-  const [surveyOver, setSurveyOver] = React.useState(true);
-  // const [totalQuestions, setTotalQuestions] = React.useState(8);
-  const [checked, setChecked] = React.useState(false);
-  const [position, setPositon] = React.useState(0);
-  const survey = getsurveyQuestions();
+  const [loading, setLoading] = useState(false);
+  const [questions, setQuestions] = useState<QuestionState[]>([]);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [score, setScore] = useState(0);
+  const [surveyOver, setSurveyOver] = useState(true);
+  const [totalQuestions, setTotalQuestions] = useState(6);
+  const [number, setNumber] = useState(0);
+ 
+  const setAnswer = useRef(null);
+  const checkAnswer = ()=>{};
+
+  const startQuizProfile = async ()=>{
+    setLoading(true)
+    setSurveyOver(false)
+    const survey =  await getsurveyQuestions();
+    setQuestions(survey);
+    setScore(0);
+    setUserAnswers([]);
+    setNumber(0);
+    setLoading(false);
+  }
+
+  useEffect (()=>{
+    startQuizProfile();
+  },[]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>{survey[position].question}</Text>
-      <View />
-      <RadioButton
-        label={survey[position].options[0].value}
-        checked={checked}
-        value="value"
-        onSelect={() => {
-          setChecked(true);
-        }}
-      />
+      {questions.length > 0 ? (
+        <>
+        <QuestionComp questionNr={number+1}
+        question = {questions[number].question}
+        />
+        <Answer answers={questions[number].options}
+          {...setAnswer}
+          checkAnswer
+          />
+        </>
+      ): null}
       <View style={styles.buttonContainer}>
         {/*  <Button text="Volver" onPress={() => { }} style={{ container: styles.button}} /> */}
         <Button text="Continuar" onPress={() => {}} />
@@ -40,11 +59,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#F2F2F2",
-  },
-  title: {
-    color: "#160266",
-    fontSize: 24,
-    fontWeight: "bold",
   },
   formGroup: {
     flexDirection: "row",

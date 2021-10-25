@@ -1,155 +1,82 @@
-export const getsurveyQuestions = () => {
-  return [
+export type QuestionState = {
+  key: number,
+  question: string,
+  options: {key: number, value:string}[],
+  answer: string
+}
+
+export const getsurveyQuestions = async() => {
+  const questions: QuestionState[] = [
     {
       key: 1,
-      question: "¿Que edad tienes?",
+      question: "¿Cómo calificas tu conocimiento en inversiones?",
       options: [
-        { key: 4, value: "Menor de 35 años" },
-        { key: 3, value: "Entre 36 y 50 años" },
-
-        { key: 2, value: "50 años o más" },
-
-        { key: 1, value: "Prefiero no responder" },
+        { key: 1, value: "Principiante" },
+        { key: 2, value: "Intermedio" },
+        { key: 3, value: "Avanzado" },
+        { key: 4, value: "Experto" },
       ],
       answer: "",
     },
     {
       key: 2,
       question:
-        "¿Qué porcentaje de su patrimonio total destinará a inversiones?",
+        "¿Qué porcentaje de su dinero destinará a inversiones?",
       options: [
         { key: 1, value: "Menos del 25%" },
         { key: 2, value: "Entre 26% y 50%" },
-
         { key: 3, value: "Entre 51% y 75%" },
-
         { key: 4, value: "Más del 75%" },
       ],
       answer: "",
     },
     {
       key: 3,
-      question: "¿Qué experiencia previa tiene en inversiones?",
+      question: "¿Cuánto tiempo conservarías la inversión?",
       options: [
-        { key: 1, value: "No tengo experiencia en inversiones" },
-        { key: 2, value: "Invierto/he invertido en plazo fijos" },
-
-        {
-          key: 3,
-          value:
-            "Invierto/he invertido en bonos, letras u obligaciones negociables",
-        },
-
-        {
-          key: 4,
-          value: "Invierto/he invertido en acciones o fondos de renta variable",
-        },
-
-        {
-          key: 5,
-          value:
-            " Invierto/he invertido en instrumentos financieros sofisticados (opciones y derivados)",
-        },
+        { key: 1, value: "Menos de 6 meses" },
+        { key: 2, value: "De 6 meses a 1 año" },
+        { key: 3, value: "Entre 1 y 2 años" },
+        { key: 4, value: "Invierto/he invertido en acciones o fondos de renta variable" },
+        { key: 5, value: "Invierto/he invertido en instrumentos financieros sofisticados (opciones y derivados)" },
       ],
       answer: "",
     },
     {
       key: 4,
-      question: "¿Qué nivel de capacitación tiene en el campo de las finanzas?",
+      question: "¿Cual es el objetivo por el cual tienes interés en invertir?",
       options: [
-        { key: 1, value: "No tengo educación formal sobre el tema" },
-        { key: 2, value: "Hice algún curso o materia afín al tema" },
-
-        {
-          key: 3,
-          value: "Curse una carrera o postgrado relacionada con la materia",
-        },
-
-        { key: 4, value: "Estudió y trabajo en finanzas" },
+        { key: 1, value: "Preservar el dinero" },
+        { key: 2, value: "Superar la rentabilidad que ofrece un plazo fijo" },
+        { key: 3, value: "Alto rendimiento" },
+        { key: 4, value: "Por que me gusta el riesgo" },
       ],
       answer: "",
     },
     {
       key: 5,
       question:
-        "Horizonte de inversión / ¿En cuánto tiempo necesita contar con sus ahorros?",
+        "¿Cómo te sientes frente al riesgo?",
       options: [
-        { key: 1, value: "Menos de 6 meses" },
-        { key: 2, value: "Entre 6 meses y un año" },
-
-        { key: 3, value: "Entre uno y dos años" },
-
-        { key: 4, value: "Más de dos años" },
+        { key: 1, value: "Lo evito a toda costa" },
+        { key: 2, value: "No me gustan las inversines que impliquen pérdidas de capital" },
+        { key: 3, value: "Aceptaria un minimo riesgo a cambio de mayor rentabilidad" },
+        { key: 4, value: "No me importa, busco la mejor rentabilidad" },
       ],
       answer: "",
     },
     {
       key: 6,
       question:
-        "¿Cuál de las siguientes frases mejor describe su objetivo al invertir?",
+        "¿Qué harías si tu inversión comienza a perder valor??",
       options: [
-        {
-          key: 1,
-          value:
-            "Preservar el capital invertido, minimizando el riesgo de pérdida de valor",
-        },
-        {
-          key: 2,
-          value:
-            "Preservar el capital, pero estoy dispuesto a afrontar pérdidas en el corto plazo para obtener un rendimiento levemente superior a un plazo fijo.",
-        },
-
-        {
-          key: 3,
-          value:
-            "Busco crecimiento y rendimiento del capital, puedo afrontar fluctuaciones negativas en mi inversión inicial por períodos de 1-2 años, para obtener un ingreso muy superior al ofrecido por instrumentos a plazo.",
-        },
-
-        {
-          key: 4,
-          value:
-            "Quiero un crecimiento y rendimiento de mi inversión lo más alto posible, aceptando grandes fluctuaciones por períodos de 2 años o más, incluyendo posibles pérdidas de mi capital inicial",
-        },
+        { key: 1, value: "Vendería la inversión para evitar una mayor perdida." },
+        { key: 2, value: "Venderia una parte."},
+        { key: 3, value: "Esperaría que la inversión recupere su valor inicial." },
+        { key: 4, value: "Compraría una mayor cantidad aprovechando que el precio actual es menor que el pagado inicialmente." },
       ],
       answer: "",
-    },
-    {
-      key: 7,
-      question:
-        "Partiendo de la premisa que las inversiones con mayor rentabilidad esperada son aquellas con mayor riesgo,¿Cuál es la máxima pérdida que usted estaría dispuesto a aceptar en un plazo de 6 meses?",
-      options: [
-        {
-          key: 1,
-          value:
-            "No acepto pérdidas en mi capital inicial, sin importar el potencial de rentabilidad",
-        },
-        { key: 2, value: "Pérdidas de hasta 3%" },
-
-        { key: 3, value: "Pérdidas de hasta 15%" },
-
-        { key: 4, value: "Pérdidas de más del 15%" },
-      ],
-      answer: "",
-    },
-    {
-      key: 8,
-      question: "¿Conservaría una inversión que se devalúa?",
-      options: [
-        {
-          key: 1,
-          value: "No, cambiaría inmediatamente a instrumentos estables",
-        },
-        { key: 2, value: "No, cambiaría lentamente a otras inversiones" },
-
-        { key: 3, value: "Si, considerando un análisis de la situación" },
-
-        {
-          key: 4,
-          value:
-            "Si, toleraría una pérdida esperando un rendimiento superior, e incluso subiría mi tenencia en la inversión",
-        },
-      ],
-      answer: "",
-    },
+    }
   ];
+  return questions;
 };

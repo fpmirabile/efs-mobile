@@ -27,27 +27,33 @@ interface ItemProps {
 
 export default (props: Props) => (itemProps: ItemProps) => {
   return (
-    <ImageBackground
-      imageStyle={styles.image}
-      source={{ uri: itemProps.item.imageUri || "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg" }}
-      style={[styles.imageBackground, props.backgroundImageStyle]}
-      onError={props.onImageLoadError}
-    >
-      <View style={[styles.textContainer, props.textContainerStyle]}>
-        <Text style={[styles.popularText, props.titleStyle]}>
-          {itemProps.item.titulo}
-        </Text>
-        <View style={styles.likesContainer}>
-          <TouchableWithoutFeedback onPress={props.onPressVideo}>
+    <TouchableWithoutFeedback onPress={props.onPressVideo}>
+      <ImageBackground
+        imageStyle={styles.image}
+        source={{
+          uri:
+            itemProps.item.imageUri ||
+            "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
+        }}
+        style={[styles.imageBackground, props.backgroundImageStyle]}
+        onError={props.onImageLoadError}
+      >
+        <View style={[styles.textContainer, props.textContainerStyle]}>
+          <Text style={[styles.popularText, props.titleStyle]}>
+            {itemProps.item.titulo}
+          </Text>
+          <View style={styles.likesContainer}>
             <Image
               source={require("../../../../../assets/images/misc/thumb_up.png")}
               style={styles.likeIcon}
             />
-          </TouchableWithoutFeedback>
-          <Text style={styles.popularText}>{itemProps.item.cantidadLikes}</Text>
+            <Text style={styles.popularText}>
+              {itemProps.item.cantidadLikes}
+            </Text>
+          </View>
         </View>
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+    </TouchableWithoutFeedback>
   );
 };
 

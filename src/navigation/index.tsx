@@ -7,12 +7,13 @@ import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Image, ImageSourcePropType } from "react-native";
+import { Image, ImageSourcePropType, Text } from "react-native";
 
 import Colors from "../constants/colors";
 import Login from "../screens/login";
 import NotFoundScreen from "../screens/common/NotFoundScreen";
 import {
+  BasicStackComponentProps,
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
@@ -22,6 +23,8 @@ import Profile from "../screens/profile-test/profile";
 import Register from "../screens/registration";
 import Reels from "../screens/reel-list";
 import VideoPlayer from "../screens/video-player";
+import { HeaderBackButtonProps } from "@react-navigation/native-stack/lib/typescript/src/types";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Navigation() {
   return (
@@ -37,6 +40,14 @@ export default function Navigation() {
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const backButton = (onPress: () => void) => (props: HeaderBackButtonProps) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Text>Back</Text>
+    </TouchableOpacity>
+  );
+};
+
 function RootNavigator() {
   return (
     <Stack.Navigator>
@@ -48,7 +59,14 @@ function RootNavigator() {
       <Stack.Screen
         name="Register"
         component={Register}
-        options={{ headerShown: false }}
+        // options={{ headerShown: false, headerLeft: backButton }}
+        options={{
+          headerBackButtonMenuEnabled: true,
+          headerTitle: "",
+          headerTintColor: Colors.black,
+          headerShadowVisible: false,
+          headerTransparent: true
+        }}
       />
       <Stack.Screen
         name="Home"
@@ -63,7 +81,13 @@ function RootNavigator() {
       <Stack.Screen
         name="Video"
         component={VideoPlayer}
-        options={{ headerShown: false }}
+        options={{
+          headerBackButtonMenuEnabled: true,
+          headerTitle: "",
+          headerTintColor: Colors.white,
+          headerShadowVisible: false,
+          headerTransparent: true
+        }}
       />
       <Stack.Screen
         name="NotFound"
@@ -151,9 +175,6 @@ function BottomTabNavigator() {
   );
 }
 
-function TabBarIcon(props: {
-  source: ImageSourcePropType;
-  color: string;
-}) {
+function TabBarIcon(props: { source: ImageSourcePropType; color: string }) {
   return <Image source={props.source} style={{ tintColor: props.color }} />;
 }

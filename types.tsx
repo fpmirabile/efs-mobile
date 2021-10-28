@@ -19,9 +19,7 @@ export type RootStackParamList = {
   Home: NavigatorScreenParams<RootTabParamList> | undefined;
   Profile: undefined;
   Video: undefined;
-  Modal: undefined;
   TermsAndConditions: undefined;
-  Reels: undefined;
   NotFound: undefined;
 };
 

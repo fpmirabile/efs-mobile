@@ -1,14 +1,16 @@
 import React, { Fragment, useState } from 'react';
 import { StyleSheet, View } from "react-native";
 import RadioButton from "../../components/common/radio-button";
+import { AnswerObject } from "../../screens/profile-test/profile";
 
 interface AnswersProps {
   answers: {
     key: number;
     value: string;
-}[];
+    }[];
   setAnswer: any;
   checkAnswer: () => void;
+  userAnswer: AnswerObject | undefined;
 }
 
 const Answer = ({answers, setAnswer}:AnswersProps ) => {
@@ -24,7 +26,7 @@ const Answer = ({answers, setAnswer}:AnswersProps ) => {
               onSelect={() => {
              console.log(answer)
               setChecked(true);
-          //setAnswer.current =answer.value;
+             setAnswer.current =answer.value;
         }}
        />
           </Fragment>

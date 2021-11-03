@@ -4,12 +4,13 @@ import { StatusBar } from "react-native";
 import useCachedResources from "./hooks/useCachedResources";
 import Navigation from "./src/navigation";
 import Colors from "./src/constants/colors";
+import LoadingScreen from "./loading-screen";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
 
   if (!isLoadingComplete) {
-    return null;
+    return <LoadingScreen />;
   } else {
     return (
       <SafeAreaProvider>

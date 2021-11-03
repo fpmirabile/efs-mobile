@@ -54,6 +54,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.15,
     marginHorizontal: 9,
     textTransform: "capitalize",
+    fontFamily: 'redhatdisplay-regular',
+    fontWeight: '700'
   },
   filterButtonSelected: {
     color: Colors.white,

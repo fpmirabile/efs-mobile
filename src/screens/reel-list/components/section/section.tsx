@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     color: Colors.blue,
-    fontWeight: "bold",
+    fontWeight: "700",
+    fontFamily: 'redhatdisplay-regular'
   },
 });

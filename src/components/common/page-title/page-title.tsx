@@ -24,5 +24,7 @@ const styles = StyleSheet.create({
     color: "#160266",
     fontSize: 34,
     lineHeight: 36,
+    fontWeight: '700',
+    fontFamily: 'redhatdisplay-regular'
   },
 });

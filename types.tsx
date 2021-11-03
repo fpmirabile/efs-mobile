@@ -6,6 +6,7 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Reel } from './src/api/models/reels';
 
 declare global {
   namespace ReactNavigation {
@@ -18,7 +19,7 @@ export type RootStackParamList = {
   Register: undefined;
   Home: NavigatorScreenParams<RootTabParamList> | undefined;
   Profile: undefined;
-  Video: undefined;
+  Video: { reelId: number, sectionReels: Reel[] };
   TermsAndConditions: undefined;
   NotFound: undefined;
 };

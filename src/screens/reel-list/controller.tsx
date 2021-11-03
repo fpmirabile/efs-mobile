@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FlatList } from "react-native";
 import { BasicStackComponentProps } from "../../../types";
-import { Grupo, ReelPopular, Seccion } from "../../api/models/reels";
+import { Grupo, Reel, ReelPopular, Seccion } from "../../api/models/reels";
 import ReelsView from "./view";
 
 export interface Props extends BasicStackComponentProps {
@@ -86,10 +86,25 @@ class ReelsController extends React.PureComponent<Props, State> {
     this.handleFilterChanged(index);
   };
 
-  handlePressVideo = () => {
+  handlePressVideo = (reelId: number) => {
     const { navigation } = this.props;
-    navigation.navigate("Video");
-  }
+    const { reels, popularReels } = this.state;
+    const isPopularReel = popularReels.find((popu) => popu.reelId === reelId);
+    let sectionReels: Reel[] = [];
+    if (isPopularReel) {
+      sectionReels = popularReels;
+    } else {
+      const sectionIndex = reels.findIndex((section) =>
+        section.reels.some((reel) => reel.reelId === reelId)
+      );
+      sectionReels = reels[sectionIndex].reels;
+    }
+
+    navigation.navigate("Video", {
+      reelId,
+      sectionReels,
+    });
+  };
 
   render() {
     const { currentIndex, filterGroups, reels, popularReels, isLoading } =

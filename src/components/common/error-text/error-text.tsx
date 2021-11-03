@@ -18,5 +18,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 14,
     color: Colors.red,
+    fontWeight: "500",
+    fontFamily: 'redhatdisplay-regular'
   },
 });

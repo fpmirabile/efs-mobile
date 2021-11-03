@@ -40,7 +40,7 @@ export function isValidAge(age: string): boolean {
     return false;
   }
 
-  if (numberAge < 18) {
+  if (numberAge < 12) {
     return false;
   }
 

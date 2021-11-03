@@ -13,7 +13,7 @@ interface Props {
   currentIndex: number;
   onFilterScrollEnd: (data: any, index: number) => void;
   onPressedItem: (index: number) => () => void;
-  onPressVideo: () => void;
+  onPressVideo: (reelId: number) => void;
   onImageLoadError: () => string;
   filters: Grupo[];
   popularReels: ReelPopular[];

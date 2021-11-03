@@ -9,13 +9,14 @@ import {
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Reel } from "../../../../api/models/reels";
+import Colors from "../../../../constants/colors";
 
 interface Props {
   backgroundImageStyle?: ViewStyle;
   textContainerStyle?: ViewStyle;
   titleStyle?: TextStyle;
   onImageLoadError: () => string;
-  onPressVideo: () => void;
+  onPressVideo: (reelId: number) => void;
 }
 
 interface ItemProps {
@@ -24,8 +25,12 @@ interface ItemProps {
 }
 
 export default (props: Props) => (itemProps: ItemProps) => {
+  const onPressVideo = () => {
+    props.onPressVideo(itemProps.item.reelId);
+  }
+
   return (
-    <TouchableWithoutFeedback onPress={props.onPressVideo}>
+    <TouchableWithoutFeedback onPress={onPressVideo}>
       <ImageBackground
         imageStyle={styles.image}
         source={{
@@ -62,7 +67,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    backgroundColor: "#C4C4C4",
+    backgroundColor: "#16026647",
     paddingHorizontal: 8,
     paddingVertical: 11,
   },
@@ -70,6 +75,8 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     fontSize: 12,
     letterSpacing: 0.4,
-    color: "#000000",
+    color: Colors.white,
+    fontFamily: 'redhatdisplay-regular',
+    fontWeight: '700'
   },
 });

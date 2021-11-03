@@ -27,5 +27,7 @@ const styles = StyleSheet.create({
     lineHeight: 36,
     textAlign: "center",
     color: "#160266",
+    fontWeight: "700",
+    fontFamily: 'redhatdisplay-regular'
   },
 });

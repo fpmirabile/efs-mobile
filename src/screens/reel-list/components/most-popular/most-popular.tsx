@@ -17,7 +17,7 @@ interface Props {
   textContainerStyle?: ViewStyle;
   titleStyle?: TextStyle;
   onImageLoadError: () => string;
-  onPressVideo: () => void;
+  onPressVideo: (reelId: number) => void;
 }
 
 interface ItemProps {
@@ -26,8 +26,12 @@ interface ItemProps {
 }
 
 export default (props: Props) => (itemProps: ItemProps) => {
+  const onReelPress = () => {
+    props.onPressVideo(itemProps.item.reelId);
+  }
+
   return (
-    <TouchableWithoutFeedback onPress={props.onPressVideo}>
+    <TouchableWithoutFeedback onPress={onReelPress}>
       <ImageBackground
         imageStyle={styles.image}
         source={{
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    backgroundColor: "rgba(22, 2, 102, 0.7)",
+    backgroundColor: "#16026647",
     paddingHorizontal: 8,
     paddingVertical: 11,
   },
@@ -83,6 +87,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.1,
     color: Colors.white,
     maxWidth: 156,
+    fontFamily: 'redhatdisplay-regular',
+    fontWeight: '500'
   },
   likesContainer: {
     flexDirection: "column",

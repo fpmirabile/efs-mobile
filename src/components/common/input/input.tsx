@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.15,
     color: "#000",
     paddingHorizontal: 16,
+    fontFamily: 'redhatdisplay-regular'
   },
   inputError: {
     borderColor: "#ED2939",

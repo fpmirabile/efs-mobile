@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 10,
   },
   titleContainer: {
@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     color: Colors.lightGray,
     marginBottom: 9,
+    fontFamily: 'redhatdisplay-regular'
   },
   registerBox: {
     marginLeft: 24,

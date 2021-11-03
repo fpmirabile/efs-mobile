@@ -15,7 +15,13 @@ export interface Seccion {
 export interface Reel {
   reelId: number;
   titulo: string;
+  liked?: boolean;
+  favorito?: boolean;
   imageUri?: string;
+  // video url
+  url?: string;
+  duracion?: string;
+  monedas?: number;
 }
 
 export interface ReelPopular extends Reel {

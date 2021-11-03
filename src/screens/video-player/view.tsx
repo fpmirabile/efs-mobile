@@ -1,24 +1,33 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, View, ViewStyle } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { Video } from "expo-av";
 import VideoPlayer from "expo-video-player";
 import Colors from "../../constants/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Button from "../../components/common/button";
+import NextView from "./components/next-view";
+import { Reel } from "../../api/models/reels";
 
 export interface Value {
   isPlaying: boolean;
-  videoUri: string;
+  videoUri?: string;
+  liked: boolean;
+  favorite: boolean;
+  showNextScreen: boolean;
+  nextVideos: Reel[];
 }
 
 interface Props {
   videoRef: React.MutableRefObject<Video>;
-  onLike: () => void;
+  onFavorite: (favorite: boolean) => void;
   onThumbUpPress: () => void;
   onThumbDownPress: () => void;
   onNextPress: () => void;
   onPlayPressed: () => void;
   value: Value;
+
+  groupTitle: string;
+  onNextVideoPress: (reelId: number) => void;
 }
 
 function playButton(styles?: Image["props"]["style"], onPress?: () => void) {
@@ -46,20 +55,28 @@ function pauseButton(styles?: Image["props"]["style"], onPress?: () => void) {
 
 export default function ReelsView({
   videoRef,
-  onLike,
+  onFavorite,
   onThumbUpPress,
   onThumbDownPress,
   onNextPress,
   onPlayPressed,
   value,
+  groupTitle,
+  onNextVideoPress,
 }: Props) {
+  const onFavoritePress = () => {
+    onFavorite(!value.favorite);
+  };
+
   return (
     <View style={styles.page}>
       <VideoPlayer
         videoProps={{
           ref: videoRef,
           source: {
-            uri: value.videoUri || "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+            uri:
+              value.videoUri ||
+              "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
           },
           resizeMode: Video.RESIZE_MODE_STRETCH,
         }}
@@ -84,49 +101,61 @@ export default function ReelsView({
           controlsBackgroundColor: Colors.gray,
         }}
       />
-      <View style={styles.videoButtonContainer}>
-        <View style={styles.likeAndThumbContainer}>
-          <TouchableOpacity onPress={onThumbUpPress}>
-            <Image
-              style={styles.icon}
-              source={require("../../../assets/images/misc/thumb_up.png")}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onThumbDownPress}>
-            <Image
-              style={[styles.icon, styles.thumbDown]}
-              source={require("../../../assets/images/misc/thumb_up.png")}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onLike}>
-            <Image
-              style={styles.icon}
-              source={require("../../../assets/images/misc/likes.png")}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.nextContainer}>
-          <Button
-            style={{
-              container: styles.nextButtonContainer,
-              text: styles.nextButton,
-            }}
-            icon={
-              <Image
-                style={styles.nextButtonIcon}
-                source={require("../../../assets/images/misc/caret.png")}
+      {!value.showNextScreen && (
+        <View>
+          <View style={styles.videoButtonContainer}>
+            <View style={styles.likeAndThumbContainer}>
+              <TouchableOpacity onPress={onThumbUpPress}>
+                <Image
+                  style={styles.icon}
+                  source={require("../../../assets/images/misc/thumb_up.png")}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onThumbDownPress}>
+                <Image
+                  style={[styles.icon, styles.thumbDown]}
+                  source={require("../../../assets/images/misc/thumb_up.png")}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onFavoritePress}>
+                <Image
+                  style={styles.icon}
+                  source={require("../../../assets/images/misc/likes.png")}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.nextContainer}>
+              <Button
+                style={{
+                  container: styles.nextButtonContainer,
+                  text: styles.nextButton,
+                }}
+                icon={
+                  <Image
+                    style={styles.nextButtonIcon}
+                    source={require("../../../assets/images/misc/caret.png")}
+                  />
+                }
+                text="A continuación"
+                upperCase={false}
+                onPress={onNextPress}
               />
-            }
-            text="A continuación"
-            upperCase={false}
-            onPress={onNextPress}
-          />
+            </View>
+          </View>
+          <View style={styles.playContainer}>
+            {value.isPlaying &&
+              pauseButton(styles.pauseSmallButton, onPlayPressed)}
+            {!value.isPlaying && playButton(styles.playIcon, onPlayPressed)}
+          </View>
         </View>
-      </View>
-      <View style={styles.playContainer}>
-        {value.isPlaying && pauseButton(styles.pauseSmallButton, onPlayPressed)}
-        {!value.isPlaying && playButton(styles.playIcon, onPlayPressed)}
-      </View>
+      )}
+      {value.showNextScreen && (
+        <NextView
+          groupTitle={groupTitle}
+          nextVideos={value.nextVideos}
+          onPressedVideo={onNextVideoPress}
+        />
+      )}
     </View>
   );
 }

@@ -1,9 +1,12 @@
-import { Video } from "expo-av";
 import * as React from "react";
-import { BasicStackComponentProps } from "../../../types";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Video } from "expo-av";
+import reelsApi from "../../api/models/reels";
+import { RootStackParamList } from "../../../types";
 import VideoView, { Value as ViewValue } from "./view";
 
-export interface PropsTypes extends BasicStackComponentProps {}
+export interface PropsTypes
+  extends NativeStackScreenProps<RootStackParamList, "Video"> {}
 
 interface StateType {
   value: ViewValue;
@@ -14,18 +17,96 @@ class VideoPlayerController extends React.PureComponent<PropsTypes, StateType> {
   state: StateType = {
     value: {
       isPlaying: false,
-      videoUri: '',
+      videoUri: "",
+      liked: false,
+      favorite: false,
+      showNextScreen: false,
+      nextVideos: [],
     },
   };
 
-  handleLike = () => {};
-  handleThumbUpPress = () => {};
-  handleThumbDownPress = () => {};
-  handleNextPress = () => {};
+  async componentDidMount() {
+    const { route } = this.props;
+    const reelId = route.params.reelId;
+    const nextVideos = route.params.sectionReels;
+    if (!reelId) {
+      // TODO: Show some error?
+      return;
+    }
+
+    const videoInformation = await reelsApi.getReel(reelId);
+    console.log(`next videos q: ${nextVideos.length}`)
+    this.setState({
+      value: {
+        showNextScreen: false,
+        isPlaying: false,
+        videoUri: videoInformation.url,
+        liked: videoInformation.liked || false,
+        favorite: videoInformation.favorito || false,
+        nextVideos,
+      },
+    });
+  }
+
+  handleFavorite = (favorite: boolean) => {
+    const {
+      route: {
+        params: { reelId },
+      },
+    } = this.props;
+
+    reelsApi.favoriteReel(reelId);
+    this.setState((prevState) => {
+      return {
+        value: {
+          ...prevState.value,
+          favorite: !prevState.value.favorite,
+        },
+      };
+    });
+  };
+
+  handleThumbUpPress = () => {
+    this.sendLikeRequest(true);
+  };
+
+  handleThumbDownPress = () => {
+    this.sendLikeRequest(false);
+  };
+
+  handleNextPress = () => {
+    this.setState((prevState) => {
+      return {
+        value: {
+          ...prevState.value,
+          showNextScreen: !prevState.value.showNextScreen,
+        },
+      };
+    });
+  };
+
+  sendLikeRequest = (like: boolean) => {
+    const {
+      route: {
+        params: { reelId },
+      },
+    } = this.props;
+
+    reelsApi.likeReel(reelId, like);
+
+    this.setState((prevState) => {
+      return {
+        value: {
+          ...prevState.value,
+          liked: !prevState.value.liked,
+        },
+      };
+    });
+  };
 
   handlePlayPressed = () => {
     const {
-      value: { isPlaying },
+      value: { isPlaying, showNextScreen },
     } = this.state;
 
     if (!isPlaying) {
@@ -39,10 +120,13 @@ class VideoPlayerController extends React.PureComponent<PropsTypes, StateType> {
         value: {
           ...prevState.value,
           isPlaying: !prevState.value.isPlaying,
+          showNextScreen: false,
         },
       };
     });
   };
+
+  handleNextVideoPress = (reelId: number) => {};
 
   render() {
     const { value } = this.state;
@@ -50,11 +134,13 @@ class VideoPlayerController extends React.PureComponent<PropsTypes, StateType> {
       <VideoView
         videoRef={this.videoRef as React.MutableRefObject<Video>}
         value={value}
-        onLike={this.handleLike}
+        onFavorite={this.handleFavorite}
         onNextPress={this.handleNextPress}
         onPlayPressed={this.handlePlayPressed}
         onThumbDownPress={this.handleThumbDownPress}
         onThumbUpPress={this.handleThumbUpPress}
+        groupTitle="title"
+        onNextVideoPress={this.handleNextVideoPress}
       />
     );
   }

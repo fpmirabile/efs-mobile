@@ -1,11 +1,12 @@
 import * as React from "react";
-import { Text, StyleSheet, View,ScrollView } from "react-native";
+import { Text, StyleSheet, View, ScrollView } from "react-native";
 import WhiteBackgroundView from "../../components/common/white-background-view/white-background-view";
 import Answer from "../profile-test/components/answer";
 import Button from "../../components/common/button";
 import LoadingBanner from "../../components/common/loading-banner/loading-banner";
 import { QuestionState } from "../../util/profile";
 import Colors from "../../constants/colors";
+import { Ionicons } from "@expo/vector-icons";
 
 interface Props {
   currentIndex: number;
@@ -14,6 +15,7 @@ interface Props {
   onPressPrevQuestion: () => void;
   onPressNextQuestion: () => void;
   onSelectAnswer: (status: number) => void;
+  onPressEnd: () => void;
   isLoading: boolean;
   questions: QuestionState[];
 }
@@ -26,6 +28,7 @@ export default function ProfileView({
   surveyOver,
   onPressPrevQuestion,
   onPressNextQuestion,
+  onPressEnd,
   isLoading,
 }: Props): JSX.Element {
   if (isLoading) {
@@ -37,53 +40,84 @@ export default function ProfileView({
   }
 
   return (
-    <ScrollView style={styles.scrollView}>  
-    <View style={styles.container}>
-      <Text style={styles.title}>{questions[currentIndex].question}</Text>
-      <WhiteBackgroundView viewStyles={styles.registerBox}>
-        <View >
-          <Answer
-            onSelectAnswer={onSelectAnswer}
-            userAnswer={undefined}
-            answers={questions[currentIndex].options}
-            status={status}
-          />
-        </View>
-      </WhiteBackgroundView>
-      <View style={styles.buttomContainer}>
-        {!surveyOver && !isLoading && currentIndex != questions.length - 1 ? (
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.container}>
+        {questions.length > 0 ? (
           <>
-            {currentIndex > 0 ? (
-            <View >  
-              <Button text="Volver" 
-              style={{
-                text: styles.buttonSec
-              }} 
-              onPress={onPressPrevQuestion} />
-            </View>  
-            ) : null}
-            <View >  
-            <Button text="Continuar" 
+            <Text style={styles.title}>{questions[currentIndex].question}</Text>
+            <WhiteBackgroundView viewStyles={styles.registerBox}>
+              <View>
+                <Answer
+                  onSelectAnswer={onSelectAnswer}
+                  userAnswer={undefined}
+                  answers={questions[currentIndex].options}
+                  status={status}
+                />
+              </View>
+            </WhiteBackgroundView>
+          </>
+        ) : null}
+        <View style={styles.buttonContainer}>
+          {!surveyOver && !isLoading && currentIndex != questions.length - 1 ? (
+            <>
+              {currentIndex > 0 ? (
+                <><View style={styles.buttonView}>
+                  <Ionicons
+                    name="chevron-back"
+                    size={25}
+                    color={Colors.orange} />
+                  <Button
+                    text="Volver"
+                    style={{
+                      text: styles.buttonSec,
+                    }}
+                    onPress={onPressPrevQuestion} />
+                </View></>
+              ) : null}
+              <View style={styles.buttonView}>
+                <Button
+                  text="Continuar"
+                  style={{
+                    text: styles.buttonPrim,
+                  }}
+                  onPress={onPressNextQuestion}
+                />
+                <Ionicons
+                name="chevron-forward"
+                size={25}
+                color={Colors.orange}
+              />
+              </View>
+            </>
+          ) : (
+            <View style={styles.buttonContainer}>
+              <View>
+              <Ionicons
+                    name="chevron-back"
+                    size={25}
+                    color={Colors.orange} />
+                <Button
+                  text="Volver"
+                  style={{
+                    text: styles.buttonSec,
+                  }}
+                  onPress={onPressPrevQuestion}
+                />
+              </View>
+              <Button text="Finalizar" 
                 style={{
-                  text: styles.buttonPrim
+                  text: styles.buttonPrim,
                 }}
-                  onPress={onPressNextQuestion} />
-              <i className="fas fa-chevron-right"></i>    
-            </View>  
-          </>
-        ) : (
-          <>
-           <View >
-            <Button text="Volver"
-                     style={{
-                      text: styles.buttonSec
-                    }} onPress={onPressPrevQuestion} />
-           </View> 
-            {/* <Button text="Finalizar" onPress={} /> */}{" "}
-          </>
-        )}
+                onPress={onPressEnd} />
+              <Ionicons
+                name="chevron-forward"
+                size={25}
+                color={Colors.orange}
+              />
+            </View>
+          )}
+        </View>
       </View>
-    </View>
     </ScrollView>
   );
 }
@@ -116,24 +150,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     alignSelf: "stretch",
   },
-   buttomContainer: {
+  buttonContainer: {
     marginLeft: 39,
     marginRight: 39,
-    flexDirection: "row"
+    flexDirection: "row",
   },
-  buttonPrim:{
+
+  buttonPrim: {
     fontSize: 16,
     lineHeight: 24,
     paddingTop: 10,
     fontWeight: "bold",
-    color: Colors.blue
+    color: Colors.blue,
   },
-  buttonSec:{
+  buttonSec: {
     fontSize: 16,
     lineHeight: 24,
     paddingTop: 10,
     fontWeight: "bold",
-    color: Colors.blue
+    color: Colors.blue,
+  },
+  buttonView:{
+    flexDirection:"row",
+    marginTop:35,
+    alignItems:"baseline"
   },
   loadingBanner: {
     width: 150,

@@ -2,7 +2,7 @@ export type QuestionState = {
   key: number,
   question: string,
   options: {key: number, value:string}[],
-  answer: string
+  answer: number
 }
 
 export const getsurveyQuestions = async() => {
@@ -16,7 +16,7 @@ export const getsurveyQuestions = async() => {
         { key: 3, value: "Avanzado" },
         { key: 4, value: "Experto" },
       ],
-      answer: "",
+      answer: 0,
     },
     {
       key: 2,
@@ -28,7 +28,7 @@ export const getsurveyQuestions = async() => {
         { key: 3, value: "Entre 51% y 75%" },
         { key: 4, value: "Más del 75%" },
       ],
-      answer: "",
+      answer: 0,
     },
     {
       key: 3,
@@ -37,10 +37,9 @@ export const getsurveyQuestions = async() => {
         { key: 1, value: "Menos de 6 meses" },
         { key: 2, value: "De 6 meses a 1 año" },
         { key: 3, value: "Entre 1 y 2 años" },
-        { key: 4, value: "Invierto/he invertido en acciones o fondos de renta variable" },
-        { key: 5, value: "Invierto/he invertido en instrumentos financieros sofisticados (opciones y derivados)" },
+        { key: 4, value: "Mas de 2 años" }
       ],
-      answer: "",
+      answer: 0,
     },
     {
       key: 4,
@@ -51,7 +50,7 @@ export const getsurveyQuestions = async() => {
         { key: 3, value: "Alto rendimiento" },
         { key: 4, value: "Por que me gusta el riesgo" },
       ],
-      answer: "",
+      answer: 0,
     },
     {
       key: 5,
@@ -63,19 +62,19 @@ export const getsurveyQuestions = async() => {
         { key: 3, value: "Aceptaria un minimo riesgo a cambio de mayor rentabilidad" },
         { key: 4, value: "No me importa, busco la mejor rentabilidad" },
       ],
-      answer: "",
+      answer: 0,
     },
     {
       key: 6,
       question:
-        "¿Qué harías si tu inversión comienza a perder valor??",
+        "¿Qué harías si tu inversión comienza a perder valor?",
       options: [
         { key: 1, value: "Vendería la inversión para evitar una mayor perdida." },
         { key: 2, value: "Venderia una parte."},
         { key: 3, value: "Esperaría que la inversión recupere su valor inicial." },
         { key: 4, value: "Compraría una mayor cantidad aprovechando que el precio actual es menor que el pagado inicialmente." },
       ],
-      answer: "",
+      answer: 0,
     }
   ];
   return questions;

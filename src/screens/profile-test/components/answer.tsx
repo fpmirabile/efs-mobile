@@ -17,7 +17,6 @@ interface AnswersProps {
 
 const Answer = ({answers, onSelectAnswer, status}:AnswersProps ) => {
     // const [selectAnswer, setSelectAnswer] = useState(status);
-    console.log(answers[status].value)
     return (
       <View> 
         {answers.map((answer, key)=>(

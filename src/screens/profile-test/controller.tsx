@@ -12,6 +12,10 @@ export interface Props extends BasicStackComponentProps {
 //   onFavoriteReel: (reelId: number) => Promise<void>;
 //   onLikeReel: (reelId: number, liked: boolean) => Promise<void>;
 }
+export type AnswerObject = {
+  question: number;
+  answer: number;
+}
 
 interface State {
   isLoading: boolean;
@@ -19,9 +23,7 @@ interface State {
   currentIndex: number;
   status:number;
   surveyOver:boolean;
-//   filterGroups: Grupo[];
-//   popularReels: ReelPopular[];
-//   reels: Seccion[];
+  score:0;
 }
 
 class ProfileController extends React.PureComponent<Props, State> {
@@ -31,33 +33,19 @@ class ProfileController extends React.PureComponent<Props, State> {
     questions:[],
     currentIndex: 0,
     status:0,
-    surveyOver: false
-    // filterGroups: [],
-    // reels: [],
-    // popularReels: [],
+    surveyOver: false,
+    score: 0
   };
 
   async componentDidMount() {
-    //const { onGetGroups, onGetPopularReels, onGetReelsByGroup } = this.props;
     const { onGetSurveyQuestions } = this.props;
     const { currentIndex } = this.state;
-    
-
     try {
-    //   const allFilters = await onGetGroups();
-    //   if (allFilters && allFilters.length) {
-    //     const currentFilter = allFilters[currentIndex];
-    //     if (!currentFilter) {
-    //       return;
-    //     }
-
-        // const popularReels = await onGetPopularReels(currentFilter.grupoId);
-        // const reels = await onGetReelsByGroup(currentFilter.grupoId);
         const questions = await onGetSurveyQuestions();
+        if(questions.length===0){
+          return
+        }
          this.setState({
-        //   reels,
-        //   popularReels,
-        //   filterGroups: allFilters,
           isLoading: false,
           questions
         });
@@ -69,48 +57,25 @@ class ProfileController extends React.PureComponent<Props, State> {
   }
 
   handleSelectAnser = async (status: number) => {
+    const { surveyOver, currentIndex,questions  } = this.state
     this.setState({
       status: status
-    });}
+    });
 
-//     const { filterGroups } = this.state;
-//     const { onGetReelsByGroup } = this.props;
-//     const groupReels = await onGetReelsByGroup(filterGroups[index].grupoId);
+   if (!surveyOver){
+     questions[currentIndex].answer=status;
+     console.log(questions[currentIndex].answer)
+   }
+ };
 
-//     this.setState({
-//       currentIndex: index,
-//       reels: groupReels,
-//       isLoading: false,
-//     });
-//   };
-// const checkAnswer = ()=>{ 
-//   if (!surveyOver){
-//     const answer = setAnswer.current;
-//     console.log(answer)
-//     setScore((prev) => prev + 1);
-//     //save answer in the array of answers
-//     const answerObject = {
-//       question: questions[number].question,
-//       answer: "",
-//     };
-//     setUserAnswers(prev => [...prev, answerObject]);
-//   }
-// };
  handlePrevQuestion =()=> {
    const { questions, currentIndex } = this.state
   //move on to the next question if not the last question
   const nextQ = currentIndex - 1;
-  if(nextQ === questions.length){
-    this.setState({
-      surveyOver: true,
-      status:0
-    })
-  } else{
     this.setState({
       currentIndex:nextQ,
       status:0,
-    });
-  }
+  })
 };
  handleNextQuestion = () => {
   //move on to the next question if not the last question
@@ -129,29 +94,10 @@ class ProfileController extends React.PureComponent<Props, State> {
   }
 }; 
 
-//  startQuizProfile = async ()=>{
-//   setLoading(true)
-//   setSurveyOver(false)
-//   const survey =  await getsurveyQuestions();
-//   setQuestions(survey);
-//   setScore(0);
-//   setUserAnswers([]);
-//   setNumber(0);
-//   setLoading(false);
-// }
-
-//   handleFilterScrollEnd = (data: any, index: number) => {
-//     if (isNaN(index)) {
-//       return;
-//     }
-
-//     this.handleFilterChanged(index);
-//   };
-
-//   handleItemPress = (index: number) => () => {
-//     this.filterRef.current?.scrollToIndex({ index, animated: true });
-//     this.handleFilterChanged(index);
-//   };
+handleEnd = () => {
+  const { navigation } = this.props;
+  navigation.navigate("Home");
+}
 
 //   handlePressVideo = () => {
 //     const { navigation } = this.props;
@@ -159,24 +105,9 @@ class ProfileController extends React.PureComponent<Props, State> {
 //   }
 
   render() {
-    // const { currentIndex, filterGroups, reels, popularReels, isLoading } =
     const { currentIndex, questions, isLoading, status, surveyOver } =
       this.state;
     return (
-    //   <ReelsView
-    //     filterRef={this.filterRef}
-    //     currentIndex={currentIndex}
-    //     onFilterScrollEnd={this.handleFilterScrollEnd}
-    //     onPressedItem={this.handleItemPress}
-    //     onPressVideo={this.handlePressVideo}
-    //     onImageLoadError={() => {
-    //       return "";
-    //     }}
-    //     filters={filterGroups}
-    //     seccionReels={reels}
-    //     popularReels={popularReels}
-    //     isLoading={isLoading}
-    //   />
         <ProfileView
          isLoading={isLoading}
          currentIndex={currentIndex}   
@@ -186,6 +117,7 @@ class ProfileController extends React.PureComponent<Props, State> {
          surveyOver={surveyOver}
          onPressPrevQuestion={this.handlePrevQuestion}
          onPressNextQuestion={this.handleNextQuestion}
+         onPressEnd={this.handleEnd}
         />
     );
   }

@@ -178,7 +178,8 @@ class RegisterController extends React.PureComponent<Props, State> {
         await onUserRegister(newUser);
         const token = await onLoginUser(newUser.email, newUser.password);
         setSession({ jwt: token.token, refresh: token.refreshToken });
-        navigation.navigate("Profile"); // TODO: Move to correct page
+        //navigation.navigate("Home"); 
+        navigation.navigate("Profile");
       } catch (exception) {
         // TODO: We need to handle an error here
         console.log(exception)

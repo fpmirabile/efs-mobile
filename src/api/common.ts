@@ -138,3 +138,16 @@ const checkStatus = (response: Response) => {
   (error as any).response = response;
   throw error;
 };
+
+export const scoreProfileApi = async (
+  url: string,
+  args: RequestInit = {},
+  options: AuthenticatedApiOptions = {}
+) => {
+  const { checkTokenExpiration, token } = options || {};
+  args.headers = await withAuthenticationToken(args.headers || {}, token);
+
+  return api(url, args, checkTokenExpiration).catch((err: ErrorResponse) => {
+    console.log("error during calling", JSON.stringify(err));
+  });
+};

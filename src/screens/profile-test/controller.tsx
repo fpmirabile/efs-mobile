@@ -5,12 +5,10 @@ import { Grupo } from "../../api/models/reels";
 import ProfileView from "./view";
 import { QuestionState } from "../../util/profile";
 
+
 export interface Props extends BasicStackComponentProps {
     onGetSurveyQuestions:() => Promise<QuestionState[]>
-//   onGetGroups: () => Promise<Grupo[]>;
-//   onGetPopularReels: (groupId: number) => Promise<ReelPopular[]>;
-//   onFavoriteReel: (reelId: number) => Promise<void>;
-//   onLikeReel: (reelId: number, liked: boolean) => Promise<void>;
+    onPostScore: (score:number) => Promise<void>;
 }
 export type AnswerObject = {
   question: number;
@@ -95,7 +93,14 @@ class ProfileController extends React.PureComponent<Props, State> {
 }; 
 
 handleEnd = () => {
-  const { navigation } = this.props;
+  const { navigation} = this.props;
+  const { questions } = this.state;
+  let score: number = 0;
+
+  questions.forEach((question)=>{
+    score = score + question.answer;
+  })
+    //TODO: onPostScore(score);
   navigation.navigate("Home");
 }
 

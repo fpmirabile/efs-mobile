@@ -61,18 +61,22 @@ export default function ProfileView({
           {!surveyOver && !isLoading && currentIndex != questions.length - 1 ? (
             <>
               {currentIndex > 0 ? (
-                <><View style={styles.buttonView}>
-                  <Ionicons
-                    name="chevron-back"
-                    size={25}
-                    color={Colors.orange} />
-                  <Button
-                    text="Volver"
-                    style={{
-                      text: styles.buttonSec,
-                    }}
-                    onPress={onPressPrevQuestion} />
-                </View></>
+                <>
+                  <View style={styles.buttonView}>
+                    <Ionicons
+                      name="chevron-back"
+                      size={25}
+                      color={Colors.orange}
+                    />
+                    <Button
+                      text="Volver"
+                      style={{
+                        text: styles.buttonSec,
+                      }}
+                      onPress={onPressPrevQuestion}
+                    />
+                  </View>
+                </>
               ) : null}
               <View style={styles.buttonView}>
                 <Button
@@ -83,19 +87,16 @@ export default function ProfileView({
                   onPress={onPressNextQuestion}
                 />
                 <Ionicons
-                name="chevron-forward"
-                size={25}
-                color={Colors.orange}
-              />
+                  name="chevron-forward"
+                  size={25}
+                  color={Colors.orange}
+                />
               </View>
             </>
           ) : (
             <View style={styles.buttonContainer}>
-              <View>
-              <Ionicons
-                    name="chevron-back"
-                    size={25}
-                    color={Colors.orange} />
+              <View style={{flexDirection:"row", alignItems:"center", justifyContent: 'center' }}>
+                <Ionicons name="chevron-back" size={20} color={Colors.orange} style={styles.icon} />
                 <Button
                   text="Volver"
                   style={{
@@ -104,16 +105,21 @@ export default function ProfileView({
                   onPress={onPressPrevQuestion}
                 />
               </View>
-              <Button text="Finalizar" 
+              <View style={{flexDirection:"row", alignItems:"center" }}>
+              <Button
+                text="Finalizar"
                 style={{
                   text: styles.buttonPrim,
                 }}
-                onPress={onPressEnd} />
+                onPress={onPressEnd}
+              />
               <Ionicons
                 name="chevron-forward"
-                size={25}
+                size={20}
                 color={Colors.orange}
+                style={styles.icon}
               />
+              </View>
             </View>
           )}
         </View>
@@ -154,6 +160,8 @@ const styles = StyleSheet.create({
     marginLeft: 39,
     marginRight: 39,
     flexDirection: "row",
+    alignItems:"center",
+    marginTop:12
   },
 
   buttonPrim: {
@@ -170,13 +178,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.blue,
   },
-  buttonView:{
-    flexDirection:"row",
-    marginTop:35,
-    alignItems:"baseline"
+  buttonView: {
+    flexDirection: "row",
+    marginTop: 35,
+    alignItems: "baseline",
   },
   loadingBanner: {
     width: 150,
     height: 150,
+  },
+  icon: {
+    paddingTop: 10
   },
 });

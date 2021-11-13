@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, StyleSheet, View, ScrollView } from "react-native";
+import { Text, StyleSheet, View, ScrollView,Image } from "react-native";
 import WhiteBackgroundView from "../../components/common/white-background-view/white-background-view";
 import Answer from "../profile-test/components/answer";
 import Button from "../../components/common/button";
@@ -7,6 +7,8 @@ import LoadingBanner from "../../components/common/loading-banner/loading-banner
 import { QuestionState } from "../../util/profile";
 import Colors from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
+import TextButton from "../../components/common/text-button/text-button";
+import ButtonWithLoading from "../../components/common/button-with-loading/button-with-loading";
 
 interface Props {
   currentIndex: number;
@@ -18,8 +20,44 @@ interface Props {
   onPressEnd: () => void;
   isLoading: boolean;
   questions: QuestionState[];
+  onSkipProfilePress: () => void;
+  onContinuePress:()=>void; 
 }
 
+const renderSkipProfile = ({
+  onSkipProfilePress,
+  onContinuePress
+}:{onSkipProfilePress:Props["onSkipProfilePress"],
+    onContinuePress:Props["onContinuePress"]}) =>{
+  return (
+    <><Text style={styles.title}>
+      Registro Finalizado
+    </Text>
+      <Text style={styles.subtitle}>
+        Muchas gracias por registrarte en EFS.Antes de comenzar te pedimos que contestes esta breve encuesta para conocer un poco mas sobre vos.
+      </Text>
+      <View style={styles.termsAndCondsContainer}>
+          <View style={styles.container}>
+      <Image style={styles.logo} source={require("../../../assets/images/register/register.png")} />
+    </View>
+          <TextButton
+            textStyle={styles.termsAndCondButtonText}
+            containerStyle={styles.termsAndCondButtonContainer}
+            text="Omitir perfil de inversor"
+            onPress={onSkipProfilePress}
+          />
+        </View>
+        <ButtonWithLoading
+          text="Empecemos"
+          style={{
+            //TODO container: registerButtonContainerEnabled,
+           //TODO text: buttonTextStyles,
+          }}
+          onPress={onContinuePress}
+        />
+      </>
+  )
+}
 export default function ProfileView({
   currentIndex,
   questions,
@@ -29,6 +67,8 @@ export default function ProfileView({
   onPressPrevQuestion,
   onPressNextQuestion,
   onPressEnd,
+  onContinuePress,
+  onSkipProfilePress,
   isLoading,
 }: Props): JSX.Element {
   if (isLoading) {
@@ -42,6 +82,7 @@ export default function ProfileView({
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
+        {renderSkipProfile({ onSkipProfilePress,onContinuePress })}
         {questions.length > 0 ? (
           <>
             <Text style={styles.title}>{questions[currentIndex].question}</Text>
@@ -146,8 +187,16 @@ const styles = StyleSheet.create({
     fontSize: 34,
     lineHeight: 36,
     fontWeight: "bold",
-    color: Colors.blue,
-    marginVertical: 75,
+    color: Colors.blue
+  },
+  subtitle: {
+    marginHorizontal: 16,
+    maxWidth: 328,
+    fontSize: 16,
+    lineHeight: 26,
+    color: Colors.lightGray,
+    marginBottom: 9,
+    fontFamily: 'redhatdisplay-regular'
   },
   registerBox: {
     marginLeft: 15,
@@ -157,7 +206,7 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   buttonContainer: {
-    marginLeft: 39,
+    marginLeft: 24,
     marginRight: 39,
     flexDirection: "row",
     alignItems:"center",
@@ -189,5 +238,60 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingTop: 10
+  },
+  ermsAndCondsContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  termsAndCondsTitle: {
+    color: Colors.gray,
+    fontWeight: "500",
+    fontSize: 10,
+    lineHeight: 16,
+    letterSpacing: 0.4,
+  },
+  termsAndCondButtonContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    maxHeight: 15,
+    marginVertical: 1,
+  },
+  termsAndCondButtonText: {
+    fontSize: 12,
+    fontWeight: "500",
+    lineHeight: 16,
+    letterSpacing: 0.4,
+  },
+  registerButtonContainer: {
+    borderWidth: 1,
+    borderColor: Colors.gray,
+    borderRadius: 4,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 24,
+    marginRight: 39,
+    alignSelf: "stretch",
+  },
+  registerButtonText: {
+    fontSize: 14,
+    lineHeight: 16,
+    fontWeight: "bold",
+    color: Colors.gray,
+  },
+  registerButtonTextEnabled: {
+    color: Colors.white,
+  },
+  termsAndCondsContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  registerButtonContainerEnabled: {
+    backgroundColor: Colors.blue,
+  },
+  logo: {
+    height: 213,
+    width: 319
   },
 });

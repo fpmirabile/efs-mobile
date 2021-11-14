@@ -1,4 +1,4 @@
-import { authenticatedApi, getHeaders, postHeaders } from "./common";
+import { authenticatedApi, getHeaders, postHeaders, scoreProfileApi } from "./common";
 
 export const authenticatedGet = (
   url: string,
@@ -82,3 +82,4 @@ export const authenticatedPatch = (
     },
     { token: token }
   );
+

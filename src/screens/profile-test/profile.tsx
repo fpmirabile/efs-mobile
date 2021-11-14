@@ -3,8 +3,7 @@ import { StyleSheet, SafeAreaView, Text, View } from "react-native";
 import Button from "../../components/common/button";
 import { getsurveyQuestions, QuestionState } from "../../util/profile";
 import { useEffect, useRef, useState } from "react";
-import  QuestionComp  from "../../components/questions/Question";
-import Answer from "../../components/questions/Answer";
+import Answer from "../profile-test/components/answer";
 
 export type AnswerObject = {
         question: string;
@@ -23,11 +22,12 @@ const Profile = () => {
   const checkAnswer = ()=>{ 
     if (!surveyOver){
       const answer = setAnswer.current;
+      console.log(answer)
       setScore((prev) => prev + 1);
       //save answer in the array of answers
       const answerObject = {
         question: questions[number].question,
-        answer,
+        answer: "",
       };
       setUserAnswers(prev => [...prev, answerObject]);
     }
@@ -74,10 +74,7 @@ const Profile = () => {
         <QuestionComp questionNr={number+1}
         question = {questions[number].question}
         />
-        <Answer answers={questions[number].options}
-          {...setAnswer}
-          checkAnswer
-          />
+        <Answer setAnswer={setAnswer} userAnswer={undefined} answers={questions[number].options} status={status}/>
         </>
       ): null}
       <View style={styles.buttonContainer}>

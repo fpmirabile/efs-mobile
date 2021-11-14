@@ -12,6 +12,7 @@ export interface User {
   sexo: string;
 }
 
+
 export interface RegisterUser extends User {
   password: string;
 }
@@ -19,4 +20,6 @@ export interface RegisterUser extends User {
 export default {
   register: (newUser: RegisterUser) => authenticatedPost("/usuario", newUser),
   login: (email: string, password: string): Promise<LoginToken> => authenticatedPost('/sesion', { usuario: email, password }),
+  calculateProfile: (score: number) => authenticatedPost("/usuario/puntaje", {puntaje:score})
 };
+

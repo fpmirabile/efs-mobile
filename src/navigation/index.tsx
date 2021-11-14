@@ -18,7 +18,7 @@ import {
   RootTabScreenProps,
 } from "../../types";
 import LinkingConfiguration from "./LinkingConfiguration";
-import Profile from "../screens/profile-test/profile";
+import Profile from "../screens/profile-test";
 import Register from "../screens/registration";
 import Reels from "../screens/reel-list";
 import Simulador from "../screens/simulator";

@@ -1,12 +1,11 @@
 import * as React from "react";
 import { BasicStackComponentProps } from "../../../types";
-import { LoginToken } from "../../api/models/user";
-import { setSession } from "../../api/session";
 import { isValidEmail, isValidPassword } from "../../util/validator";
 import LoginView from "./login";
 
 export interface Props extends BasicStackComponentProps {
-  onLoginUser: (email: string, password: string) => Promise<LoginToken>;
+  onLoginUser: (email: string, password: string) => Promise<void>;
+  invalidCredentials: boolean;
 }
 
 export interface Value {
@@ -19,13 +18,11 @@ export interface Value {
 interface State {
   value: Value;
   loading: boolean;
-  invalidCredentials: boolean;
 }
 
 class LoginController extends React.PureComponent<Props, State> {
   state: State = {
     loading: false,
-    invalidCredentials: false,
     value: {
       email: "",
       invalidEmail: false,
@@ -93,7 +90,6 @@ class LoginController extends React.PureComponent<Props, State> {
   handleFieldChange = (field: keyof Value, newValue: string) => {
     this.setState((state) => {
       return {
-        invalidCredentials: false,
         value: {
           ...state.value,
           [field]: newValue,
@@ -112,24 +108,10 @@ class LoginController extends React.PureComponent<Props, State> {
       const { navigation, onLoginUser } = this.props;
       this.setState({
         loading: true,
-        invalidCredentials: false,
       });
       try {
         const { value } = this.state;
-        const token = await onLoginUser(value.email, value.password);
-        if (!token) {
-          this.setState({
-            invalidCredentials: true,
-          });
-          return;
-        }
-
-        setSession({ jwt: token.token, refresh: token.refreshToken });
-        navigation.navigate("Home"); // TODO: Move to correct page
-      } catch (exception) {
-        // TODO: We need to handle an error here
-        console.log(exception);
-        navigation.navigate("NotFound");
+        await onLoginUser(value.email, value.password);
       } finally {
         this.setState({
           loading: false,
@@ -161,7 +143,8 @@ class LoginController extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { value, loading, invalidCredentials } = this.state;
+    const { value, loading } = this.state;
+    const { invalidCredentials } = this.props;
     return (
       <LoginView
         onFieldChange={this.handleFieldChange}

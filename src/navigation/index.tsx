@@ -13,7 +13,6 @@ import Colors from "../constants/colors";
 import Login from "../screens/login";
 import NotFoundScreen from "../screens/common/NotFoundScreen";
 import {
-  BasicStackComponentProps,
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
@@ -22,6 +21,7 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import Profile from "../screens/profile-test";
 import Register from "../screens/registration";
 import Reels from "../screens/reel-list";
+import Simulador from "../screens/simulator";
 import VideoPlayer from "../screens/video-player";
 import { HeaderBackButtonProps } from "@react-navigation/native-stack/lib/typescript/src/types";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -59,7 +59,6 @@ function RootNavigator() {
       <Stack.Screen
         name="Register"
         component={Register}
-        // options={{ headerShown: false, headerLeft: backButton }}
         options={{
           headerBackButtonMenuEnabled: true,
           headerTitle: "",
@@ -131,7 +130,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Simulador"
-        component={Reels}
+        component={Simulador}
         options={{
           title: "Simulador",
           tabBarIcon: ({ color }) => (

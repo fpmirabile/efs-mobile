@@ -121,6 +121,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   sectionContainer: {
-    marginVertical: 12,
+    marginVertical: 6,
   },
 });

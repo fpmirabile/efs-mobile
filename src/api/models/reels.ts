@@ -17,7 +17,7 @@ export interface Reel {
   titulo: string;
   liked?: boolean;
   favorito?: boolean;
-  imageUri?: string;
+  imagen?: string;
   // video url
   url?: string;
   duracion?: string;

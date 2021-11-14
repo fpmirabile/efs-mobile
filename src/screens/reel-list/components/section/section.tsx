@@ -1,6 +1,7 @@
 import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import Colors from "../../../../constants/colors";
+import Fonts from "../../../../constants/fonts";
 
 export interface Props {
   containerStyle?: View["props"]["style"];
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: Colors.blue,
     fontWeight: "700",
-    fontFamily: 'redhatdisplay-regular'
+    fontFamily: Fonts.redhatRegular,
+    marginBottom: 8
   },
 });

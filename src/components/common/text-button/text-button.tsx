@@ -2,9 +2,10 @@ import * as React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Colors from "../../../constants/colors";
+import Fonts from "../../../constants/fonts";
 
-interface Props {
-  containerStyle: View["props"]["style"];
+export interface Props {
+  buttonContainerStyle?: View["props"]["style"];
   textStyle?: Text["props"]["style"];
   text: string;
   onPress?: () => void;
@@ -13,7 +14,7 @@ interface Props {
 
 export default function TextButton(props: Props) {
   return (
-    <View style={[styles.container, props.containerStyle]}>
+    <View style={[styles.container, props.buttonContainerStyle]}>
       <TouchableOpacity onPress={props.onPress} disabled={props.disabled}>
         <Text style={[styles.text, props.textStyle]}>
           {props.text}
@@ -34,6 +35,6 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     letterSpacing: 0.4,
     fontWeight: "700",
-    fontFamily: 'redhatdisplay-regular'
+    fontFamily: Fonts.redhatRegular,
   },
 });

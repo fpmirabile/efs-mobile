@@ -36,7 +36,7 @@ export default (props: Props) => (itemProps: ItemProps) => {
         imageStyle={styles.image}
         source={{
           uri:
-            itemProps.item.imageUri ||
+            itemProps.item.imagen ||
             "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
         }}
         style={[styles.imageBackground, props.backgroundImageStyle]}
@@ -65,13 +65,13 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
-    borderRadius: 8,
   },
   imageBackground: {
     flex: 1,
     height: 146,
     width: 276,
     justifyContent: "flex-end",
+    borderRadius: 8,
   },
   textContainer: {
     flexDirection: "row",
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    marginRight: 8
   },
   likeIcon: {
     height: 24,

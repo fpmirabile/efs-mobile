@@ -84,7 +84,7 @@ export default function Login({
           <ErrorText errorText="Credenciales ingresadas no son válidas" />
         )}
         <TextButton
-          containerStyle={styles.forgotPasswordContainer}
+          buttonContainerStyle={styles.forgotPasswordContainer}
           text="¿Olvidaste tu contraseña?"
         />
         <ButtonWithLoading
@@ -113,7 +113,7 @@ export default function Login({
         <View style={styles.noAccountContainer}>
           <Text style={styles.noAccountText}>¿No tenés cuenta?</Text>
           <TextButton
-            containerStyle={styles.noAccountButtonContainer}
+            buttonContainerStyle={styles.noAccountButtonContainer}
             text="Registrate"
             onPress={onRegisterPress}
           />

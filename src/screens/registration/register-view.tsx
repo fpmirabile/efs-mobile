@@ -141,7 +141,7 @@ export default function RegisterView({
           </Text>
           <TextButton
             textStyle={styles.termsAndCondButtonText}
-            containerStyle={styles.termsAndCondButtonContainer}
+            buttonContainerStyle={styles.termsAndCondButtonContainer}
             text="Términos y condiciones"
             onPress={onTermsAndCondPress}
           />

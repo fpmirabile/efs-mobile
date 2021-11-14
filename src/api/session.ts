@@ -1,7 +1,8 @@
 import { setItemAsync, getItemAsync } from "expo-secure-store";
+import { User } from "./models/user";
 
 // TODO: Refactor for react native. Not working now
-type StorageKey = "store.jwt" | "store.refresh";
+type StorageKey = "store.jwt" | "store.refresh" | "store.user";
 interface AuthSession {
   jwt?: string;
   refresh?: string;
@@ -67,6 +68,31 @@ export const setSession = async ({ jwt, refresh }: AuthSession): Promise<boolean
   setItem("store.refresh", refresh || "");
   return true;
 };
+
+export const setUserData = async (user: User): Promise<void> => {
+  const storage = getTokenStorage();
+  if (!storage) {
+    return;
+  }
+
+  const { setItem } = storage;
+  setItem("store.user", JSON.stringify(user));
+}
+
+export const getUserData = async (): Promise<User | null> => {
+  const storage = getTokenStorage();
+  if (!storage) {
+    return null;
+  }
+
+  const { getItem } = storage;
+  const user = await getItem("store.user");
+  if (!user) {
+    return null;
+  }
+
+  return JSON.parse(user);
+}
 
 // export const removeSession = () => {
 //   const storage = getTokenStorage();

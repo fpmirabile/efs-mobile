@@ -25,7 +25,7 @@ export default (props: Props) => (itemProps: ItemProps) => {
           <ImageBackground
             source={{
               uri:
-                itemProps.item.imageUri ||
+                itemProps.item.imagen ||
                 "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
             }}
             style={styles.imageBackground}

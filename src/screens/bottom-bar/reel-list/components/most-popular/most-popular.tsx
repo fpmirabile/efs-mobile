@@ -9,8 +9,8 @@ import {
   Image,
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { ReelPopular } from "../../../../api/models/reels";
-import Colors from "../../../../constants/colors";
+import { ReelPopular } from "../../../../../api/models/reels";
+import Colors from "../../../../../constants/colors";
 
 interface Props {
   backgroundImageStyle?: ViewStyle;
@@ -48,7 +48,7 @@ export default (props: Props) => (itemProps: ItemProps) => {
           </Text>
           <View style={styles.likesContainer}>
             <Image
-              source={require("../../../../../assets/images/misc/thumb_up.png")}
+              source={require("../../../../../../assets/images/misc/thumb_up.png")}
               style={styles.likeIcon}
             />
             <Text style={styles.popularText}>

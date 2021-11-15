@@ -1,7 +1,7 @@
 import * as React from "react";
 import { FlatList } from "react-native";
-import { BasicStackComponentProps } from "../../../types";
-import { Grupo, Reel, ReelPopular, Seccion } from "../../api/models/reels";
+import { BasicStackComponentProps } from "../../../../types";
+import { Grupo, Reel, ReelPopular, Seccion } from "../../../api/models/reels";
 import ReelsView from "./view";
 
 export interface Props extends BasicStackComponentProps {

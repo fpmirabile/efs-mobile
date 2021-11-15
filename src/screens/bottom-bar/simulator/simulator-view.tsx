@@ -1,20 +1,27 @@
 import * as React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Indicator from "../../components/common/indicator/indicator";
-import PageWithScroll from "../../components/common/page-with-scroll/page-with-scroll";
-import TextButtonWithIcon from "../../components/common/text-button-with-icon/text-button-with-icon";
-import WhiteBackgroundView from "../../components/common/white-background-view/white-background-view";
-import Colors from "../../constants/colors";
-import Fonts from "../../constants/fonts";
+import Indicator from "../../../components/common/indicator/indicator";
+import PageWithScroll from "../../../components/common/page-with-scroll/page-with-scroll";
+import TextButtonWithIcon from "../../../components/common/text-button-with-icon/text-button-with-icon";
+import WhiteBackgroundView from "../../../components/common/white-background-view/white-background-view";
+import Colors from "../../../constants/colors";
+import Fonts from "../../../constants/fonts";
 
 interface PropTypes {
   userName: string;
+  onStonksAndCryptoPress: () => void;
+  performance: string;
 }
 
 export default function SimulatorView(props: PropTypes) {
+  const performanceAmountStyles = props.performance.includes("+")
+    ? styles.goodPerformance
+    : styles.badPerformance;
+
   return (
     <PageWithScroll
       title="Simulador"
+      scrollViewContainerStyles={styles.scrollContentView}
       titleStyles={{
         container: styles.pageTitleContainer,
       }}
@@ -33,13 +40,13 @@ export default function SimulatorView(props: PropTypes) {
               title="Valor de portfolio"
               viewStyles={styles.indicatorView}
               value="$1000,43"
-              icon={require("../../../assets/images/simulator/maletin.png")}
+              icon={require("../../../../assets/images/simulator/maletin.png")}
             />
             <Indicator
               title="Dinero disponible"
               viewStyles={styles.indicatorView}
               value="$9000,43"
-              icon={require("../../../assets/images/simulator/money.png")}
+              icon={require("../../../../assets/images/simulator/money.png")}
             />
           </View>
           <View style={styles.separator} />
@@ -47,14 +54,15 @@ export default function SimulatorView(props: PropTypes) {
             <Indicator
               title="Rendimiento"
               viewStyles={styles.indicatorView}
-              value="+0,64%"
-              icon={require("../../../assets/images/simulator/stroke.png")}
+              amountStyles={performanceAmountStyles}
+              value={props.performance}
+              icon={require("../../../../assets/images/simulator/stroke.png")}
             />
             <Indicator
               title="Clasificación"
               viewStyles={styles.indicatorView}
               value="15° Lugar"
-              icon={require("../../../assets/images/simulator/ranking.png")}
+              icon={require("../../../../assets/images/simulator/ranking.png")}
             />
           </View>
         </View>
@@ -63,21 +71,22 @@ export default function SimulatorView(props: PropTypes) {
         <View style={styles.buttonsAlignmentContainer}>
           <TextButtonWithIcon
             text="Invertir en Acciones / Criptomonedas"
-            icon={require("../../../assets/images/simulator/stroke.png")}
+            icon={require("../../../../assets/images/simulator/stroke.png")}
             textStyle={styles.simulatorTextButton}
             iconStyles={styles.simulatorIcon}
             viewStyles={styles.simulatorTextButtonContainer}
+            onPress={props.onStonksAndCryptoPress}
           />
           <TextButtonWithIcon
             text="Simulador de plazo fijo"
-            icon={require("../../../assets/images/simulator/bank.png")}
+            icon={require("../../../../assets/images/simulator/bank.png")}
             textStyle={styles.simulatorTextButton}
             iconStyles={styles.simulatorIcon}
             viewStyles={styles.simulatorTextButtonContainer}
           />
           <TextButtonWithIcon
             text="Simulador de Fondo Comun de Inversion"
-            icon={require("../../../assets/images/simulator/invest.png")}
+            icon={require("../../../../assets/images/simulator/invest.png")}
             textStyle={styles.simulatorTextButton}
             iconStyles={styles.simulatorIcon}
             viewStyles={styles.simulatorTextButtonContainer}
@@ -87,9 +96,8 @@ export default function SimulatorView(props: PropTypes) {
       <View style={styles.inviteButtonContainer}>
         <TextButtonWithIcon
           text="Invita un amigo y gana 500 FCS coins"
-          icon={require("../../../assets/images/simulator/invest.png")}
+          icon={require("../../../../assets/images/efs-coin.png")}
           textStyle={styles.inviteAFriendButton}
-          iconStyles={styles.simulatorIcon}
         />
       </View>
     </PageWithScroll>
@@ -97,6 +105,9 @@ export default function SimulatorView(props: PropTypes) {
 }
 
 const styles = StyleSheet.create({
+  scrollContentView: {
+    flex: 1,
+  },
   pageContainer: {
     marginVertical: 18,
     marginHorizontal: 16,
@@ -124,8 +135,7 @@ const styles = StyleSheet.create({
   },
   whiteBackgroundContainer: {
     marginHorizontal: 8,
-    marginBottom: 41,
-    flex: 1,
+    marginBottom: 24,
   },
   indicatorContainer: {
     flexDirection: "row",
@@ -137,6 +147,12 @@ const styles = StyleSheet.create({
   },
   indicatorView: {
     marginBottom: 16,
+  },
+  goodPerformance: {
+    color: Colors.lightGreen,
+  },
+  badPerformance: {
+    color: Colors.red,
   },
   separator: {
     borderWidth: 0.5,
@@ -155,6 +171,7 @@ const styles = StyleSheet.create({
   },
   buttonsAlignmentContainer: {
     alignItems: "flex-start",
+    flex: 1,
   },
   simulatorTextButtonContainer: {
     marginVertical: 16,
@@ -173,8 +190,8 @@ const styles = StyleSheet.create({
   inviteButtonContainer: {
     justifyContent: "flex-end",
     alignItems: "center",
-    height: 90,
-    marginBottom: 24,
+    flex: 1,
+    marginBottom: 8,
   },
   inviteAFriendButton: {
     fontSize: 14,

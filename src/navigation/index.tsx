@@ -8,6 +8,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Image, ImageSourcePropType, Text } from "react-native";
+import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 
 import Colors from "../constants/colors";
 import Login from "../screens/login";
@@ -20,9 +21,11 @@ import {
 import LinkingConfiguration from "./LinkingConfiguration";
 import Profile from "../screens/profile-test";
 import Register from "../screens/registration";
-import Reels from "../screens/reel-list";
-import Simulador from "../screens/simulator";
+import Reels from "../screens/bottom-bar/reel-list";
+import Simulador from "../screens/bottom-bar/simulator";
 import VideoPlayer from "../screens/video-player";
+import StonksAndCrypto from "../screens/invest-crypto-stonks";
+import StonksAndCryptoHeader from "./custom-header/invest-crypto-stonks/header";
 import { HeaderBackButtonProps } from "@react-navigation/native-stack/lib/typescript/src/types";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
@@ -64,7 +67,7 @@ function RootNavigator() {
           headerTitle: "",
           headerTintColor: Colors.black,
           headerShadowVisible: false,
-          headerTransparent: true
+          headerTransparent: true,
         }}
       />
       <Stack.Screen
@@ -85,7 +88,16 @@ function RootNavigator() {
           headerTitle: "",
           headerTintColor: Colors.white,
           headerShadowVisible: false,
-          headerTransparent: true
+          headerTransparent: true,
+        }}
+      />
+      <Stack.Screen
+        name="StonksAndCrypto"
+        component={StonksAndCrypto}
+        options={{
+          header: (props: NativeStackHeaderProps) => {
+            return <StonksAndCryptoHeader {...props} />;
+          },
         }}
       />
       <Stack.Screen

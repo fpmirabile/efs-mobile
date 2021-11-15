@@ -1,9 +1,9 @@
 import * as React from "react";
 import { ListRenderItem, StyleSheet } from "react-native";
 import { TextStyle, ViewStyle } from "react-native-material-ui";
-import { Grupo } from "../../../../api/models/reels";
-import Button from "../../../../components/common/button";
-import Colors from "../../../../constants/colors";
+import { Grupo } from "../../../../../api/models/reels";
+import Button from "../../../../../components/common/button";
+import Colors from "../../../../../constants/colors";
 
 interface Props {
   currentIndex?: number;
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 12,
-    marginRight: 8
+    marginRight: 8,
   },
   filterButton: {
     color: Colors.orange,

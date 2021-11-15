@@ -1,4 +1,3 @@
-import { ResizeMode } from "expo-av";
 import * as React from "react";
 import {
   StyleSheet,
@@ -7,7 +6,7 @@ import {
   Image,
   ImageSourcePropType,
 } from "react-native";
-import Colors from "../../../constants/colors";
+import { ResizeMode } from "expo-av";
 import TextButton, {
   Props as TextButtonProps,
 } from "../text-button/text-button";

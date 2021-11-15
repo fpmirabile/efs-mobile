@@ -1,13 +1,14 @@
 import * as React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import RightCarousel from "../../components/common/carousel/carousel";
-import PageWithScroll from "../../components/common/page-with-scroll/page-with-scroll";
+import RightCarousel from "../../../components/common/carousel/carousel";
+import PageWithScroll from "../../../components/common/page-with-scroll/page-with-scroll";
 import FilterItem from "./components/filter-item/filter-item";
 import MostPopularItem from "./components/most-popular/most-popular";
 import VideoItem from "./components/video-item/video-item";
 import SectionReel from "./components/section/section";
-import { Grupo, Reel, ReelPopular, Seccion } from "../../api/models/reels";
-import LoadingBanner from "../../components/common/loading-banner/loading-banner";
+import { Grupo, Reel, ReelPopular, Seccion } from "../../../api/models/reels";
+import LoadingBanner from "../../../components/common/loading-banner/loading-banner";
+import LoadingPage from "../../../components/common/loading-page/loading-page";
 
 interface Props {
   currentIndex: number;
@@ -32,6 +33,10 @@ const renderSection = (
     onPressVideo: Props["onPressVideo"];
   }
 ) => {
+  if (!sectionReels) {
+    return null;
+  }
+
   return sectionReels.map((seccion) => {
     return (
       <SectionReel
@@ -62,57 +67,42 @@ export default function ReelsView({
   filterRef,
   isLoading,
 }: Props) {
-  if (isLoading) {
-    return (
-      <View style={styles.loadingPage}>
-        <LoadingBanner style={styles.loadingBanner} />
-      </View>
-    );
-  }
-
   return (
-    <PageWithScroll
-      title="Reels"
-      viewStyles={styles.page}
-      titleStyles={{ title: styles.title }}
-    >
-      <FlatList
-        ref={filterRef}
-        data={filters}
-        renderItem={FilterItem({ currentIndex, onPressedItem })}
-        keyExtractor={(item) => item.grupoId.toString()}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-      />
-      <SectionReel
-        title="Los más populares"
-        containerStyle={styles.sectionContainer}
+    <LoadingPage isLoading={isLoading}>
+      <PageWithScroll
+        title="Reels"
+        viewStyles={styles.page}
+        titleStyles={{ title: styles.title }}
       >
-        <RightCarousel
-          data={popularReels}
-          onRenderItem={MostPopularItem({ onImageLoadError, onPressVideo })}
-          onKeyExtractor={(item: ReelPopular, _: number) =>
-            item.reelId.toString()
-          }
-          separatorWidth={15}
-          itemWidth={276}
+        <FlatList
+          ref={filterRef}
+          data={filters}
+          renderItem={FilterItem({ currentIndex, onPressedItem })}
+          keyExtractor={(item) => item.grupoId.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
         />
-      </SectionReel>
-      {renderSection(seccionReels, { onImageLoadError, onPressVideo })}
-    </PageWithScroll>
+        <SectionReel
+          title="Los más populares"
+          containerStyle={styles.sectionContainer}
+        >
+          <RightCarousel
+            data={popularReels}
+            onRenderItem={MostPopularItem({ onImageLoadError, onPressVideo })}
+            onKeyExtractor={(item: ReelPopular, _: number) =>
+              item.reelId.toString()
+            }
+            separatorWidth={15}
+            itemWidth={276}
+          />
+        </SectionReel>
+        {renderSection(seccionReels, { onImageLoadError, onPressVideo })}
+      </PageWithScroll>
+    </LoadingPage>
   );
 }
 
 const styles = StyleSheet.create({
-  loadingPage: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1,
-  },
-  loadingBanner: {
-    width: 150,
-    height: 150,
-  },
   page: {
     marginTop: 24,
     marginHorizontal: 16,

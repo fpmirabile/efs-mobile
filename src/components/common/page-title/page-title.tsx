@@ -1,5 +1,7 @@
 import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
+import Colors from "../../../constants/colors";
+import Fonts from "../../../constants/fonts";
 
 export interface Props {
   containerStyle?: View["props"]["style"];
@@ -21,10 +23,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   title: {
-    color: "#160266",
+    color: Colors.blue,
     fontSize: 34,
     lineHeight: 36,
-    fontWeight: '700',
-    fontFamily: 'redhatdisplay-regular'
+    fontWeight: 'bold',
+    fontFamily: Fonts.redhatRegular
   },
 });

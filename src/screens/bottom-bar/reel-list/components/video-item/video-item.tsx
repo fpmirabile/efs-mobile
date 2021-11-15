@@ -8,8 +8,8 @@ import {
   Text,
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { Reel } from "../../../../api/models/reels";
-import Colors from "../../../../constants/colors";
+import { Reel } from "../../../../../api/models/reels";
+import Colors from "../../../../../constants/colors";
 
 interface Props {
   backgroundImageStyle?: ViewStyle;

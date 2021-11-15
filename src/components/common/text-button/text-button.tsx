@@ -7,7 +7,7 @@ import Fonts from "../../../constants/fonts";
 export interface Props {
   buttonContainerStyle?: View["props"]["style"];
   textStyle?: Text["props"]["style"];
-  text: string;
+  text: string | JSX.Element;
   onPress?: () => void;
   disabled?: boolean;
 }
@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 16,
     letterSpacing: 0.4,
-    fontWeight: "700",
     fontFamily: Fonts.redhatRegular,
   },
 });

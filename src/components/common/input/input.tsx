@@ -12,6 +12,8 @@ import {
   TextInputEndEditingEventData,
   TargetedEvent,
 } from "react-native";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import Fonts from "../../../constants/fonts";
 import ErrorText from "../error-text/error-text";
 
 interface Props {
@@ -61,7 +63,7 @@ export default function Input(props: Props) {
 const styles = StyleSheet.create({
   container: {
     borderWidth: 0.3,
-    borderColor: "#000",
+    borderColor: Colors.black,
     borderRadius: 4,
   },
   input: {
@@ -69,12 +71,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     letterSpacing: 0.15,
-    color: "#000",
+    color: Colors.black,
     paddingHorizontal: 16,
-    fontFamily: 'redhatdisplay-regular'
+    fontFamily: Fonts.redhatRegular
   },
   inputError: {
-    borderColor: "#ED2939",
+    borderColor: Colors.red,
     borderWidth: 1,
   }
 });

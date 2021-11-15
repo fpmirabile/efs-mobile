@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Text, StyleSheet, View, ScrollView,Image } from "react-native";
+import { Text, StyleSheet, View, ScrollView, Image } from "react-native";
+import { TextStyle, ViewStyle } from "react-native-material-ui";
 import WhiteBackgroundView from "../../components/common/white-background-view/white-background-view";
 import Answer from "../profile-test/components/answer";
 import Button from "../../components/common/button";
@@ -13,61 +14,110 @@ import ButtonWithLoading from "../../components/common/button-with-loading/butto
 interface Props {
   currentIndex: number;
   status: number;
+  score:number;
+  profile:string;
   surveyOver: boolean;
   onPressPrevQuestion: () => void;
   onPressNextQuestion: () => void;
   onSelectAnswer: (status: number) => void;
   onPressEnd: () => void;
   isLoading: boolean;
+  isContinue: boolean;
   questions: QuestionState[];
   onSkipProfilePress: () => void;
-  onContinuePress:()=>void; 
+  onContinuePress: () => void;
+  onContinueEndPress: () => void;
 }
 
-const renderSkipProfile = ({
+const renderBeginProfile = ({
   onSkipProfilePress,
-  onContinuePress
-}:{onSkipProfilePress:Props["onSkipProfilePress"],
-    onContinuePress:Props["onContinuePress"]}) =>{
+  onContinuePress,
+}: {
+  onSkipProfilePress: Props["onSkipProfilePress"];
+  onContinuePress: Props["onContinuePress"];
+}) => {
+  const buttonContainerStyles: ViewStyle = [styles.beginButtonContainer];
+  const buttonTextStyles: TextStyle = [styles.beginButtonText];
   return (
-    <><Text style={styles.title}>
-      Registro Finalizado
-    </Text>
-      <Text style={styles.subtitle}>
-        Muchas gracias por registrarte en EFS.Antes de comenzar te pedimos que contestes esta breve encuesta para conocer un poco mas sobre vos.
-      </Text>
-      <View style={styles.termsAndCondsContainer}>
-          <View style={styles.container}>
-      <Image style={styles.logo} source={require("../../../assets/images/register/register.png")} />
-    </View>
-          <TextButton
-            textStyle={styles.termsAndCondButtonText}
-            containerStyle={styles.termsAndCondButtonContainer}
-            text="Omitir perfil de inversor"
-            onPress={onSkipProfilePress}
-          />
+    <View style={styles.scrollView}>
+      <View style={styles.container}>
+        <View style={styles.beginConText}>
+          <Text style={styles.title}>Registro Finalizado</Text>
         </View>
+        <View style={styles.beginConText}>
+          <Text style={styles.subtitle}>
+            Muchas gracias por registrarte en EFS.Antes de comenzar te pedimos
+            que contestes esta breve encuesta para conocer un poco mas sobre
+            vos.
+          </Text>
+        </View>
+        <Image
+          style={styles.logo}
+          source={require("../../../assets/images/register/register.png")}
+        />
         <ButtonWithLoading
           text="Empecemos"
           style={{
-            //TODO container: registerButtonContainerEnabled,
-           //TODO text: buttonTextStyles,
+            container: buttonContainerStyles,
+            text: buttonTextStyles,
           }}
           onPress={onContinuePress}
         />
-      </>
-  )
-}
-export default function ProfileView({
+        <TextButton
+          textStyle={styles.termsAndCondButtonText}
+          containerStyle={styles.termsAndCondButtonContainer}
+          text="Omitir perfil de inversor"
+          onPress={onSkipProfilePress}
+        />
+      </View>
+    </View>
+  );
+};
+
+const renderEndProfile = ({
+  profile,
+  onContinueEndPress }:{ profile: Props["profile"],onContinueEndPress: Props["onContinueEndPress"]})=>{
+    return( <View style={styles.scrollView}>
+      <View style={styles.container}>
+        <View style={styles.beginConText}>
+          <Text style={styles.title}>¡Tu perfil ya está listo!</Text>
+        </View>
+        <View style={styles.beginConText}>
+          <Text style={styles.subtitle}>
+          En base a las preguntas que te hicimos, podemos decir que tu perfil es {profile}.  
+          Te recomendaremos distintos contenidos relevantes en base a el.
+           Para realizar nuevamente el test lo podrás hacer desde configuración.
+          </Text>
+        </View>
+        <Image
+          style={styles.logo}
+          source={require("../../../assets/images/register/register.png")}
+        />
+        <ButtonWithLoading
+          text="IR A VER REELS"
+          style={{
+            container: styles.beginButtonContainer,
+            text: styles.beginButtonText,
+          }}
+          onPress={onContinueEndPress}
+        />
+      </View>
+    </View>);
+  };
+export default function RenderQuiz({
   currentIndex,
   questions,
   onSelectAnswer,
   status,
+  score,
+  profile,
   surveyOver,
+  isContinue,
   onPressPrevQuestion,
   onPressNextQuestion,
   onPressEnd,
   onContinuePress,
+  onContinueEndPress,
   onSkipProfilePress,
   isLoading,
 }: Props): JSX.Element {
@@ -82,11 +132,16 @@ export default function ProfileView({
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
-        {renderSkipProfile({ onSkipProfilePress,onContinuePress })}
-        {questions.length > 0 ? (
+        {!isContinue &&
+          (renderBeginProfile({ onSkipProfilePress, onContinuePress }))}
+        {questions.length > 0 && isContinue && score===0 && (
           <>
-            <Text style={styles.title}>{questions[currentIndex].question}</Text>
-            <WhiteBackgroundView viewStyles={styles.registerBox}>
+            <View style={{ margin: 19 }}>
+              <Text style={styles.title}>
+                {questions[currentIndex].question}
+              </Text>
+            </View>
+            <WhiteBackgroundView viewStyles={styles.whiteBox}>
               <View>
                 <Answer
                   onSelectAnswer={onSelectAnswer}
@@ -97,11 +152,11 @@ export default function ProfileView({
               </View>
             </WhiteBackgroundView>
           </>
-        ) : null}
+        )}
         <View style={styles.buttonContainer}>
-          {!surveyOver && !isLoading && currentIndex != questions.length - 1 ? (
+          {!surveyOver && !isLoading && currentIndex != questions.length - 1 && (
             <>
-              {currentIndex > 0 ? (
+              {currentIndex >= 0 && isContinue && (
                 <>
                   <View style={styles.buttonView}>
                     <Ionicons
@@ -117,27 +172,33 @@ export default function ProfileView({
                       onPress={onPressPrevQuestion}
                     />
                   </View>
+                  <View style={styles.buttonView}>
+                    <Button
+                      text="Continuar"
+                      style={{
+                        text: styles.buttonPrim,
+                      }}
+                      onPress={onPressNextQuestion}
+                    />
+                    <Ionicons
+                      name="chevron-forward"
+                      size={25}
+                      color={Colors.orange}
+                    />
+                  </View>
                 </>
-              ) : null}
-              <View style={styles.buttonView}>
-                <Button
-                  text="Continuar"
-                  style={{
-                    text: styles.buttonPrim,
-                  }}
-                  onPress={onPressNextQuestion}
-                />
-                <Ionicons
-                  name="chevron-forward"
-                  size={25}
-                  color={Colors.orange}
-                />
-              </View>
+              )}
             </>
-          ) : (
+          )}   
+          {  score ===0 && surveyOver && (
             <View style={styles.buttonContainer}>
-              <View style={{flexDirection:"row", alignItems:"center", justifyContent: 'center' }}>
-                <Ionicons name="chevron-back" size={20} color={Colors.orange} style={styles.icon} />
+              <View style={styles.iconButton}>
+                <Ionicons
+                  name="chevron-back"
+                  size={20}
+                  color={Colors.orange}
+                  style={styles.icon}
+                />
                 <Button
                   text="Volver"
                   style={{
@@ -146,23 +207,24 @@ export default function ProfileView({
                   onPress={onPressPrevQuestion}
                 />
               </View>
-              <View style={{flexDirection:"row", alignItems:"center" }}>
-              <Button
-                text="Finalizar"
-                style={{
-                  text: styles.buttonPrim,
-                }}
-                onPress={onPressEnd}
-              />
-              <Ionicons
-                name="chevron-forward"
-                size={20}
-                color={Colors.orange}
-                style={styles.icon}
-              />
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Button
+                  text="Finalizar"
+                  style={{
+                    text: styles.buttonPrim,
+                  }}
+                  onPress={onPressEnd}
+                />
+                <Ionicons
+                  name="chevron-forward"
+                  size={20}
+                  color={Colors.orange}
+                  style={styles.icon}
+                />
               </View>
             </View>
-          )}
+               )}
+          { surveyOver && score >0 &&  renderEndProfile({ profile, onContinueEndPress }) }
         </View>
       </View>
     </ScrollView>
@@ -187,7 +249,7 @@ const styles = StyleSheet.create({
     fontSize: 34,
     lineHeight: 36,
     fontWeight: "bold",
-    color: Colors.blue
+    color: Colors.blue,
   },
   subtitle: {
     marginHorizontal: 16,
@@ -196,9 +258,9 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     color: Colors.lightGray,
     marginBottom: 9,
-    fontFamily: 'redhatdisplay-regular'
+    fontFamily: "redhatdisplay-regular",
   },
-  registerBox: {
+  whiteBox: {
     marginLeft: 15,
     marginRight: 15,
     paddingVertical: 80,
@@ -209,8 +271,8 @@ const styles = StyleSheet.create({
     marginLeft: 24,
     marginRight: 39,
     flexDirection: "row",
-    alignItems:"center",
-    marginTop:12
+    alignItems: "center",
+    marginTop: 12,
   },
 
   buttonPrim: {
@@ -237,19 +299,17 @@ const styles = StyleSheet.create({
     height: 150,
   },
   icon: {
-    paddingTop: 10
+    paddingTop: 10,
+  },
+  iconButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   ermsAndCondsContainer: {
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 10,
-  },
-  termsAndCondsTitle: {
-    color: Colors.gray,
-    fontWeight: "500",
-    fontSize: 10,
-    lineHeight: 16,
-    letterSpacing: 0.4,
   },
   termsAndCondButtonContainer: {
     alignItems: "center",
@@ -262,36 +322,36 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     lineHeight: 16,
     letterSpacing: 0.4,
+    marginTop: 30,
   },
-  registerButtonContainer: {
+  beginButtonContainer: {
     borderWidth: 1,
     borderColor: Colors.gray,
+    backgroundColor: Colors.blue,
     borderRadius: 4,
     alignItems: "center",
     justifyContent: "center",
     marginLeft: 24,
     marginRight: 39,
+    marginTop: 70,
     alignSelf: "stretch",
   },
-  registerButtonText: {
+  beginButtonText: {
     fontSize: 14,
     lineHeight: 16,
     fontWeight: "bold",
-    color: Colors.gray,
-  },
-  registerButtonTextEnabled: {
     color: Colors.white,
   },
-  termsAndCondsContainer: {
+  registerCondsContainer: {
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 10,
   },
-  registerButtonContainerEnabled: {
-    backgroundColor: Colors.blue,
-  },
   logo: {
     height: 213,
-    width: 319
+    width: 319,
+  },
+  beginConText: {
+    marginTop: 30,
   },
 });

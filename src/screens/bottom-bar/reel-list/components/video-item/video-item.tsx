@@ -6,6 +6,7 @@ import {
   ViewStyle,
   TextStyle,
   Text,
+  Image,
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Reel } from "../../../../../api/models/reels";
@@ -27,7 +28,7 @@ interface ItemProps {
 export default (props: Props) => (itemProps: ItemProps) => {
   const onPressVideo = () => {
     props.onPressVideo(itemProps.item.reelId);
-  }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={onPressVideo}>
@@ -41,10 +42,25 @@ export default (props: Props) => (itemProps: ItemProps) => {
         style={[styles.imageBackground, props.backgroundImageStyle]}
         onError={props.onImageLoadError}
       >
-        <View style={[styles.textContainer, props.textContainerStyle]}>
-          <Text style={[styles.title, props.titleStyle]}>
-            {itemProps.item.titulo}
-          </Text>
+        <View style={styles.container}>
+          <View
+            style={styles.continerTop}
+          >
+            <Image
+              style={styles.coinsImg}
+              source={require("../../../../../../assets/images/misc/coin.png")}
+            />
+            <Text style={styles.textFCSCoin}>
+              {!itemProps.item.coins ? "25" : itemProps.item.coins}
+            </Text>
+          </View>
+          <View style={styles.containerButtom}>
+            <View style={[styles.textContainer, props.textContainerStyle]}>
+              <Text style={[styles.title, props.titleStyle]}>
+                {itemProps.item.titulo}
+              </Text> 
+            </View>
+          </View>
         </View>
       </ImageBackground>
     </TouchableWithoutFeedback>
@@ -52,10 +68,20 @@ export default (props: Props) => (itemProps: ItemProps) => {
 };
 
 const styles = StyleSheet.create({
+  container:{ flex: 1 },
   image: {
     width: "100%",
     height: "100%",
     borderRadius: 8,
+  },
+  continerTop:{ 
+    alignItems: "flex-start", 
+    justifyContent: "flex-start" 
+  },
+  containerButtom:{
+    alignItems:"flex-start", 
+    justifyContent:"flex-end", 
+    flex:1
   },
   imageBackground: {
     flex: 1,
@@ -76,7 +102,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     letterSpacing: 0.4,
     color: Colors.white,
-    fontFamily: 'redhatdisplay-regular',
-    fontWeight: '700'
+    fontFamily: "redhatdisplay-regular",
+    fontWeight: "700",
+  },
+  coinsImg: {
+    width: 18,
+    height: 22,
+  },
+  textFCSCoin: {
+    color: Colors.blue,
+    fontWeight: "bold",
+    fontFamily: "redhatdisplay-regular",
   },
 });

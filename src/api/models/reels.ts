@@ -16,6 +16,8 @@ export interface Reel {
   reelId: number;
   titulo: string;
   liked?: boolean;
+  //add coins to the model
+  coins?: string;
   favorito?: boolean;
   imagen?: string;
   // video url

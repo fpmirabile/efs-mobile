@@ -9,7 +9,7 @@ import SectionReel from "./components/section/section";
 import { Grupo, Reel, ReelPopular, Seccion } from "../../../api/models/reels";
 import LoadingBanner from "../../../components/common/loading-banner/loading-banner";
 import LoadingPage from "../../../components/common/loading-page/loading-page";
-import Colors from "../../../constants/colors";
+
 interface Props {
   currentIndex: number;
   onFilterScrollEnd: (data: any, index: number) => void;
@@ -73,19 +73,10 @@ export default function ReelsView({
     <LoadingPage isLoading={isLoading}>
       <PageWithScroll
         title="Reels"
+        coins={coins}
         viewStyles={styles.page}
         titleStyles={{ title: styles.title }}
       >
-        <View style={styles.continerCoins}>
-          <Image
-            style={styles.coinsImg}
-            source={require("../../../../assets/images/misc/coin.png")}
-          />
-          <View style={styles.contTextCoin}>
-            <Text style={styles.textNumCoin}>{coins}</Text>
-            <Text style={styles.textFCSCoin}>FCS coins</Text>
-          </View>
-        </View>
         <FlatList
           ref={filterRef}
           data={filters}
@@ -124,29 +115,5 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     marginVertical: 6,
-  },
-  coinsImg: {
-    width: 31.93,
-    height: 39,
-  },
-  continerCoins: {
-    flexDirection: "row",
-    alignSelf: "flex-end",
-    marginBottom: 15,
-    marginRight: 16,
-  },
-  textNumCoin: {
-    color: Colors.orange,
-    fontSize: 20,
-    fontWeight: "bold",
-    fontFamily: "redhatdisplay-regular",
-  },
-  textFCSCoin: {
-    color: Colors.blue,
-    fontWeight: "bold",
-    fontFamily: "redhatdisplay-regular",
-  },
-  contTextCoin: {
-    marginLeft: 17,
-  },
+  }
 });

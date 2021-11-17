@@ -1,12 +1,14 @@
 import * as React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Image, Text } from "react-native";
+import Colors from "../../../constants/colors";
 import PageTitle, { Props as PageTitleProps } from "../page-title/page-title";
 
 interface Props {
   scrollViewStyles?: ScrollView["props"]["style"];
-  scrollViewContainerStyles?: ScrollView['props']['contentContainerStyle'];
+  scrollViewContainerStyles?: ScrollView["props"]["contentContainerStyle"];
   viewStyles?: View["props"]["style"];
   title?: string;
+  coins?: string;
   titleStyles?: {
     container?: PageTitleProps["containerStyle"];
     title?: PageTitleProps["titleStyle"];
@@ -16,9 +18,31 @@ interface Props {
 
 export default function PageWithScroll(props: Props) {
   return (
-    <ScrollView contentContainerStyle={props.scrollViewContainerStyles} style={[styles.scrollView, props.scrollViewStyles]}>
+    <ScrollView
+      contentContainerStyle={props.scrollViewContainerStyles}
+      style={[styles.scrollView, props.scrollViewStyles]}
+    >
       <View style={[styles.containerView, props.viewStyles]}>
-        {props.title && <PageTitle title={props.title} titleStyle={[props.titleStyles?.title]} />}
+        <View style={styles.continerCoins}>
+          {props.title && (
+            <PageTitle
+              title={props.title}
+              titleStyle={[props.titleStyles?.title]}
+            />
+          )}
+          {props.coins && (
+             <View style={styles.marginBetween}>
+              <Image
+                style={styles.coinsImg}
+                source={require("../../../../assets/images/misc/coin.png")}
+              />
+              <View style={styles.contTextCoin}>
+                <Text style={styles.textNumCoin}>{props.coins}</Text>
+                <Text style={styles.textFCSCoin}>FCS coins</Text>
+              </View>
+             </View>
+          )}
+        </View>
         {props.children}
       </View>
     </ScrollView>
@@ -38,4 +62,31 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
   },
+  coinsImg: {
+    width: 31.93,
+    height: 39,
+  },
+  continerCoins: {
+    flexDirection: "row",
+    marginBottom: 15,
+    marginRight: 16,
+  },
+  textNumCoin: {
+    color: Colors.orange,
+    fontSize: 20,
+    fontWeight: "bold",
+    fontFamily: "redhatdisplay-regular",
+  },
+  textFCSCoin: {
+    color: Colors.blue,
+    fontWeight: "bold",
+    fontFamily: "redhatdisplay-regular",
+  },
+   contTextCoin: {
+     marginLeft: 17,
+   },
+   marginBetween:{
+     flexDirection:"row" ,
+     marginLeft:110
+    }
 });

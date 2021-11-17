@@ -28,7 +28,7 @@ interface ItemProps {
 export default (props: Props) => (itemProps: ItemProps) => {
   const onReelPress = () => {
     props.onPressVideo(itemProps.item.reelId);
-  }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={onReelPress}>
@@ -42,7 +42,18 @@ export default (props: Props) => (itemProps: ItemProps) => {
         style={[styles.imageBackground, props.backgroundImageStyle]}
         onError={props.onImageLoadError}
       >
-        <View style={[styles.textContainer, props.textContainerStyle]}>
+        <View style={styles.container}>
+          <View style={styles.continerTop}>
+            <Image
+              style={styles.coinsImg}
+              source={require("../../../../../../assets/images/misc/coin.png")}
+            />
+            <Text style={styles.textFCSCoin}>
+              {!itemProps.item.coins ? "25" : itemProps.item.coins}
+            </Text>
+          </View>
+          <View style={styles.containerButtom}>
+          <View style={[styles.textContainer, props.textContainerStyle]}>
           <Text style={[styles.popularText, props.titleStyle]}>
             {itemProps.item.titulo}
           </Text>
@@ -56,12 +67,26 @@ export default (props: Props) => (itemProps: ItemProps) => {
             </Text>
           </View>
         </View>
+          </View>
+        </View>
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  container:{ 
+    flex: 1 
+  },
+  continerTop:{ 
+    alignItems: "flex-start", 
+    justifyContent: "flex-start" 
+  },
+  containerButtom:{
+    alignItems:"flex-start", 
+    justifyContent:"flex-end", 
+    flex:1
+  },
   image: {
     width: "100%",
     height: "100%",
@@ -87,19 +112,28 @@ const styles = StyleSheet.create({
     letterSpacing: 0.1,
     color: Colors.white,
     maxWidth: 156,
-    fontFamily: 'redhatdisplay-regular',
-    fontWeight: '500'
+    fontFamily: "redhatdisplay-regular",
+    fontWeight: "500",
   },
   likesContainer: {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 8
+    marginRight: 8,
   },
   likeIcon: {
     height: 24,
     width: 24,
     tintColor: Colors.white,
     marginBottom: 4,
+  },
+  coinsImg: {
+    width: 18,
+    height: 22,
+  },
+  textFCSCoin: {
+    color: Colors.blue,
+    fontWeight: "bold",
+    fontFamily: "redhatdisplay-regular",
   },
 });

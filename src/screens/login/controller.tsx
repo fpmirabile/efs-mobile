@@ -24,9 +24,9 @@ class LoginController extends React.PureComponent<Props, State> {
   state: State = {
     loading: false,
     value: {
-      email: "",
+      email: "kZoldyck@gmail.com",
       invalidEmail: false,
-      password: "",
+      password: "Kilua123*",
       invalidPassword: false,
     },
   };

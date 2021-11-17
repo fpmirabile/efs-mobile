@@ -40,7 +40,7 @@ class RegisterController extends React.PureComponent<Props, State> {
   state: State = {
     loading: false,
     value: {
-      email: "kZoldyck@gmail.com",
+      email: "killuaZoldyck@gmail.com",
       invalidEmail: false,
       nameAndLastName: "Killua Zoldyck",
       invalidName: false,

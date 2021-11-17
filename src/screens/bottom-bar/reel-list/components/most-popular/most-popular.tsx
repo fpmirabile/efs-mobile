@@ -56,36 +56,34 @@ export default function (props: Props) {
           </View>
         )}
         {!isLoading && (
-          <View style={styles.container}>
-            <View style={styles.continerTop}>
-              <Image
-                style={styles.coinsImg}
-                source={require("../../../../../../assets/images/misc/coin.png")}
-              />
-              <Text style={styles.textFCSCoin}>
-                {!props.item.coins ? "25" : props.item.coins}
-              </Text>
-            </View>
-            <View style={styles.containerButtom}>
-              <View style={[styles.textContainer, props.textContainerStyle]}>
-                <LinearGradient
-                  colors={["rgba(22,2,102,0.8)", "transparent"]}
-                  style={styles.gradient}
-                >
-                  <Text style={[styles.popularText, props.titleStyle]}>
-                    {props.item.titulo}
+          <View style={styles.containerButtom}>
+            <View style={[styles.textContainer, props.textContainerStyle]}>
+              <LinearGradient
+                colors={["rgba(22,2,102,0.8)", "transparent"]}
+                style={styles.gradient}
+              >
+                <Text style={[styles.popularText, props.titleStyle]}>
+                  {props.item.titulo}
+                </Text>
+                <View style={styles.coinsContainer}>
+                  <Image
+                    style={styles.coinsImg}
+                    source={require("../../../../../../assets/images/misc/coin.png")}
+                  />
+                  <Text style={styles.textFCSCoin}>
+                    {!props.item.coins ? "25" : props.item.coins}
                   </Text>
-                  <View style={styles.likesContainer}>
-                    <Image
-                      source={require("../../../../../../assets/images/misc/thumb_up.png")}
-                      style={styles.likeIcon}
-                    />
-                    <Text style={styles.popularText}>
-                      {props.item.cantidadLikes}
-                    </Text>
-                  </View>
-                </LinearGradient>
-              </View>
+                </View>
+                <View style={styles.likesContainer}>
+                  <Image
+                    source={require("../../../../../../assets/images/misc/thumb_up.png")}
+                    style={styles.likeIcon}
+                  />
+                  <Text style={styles.popularText}>
+                    {props.item.cantidadLikes}
+                  </Text>
+                </View>
+              </LinearGradient>
             </View>
           </View>
         )}
@@ -98,9 +96,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  continerTop: {
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+  coinsContainer: {
+    alignItems: "center",
+    justifyContent: "center",
   },
   containerButtom: {
     alignItems: "flex-start",
@@ -129,7 +127,6 @@ const styles = StyleSheet.create({
     padding: 7,
     flexDirection: "row",
     justifyContent: "space-between",
-    // alignItems: 'flex-end'
   },
   textContainer: {
     flexDirection: "row",
@@ -161,8 +158,8 @@ const styles = StyleSheet.create({
     height: 22,
   },
   textFCSCoin: {
-    color: Colors.blue,
+    color: Colors.white,
     fontWeight: "bold",
-    fontFamily: "redhatdisplay-regular",
+    fontFamily: Fonts.redhatRegular,
   },
 });

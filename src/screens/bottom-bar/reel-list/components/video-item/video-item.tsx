@@ -95,6 +95,9 @@ const styles = StyleSheet.create({
   continerTop: {
     alignItems: "flex-start",
     justifyContent: "flex-start",
+    flexDirection: 'row',
+    marginLeft: 4,
+    marginTop: 4,
   },
   containerButtom: {
     alignItems: "flex-start",
@@ -135,6 +138,7 @@ const styles = StyleSheet.create({
   coinsImg: {
     width: 18,
     height: 22,
+    marginRight: 4
   },
   textFCSCoin: {
     color: Colors.blue,

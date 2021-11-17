@@ -123,7 +123,9 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Reels"
       screenOptions={{
-        tabBarActiveTintColor: Colors.lightBlue,
+        tabBarActiveTintColor: Colors.lightGreen,
+        tabBarActiveBackgroundColor: Colors.blue,
+        tabBarInactiveBackgroundColor: Colors.blue
       }}
     >
       <BottomTab.Screen

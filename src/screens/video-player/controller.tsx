@@ -16,18 +16,21 @@ class VideoPlayerController extends React.PureComponent<PropsTypes, StateType> {
   videoRef: React.RefObject<Video> = React.createRef();
   state: StateType = {
     value: {
-      isPlaying: false,
+      isPlaying: true,
       videoUri: "",
       liked: false,
       favorite: false,
       showNextScreen: false,
       nextVideos: [],
+      groupTitle: "",
+      isLoading: true,
     },
   };
 
   async componentDidMount() {
     const { route } = this.props;
     const reelId = route.params.reelId;
+    const groupTitle = route.params.groupTitle;
     const nextVideos = route.params.sectionReels;
     if (!reelId) {
       // TODO: Show some error?
@@ -35,15 +38,16 @@ class VideoPlayerController extends React.PureComponent<PropsTypes, StateType> {
     }
 
     const videoInformation = await reelsApi.getReel(reelId);
-    console.log(`next videos q: ${nextVideos.length}`)
     this.setState({
       value: {
         showNextScreen: false,
-        isPlaying: false,
+        isPlaying: true,
         videoUri: videoInformation.url,
         liked: videoInformation.liked || false,
         favorite: videoInformation.favorito || false,
         nextVideos,
+        groupTitle,
+        isLoading: false,
       },
     });
   }
@@ -82,7 +86,10 @@ class VideoPlayerController extends React.PureComponent<PropsTypes, StateType> {
           showNextScreen: !prevState.value.showNextScreen,
         },
       };
+    }, () => {
+      // this.handlePlayPressed();
     });
+
   };
 
   sendLikeRequest = (like: boolean) => {
@@ -106,7 +113,7 @@ class VideoPlayerController extends React.PureComponent<PropsTypes, StateType> {
 
   handlePlayPressed = () => {
     const {
-      value: { isPlaying, showNextScreen },
+      value: { isPlaying },
     } = this.state;
 
     if (!isPlaying) {
@@ -139,8 +146,8 @@ class VideoPlayerController extends React.PureComponent<PropsTypes, StateType> {
         onPlayPressed={this.handlePlayPressed}
         onThumbDownPress={this.handleThumbDownPress}
         onThumbUpPress={this.handleThumbUpPress}
-        groupTitle="title"
         onNextVideoPress={this.handleNextVideoPress}
+        onCloseNextVideos={this.handleNextPress}
       />
     );
   }

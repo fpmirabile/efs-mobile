@@ -19,7 +19,7 @@ export interface Reel {
   favorito?: boolean;
   imagen?: string;
   // video url
-  url?: string;
+  url: string;
   duracion?: string;
   monedas?: number;
 }

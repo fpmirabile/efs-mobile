@@ -4,31 +4,34 @@ import { TextStyle, ViewStyle } from "react-native-material-ui";
 import { Grupo } from "../../../../../api/models/reels";
 import Button from "../../../../../components/common/button";
 import Colors from "../../../../../constants/colors";
+import Fonts from "../../../../../constants/fonts";
 
 interface Props {
-  currentIndex?: number;
   onPressedItem: (index: number) => () => void;
+  item: Grupo;
+  isActive: boolean;
+  index: number;
 }
 
-export default (props: Props): ListRenderItem<Grupo> => ({ item, index }) => {
+export default function (props: Props) {
   const containerStyles: ViewStyle = [styles.filterButtonContainer];
   const buttonStyles: TextStyle = [styles.filterButton];
-  if (props.currentIndex === index) {
+  if (props.isActive) {
     containerStyles.push(styles.filterButtonContainerSelected);
     buttonStyles.push(styles.filterButtonSelected);
   }
 
   return (
     <Button
-      text={item.titulo}
+      text={props.item.titulo}
       style={{
         container: containerStyles,
         text: buttonStyles,
       }}
-      onPress={props.onPressedItem(index)}
+      onPress={props.onPressedItem(props.index)}
     />
   );
-};
+}
 
 const styles = StyleSheet.create({
   filterButtonContainer: {
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     shadowOffset: {
       height: 2,
-      width: 0
+      width: 2,
     },
     shadowRadius: 8,
     shadowOpacity: 0.14,
@@ -46,6 +49,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     marginRight: 8,
+    marginBottom: 8
   },
   filterButton: {
     color: Colors.orange,
@@ -54,8 +58,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.15,
     marginHorizontal: 9,
     textTransform: "capitalize",
-    fontFamily: 'redhatdisplay-regular',
-    fontWeight: '700'
+    fontFamily: Fonts.redhatRegular,
+    fontWeight: "bold",
   },
   filterButtonSelected: {
     color: Colors.white,

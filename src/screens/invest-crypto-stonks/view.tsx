@@ -1,10 +1,12 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, Image } from "react-native";
 import {
   VictoryChart,
   VictoryCandlestick,
   VictoryTheme,
   VictoryAxis,
+  VictoryZoomContainer,
+  VictoryLine,
 } from "victory-native";
 import Button from "../../components/common/button";
 import PageWithScroll from "../../components/common/page-with-scroll/page-with-scroll";
@@ -13,16 +15,33 @@ import Colors from "../../constants/colors";
 import Fonts from "../../constants/fonts";
 import LoadingPage from "../../components/common/loading-page/loading-page";
 import EnterOrder from "./components/enter-order";
+import { StatusBar } from "expo-status-bar";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 interface PropTypes {
-  data: CandleStickChartData[];
-  companiesStonks: CompanyStonks[];
   isLoading: boolean;
-  isBuySellModalOpen: boolean;
-
+  value: ViewValue;
   onBuyPress: () => void;
   onSellPress: () => void;
   onBuySellDone: () => void;
+  onGraphChange: () => void;
+}
+
+export interface ViewValue {
+  chartType: "candle" | "line";
+  data: CandleStickChartData[];
+  lineData: LineChartData[];
+  companiesStonks: CompanyStonks[];
+  isBuySellOpen: boolean;
+}
+
+export interface LineChartData {
+  x: number;
+  y: number;
+  label?: string;
+  symbol?: string;
+  fill?: string;
+  opacity?: number;
 }
 
 export interface CandleStickChartData {
@@ -35,7 +54,8 @@ export interface CandleStickChartData {
 
 export interface CompanyStonks {
   id: number;
-  image: any;
+  enableImg: any;
+  disableImg: any;
   name: string;
   isSelected: boolean;
 }
@@ -43,10 +63,11 @@ export interface CompanyStonks {
 export default function InvestView(props: PropTypes) {
   return (
     <LoadingPage isLoading={props.isLoading}>
-      <PageWithScroll viewStyles={{ flex: 1 }}>
+      <PageWithScroll scrollViewContainerStyles={{ flex: 1 }}>
+        <StatusBar hidden />
         <View style={styles.stonkTypeContainer}>
           <FlatList
-            data={props.companiesStonks}
+            data={props.value.companiesStonks}
             renderItem={StonkList({})}
             keyExtractor={(item) => item.id.toString()}
             horizontal
@@ -69,51 +90,64 @@ export default function InvestView(props: PropTypes) {
                 top: 30,
                 bottom: 40,
               }}
+              height={404}
               scale={{ x: "time" }}
+              containerComponent={
+                <VictoryZoomContainer
+                  allowZoom={false}
+                  zoomDomain={{
+                    x: [props.value.data[0].x, props.value.data[4].x],
+                    y: [30000, props.value.data[4].close],
+                  }}
+                />
+              }
             >
               <VictoryAxis
                 tickFormat={(t) => `${t.getDate()}/${t.getMonth()}`}
               />
               <VictoryAxis dependentAxis orientation="right" />
-              <VictoryCandlestick
-                candleColors={{ positive: "#5f5c5b", negative: "#c43a31" }}
-                data={props.data}
-              />
+              {props.value.chartType === "candle" && (
+                <VictoryCandlestick
+                  candleColors={{
+                    positive: Colors.lightGreen,
+                    negative: Colors.red,
+                  }}
+                  data={props.value.data}
+                />
+              )}
+              {props.value.chartType === "line" && (
+                <VictoryLine
+                  interpolation="natural"
+                  data={props.value.lineData}
+                />
+              )}
             </VictoryChart>
+            <View style={styles.graphButtonContainer}>
+              <TouchableWithoutFeedback onPress={props.onGraphChange}>
+                <Image
+                  source={
+                    props.value.chartType === "line"
+                      ? require("../../../assets/images/temp/graphs/velas.png")
+                      : require("../../../assets/images/temp/graphs/lineal.png")
+                  }
+                  style={styles.graphButton}
+                />
+              </TouchableWithoutFeedback>
+            </View>
           </View>
           <View style={styles.buySellContainer}>
-            <Button
-              text="Vender 60614.98"
-              style={{
-                container: styles.sellButtonContainer,
-                text: styles.sellAndBuyButtonText,
-              }}
-              icon={
-                <Image
-                  style={styles.sellAndBuyIcon}
-                  source={require("../../../assets/images/efs-coin.png")}
-                />
-              }
-              onPress={props.onSellPress}
-            />
             <Button
               text="Comprar 60614.98"
               style={{
                 container: styles.buyButtonContainer,
                 text: styles.sellAndBuyButtonText,
               }}
-              icon={
-                <Image
-                  style={styles.sellAndBuyIcon}
-                  source={require("../../../assets/images/efs-coin.png")}
-                />
-              }
               onPress={props.onBuyPress}
             />
           </View>
         </View>
         <EnterOrder
-          isVisible={props.isBuySellModalOpen}
+          isVisible={props.value.isBuySellOpen}
           onCloseModal={props.onBuySellDone}
         />
       </PageWithScroll>
@@ -153,11 +187,19 @@ const styles = StyleSheet.create({
   graphContainer: {
     flex: 1,
   },
+  graphButtonContainer: {
+    position: "relative",
+    bottom: 95,
+    left: 10,
+    zIndex: 100,
+  },
+  graphButton: {},
   buySellContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
-    marginTop: 7,
+    alignItems: "flex-end",
+    flex: 1,
+    marginBottom: 16,
   },
   sellButtonContainer: {
     backgroundColor: Colors.sellRed,
@@ -170,18 +212,17 @@ const styles = StyleSheet.create({
   },
   sellAndBuyButtonText: {
     fontFamily: Fonts.redhatRegular,
-    fontWeight: "700",
+    fontWeight: "bold",
     fontSize: 14,
     lineHeight: 16,
     letterSpacing: 1.25,
     color: Colors.white,
   },
   buyButtonContainer: {
-    backgroundColor: Colors.secondaryLightBlue,
+    backgroundColor: Colors.blue,
     borderRadius: 4,
     minHeight: 59,
-    maxWidth: 159,
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
   },
   sellAndBuyIcon: {

@@ -14,6 +14,7 @@ export interface Props extends BasicStackComponentProps {
 
 interface State {
   isLoading: boolean;
+  showRetry: boolean;
   currentIndex: number;
   filterGroups: Grupo[];
   popularReels: ReelPopular[];
@@ -24,6 +25,7 @@ class ReelsController extends React.PureComponent<Props, State> {
   filterRef: React.RefObject<FlatList<Grupo>> = React.createRef();
   state: State = {
     isLoading: true,
+    showRetry: false,
     currentIndex: 0,
     filterGroups: [],
     popularReels: [],
@@ -49,13 +51,17 @@ class ReelsController extends React.PureComponent<Props, State> {
           popularReels,
           filterGroups: allFilters,
           isLoading: false,
+          showRetry: false,
         });
       }
     } catch (exception) {
-      // TODO: Set an error message or page.
-      console.log(exception);
+      this.showRetry(true);
     }
   }
+
+  showRetry = (showRetry: boolean) => {
+    this.setState({ isLoading: false, showRetry });
+  };
 
   handleFilterChanged = async (index: number) => {
     this.setState({
@@ -64,13 +70,18 @@ class ReelsController extends React.PureComponent<Props, State> {
 
     const { filterGroups } = this.state;
     const { onGetReelsByGroup } = this.props;
-    const groupReels = await onGetReelsByGroup(filterGroups[index].grupoId);
+    try {
+      const groupReels = await onGetReelsByGroup(filterGroups[index].grupoId);
 
-    this.setState({
-      currentIndex: index,
-      reels: groupReels,
-      isLoading: false,
-    });
+      this.setState({
+        currentIndex: index,
+        reels: groupReels,
+        isLoading: false,
+        showRetry: false,
+      });
+    } catch (exception) {
+      this.showRetry(true);
+    }
   };
 
   handleFilterScrollEnd = (data: any, index: number) => {
@@ -91,18 +102,22 @@ class ReelsController extends React.PureComponent<Props, State> {
     const { reels, popularReels } = this.state;
     const isPopularReel = popularReels.find((popu) => popu.reelId === reelId);
     let sectionReels: Reel[] = [];
+    let groupTitle: string = "";
     if (isPopularReel) {
       sectionReels = popularReels;
+      groupTitle = "Los más populares";
     } else {
       const sectionIndex = reels.findIndex((section) =>
         section.reels.some((reel) => reel.reelId === reelId)
       );
       sectionReels = reels[sectionIndex].reels;
+      groupTitle = reels[sectionIndex].titulo;
     }
 
     navigation.navigate("Video", {
       reelId,
       sectionReels,
+      groupTitle,
     });
   };
 

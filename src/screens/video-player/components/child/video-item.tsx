@@ -1,53 +1,93 @@
 import * as React from "react";
 import { Text, View, StyleSheet, ImageBackground } from "react-native";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
 import { Reel } from "../../../../api/models/reels";
 import Colors from "../../../../constants/colors";
+import Fonts from "../../../../constants/fonts";
+import LoadingBanner from "../../../../components/common/loading-banner/loading-banner";
 
 interface Props {
   onPressedVideo: (reelId: number) => void;
-}
-
-interface ItemProps {
   item: Reel;
-  index: number;
 }
 
-export default (props: Props) => (itemProps: ItemProps) => {
+export default function (props: Props) {
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const onVideoPress = () => {
-    props.onPressedVideo(itemProps.item.reelId);
+    props.onPressedVideo(props.item.reelId);
+  };
+
+  const startLoading = () => {
+    setIsLoading(true);
+  };
+
+  const endLoading = () => {
+    setIsLoading(false);
   };
 
   return (
     <View style={styles.itemContainer}>
-      <TouchableHighlight onPress={onVideoPress}>
+      <TouchableWithoutFeedback onPress={onVideoPress}>
         <View style={styles.elementsContainer}>
           <ImageBackground
             source={{
-              uri:
-                itemProps.item.imagen ||
-                "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
+              uri: props.item.imagen,
             }}
+            onLoadStart={startLoading}
+            onLoadEnd={endLoading}
             style={styles.imageBackground}
           >
-            <View style={styles.durationContainer}>
-              <Text style={styles.videoDuration}>
-                {itemProps.item.duracion || "00:00"}
-              </Text>
-            </View>
-            <View style={styles.videoTitleContainer}>
-              <Text style={styles.videoTitle}>{itemProps.item.titulo}</Text>
-            </View>
+            {isLoading && (
+              <View style={styles.loadingView}>
+                <LoadingBanner />
+              </View>
+            )}
+            {!isLoading && (
+              <View style={styles.container}>
+                <View style={styles.durationContainer}>
+                  <LinearGradient
+                    colors={["rgba(22,2,102,0.8)", "transparent"]}
+                    style={styles.topGradient}
+                  >
+                    <Text style={styles.videoDuration}>
+                      {props.item.duracion}
+                    </Text>
+                  </LinearGradient>
+                </View>
+                <View style={styles.videoTitleContainer}>
+                  <LinearGradient
+                    // Background Linear Gradient
+                    colors={["transparent", "rgba(22,2,102,0.8)"]}
+                    style={styles.bottomGradient}
+                  >
+                    <Text style={styles.videoTitle}>{props.item.titulo}</Text>
+                  </LinearGradient>
+                </View>
+              </View>
+            )}
           </ImageBackground>
         </View>
-      </TouchableHighlight>
+      </TouchableWithoutFeedback>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
+  loadingView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  container: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    flex: 1,
+  },
   itemContainer: {
     borderWidth: 1,
+    borderRadius: 2,
     borderColor: Colors.blue,
     marginRight: 8,
   },
@@ -56,10 +96,21 @@ const styles = StyleSheet.create({
     width: 157,
     flexDirection: "column",
   },
-  durationContainer: {
-    flex: 0.12,
-    justifyContent: "center",
+  topGradient: {
+    padding: 7,
+    width: "100%",
     alignItems: "flex-end",
+  },
+  bottomGradient: {
+    padding: 15,
+    width: '100%',
+    paddingBottom: 25
+  },
+  durationContainer: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
+    width: '100%'
   },
   videoDuration: {
     fontWeight: "bold",
@@ -69,15 +120,15 @@ const styles = StyleSheet.create({
   },
   imageBackground: {
     flex: 1,
-    paddingBottom: 8,
-    paddingHorizontal: 8,
   },
   videoTitleContainer: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-start',
+    justifyContent: "flex-end",
+    alignItems: "flex-start",
     flex: 1,
+    width: '100%',
   },
   videoTitle: {
+    fontFamily: Fonts.redhatRegular,
     color: Colors.white,
     fontWeight: "bold",
     fontSize: 12,

@@ -18,7 +18,7 @@ export default (props: PropTypes): ListRenderItem<CompanyStonks> =>
         ]}
       >
         <Image
-          source={item.image}
+          source={item.isSelected ? item.enableImg : item.disableImg}
           style={item.isSelected ? undefined : styles.noSelectedLogo}
         />
         <Text style={styles.logoName}>{item.name}</Text>

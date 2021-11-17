@@ -10,6 +10,7 @@ const Colors = {
   orange: '#FF6035',
   secondaryOrange: '#D2414B',
   blue: '#160266',
+  violet: '#13259B',
   brown: '#332F2F',
   lightGreen: '#00B3A6',
 

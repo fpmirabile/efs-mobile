@@ -48,7 +48,7 @@ export default function EnterOrder(props: PropTypes) {
               <Image
                 resizeMode={ResizeMode.CONTAIN}
                 style={styles.tooltip}
-                source={require("../../../../assets/images/efs-coin.png")}
+                source={require("../../../../assets/images/misc/tooltip.png")}
               />
             </TouchableWithoutFeedback>
           </Text>

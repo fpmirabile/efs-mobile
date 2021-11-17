@@ -1,3 +1,4 @@
+import { LinearGradient } from "expo-linear-gradient";
 import * as React from "react";
 import {
   StyleSheet,
@@ -10,7 +11,9 @@ import {
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { ReelPopular } from "../../../../../api/models/reels";
+import LoadingBanner from "../../../../../components/common/loading-banner/loading-banner";
 import Colors from "../../../../../constants/colors";
+import Fonts from "../../../../../constants/fonts";
 
 interface Props {
   backgroundImageStyle?: ViewStyle;
@@ -18,68 +21,94 @@ interface Props {
   titleStyle?: TextStyle;
   onImageLoadError: () => string;
   onPressVideo: (reelId: number) => void;
-}
-
-interface ItemProps {
   item: ReelPopular;
-  index: number;
 }
 
-export default (props: Props) => (itemProps: ItemProps) => {
+export default function (props: Props) {
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const onReelPress = () => {
-    props.onPressVideo(itemProps.item.reelId);
-  }
+    props.onPressVideo(props.item.reelId);
+  };
+
+  const startLoading = () => {
+    setIsLoading(true);
+  };
+
+  const endLoading = () => {
+    setIsLoading(false);
+  };
 
   return (
     <TouchableWithoutFeedback onPress={onReelPress}>
       <ImageBackground
         imageStyle={styles.image}
         source={{
-          uri:
-            itemProps.item.imagen ||
-            "https://www.liquor.com/thmb/fO-COKLw_iEA28v8K4XQjzMhkfw=/735x0/very-sexy-martini-720x720-primary-b1212ebf73f54f898a56f7f0b60c0a34.jpg",
+          uri: props.item.imagen,
         }}
+        onLoadStart={startLoading}
+        onLoadEnd={endLoading}
         style={[styles.imageBackground, props.backgroundImageStyle]}
         onError={props.onImageLoadError}
       >
-        <View style={[styles.textContainer, props.textContainerStyle]}>
-          <Text style={[styles.popularText, props.titleStyle]}>
-            {itemProps.item.titulo}
-          </Text>
-          <View style={styles.likesContainer}>
-            <Image
-              source={require("../../../../../../assets/images/misc/thumb_up.png")}
-              style={styles.likeIcon}
-            />
-            <Text style={styles.popularText}>
-              {itemProps.item.cantidadLikes}
-            </Text>
+        {isLoading && (
+          <View style={styles.loadingView}>
+            <LoadingBanner />
           </View>
-        </View>
+        )}
+        {!isLoading && (
+          <View style={[styles.textContainer, props.textContainerStyle]}>
+            <LinearGradient
+              colors={["rgba(22,2,102,0.8)", "transparent"]}
+              style={styles.gradient}
+            >
+              <Text style={[styles.popularText, props.titleStyle]}>
+                {props.item.titulo}
+              </Text>
+              <View style={styles.likesContainer}>
+                <Image
+                  source={require("../../../../../../assets/images/misc/thumb_up.png")}
+                  style={styles.likeIcon}
+                />
+                <Text style={styles.popularText}>
+                  {props.item.cantidadLikes}
+                </Text>
+              </View>
+            </LinearGradient>
+          </View>
+        )}
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
-};
+}
 
 const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+    borderRadius: 8,
   },
   imageBackground: {
-    flex: 1,
     height: 146,
     width: 276,
     justifyContent: "flex-end",
     borderRadius: 8,
+    marginRight: 8,
+  },
+  loadingView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  gradient: {
+    flex: 1,
+    padding: 7,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // alignItems: 'flex-end'
   },
   textContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "flex-end",
-    backgroundColor: "#16026647",
-    paddingHorizontal: 8,
-    paddingVertical: 11,
   },
   popularText: {
     lineHeight: 16,
@@ -87,14 +116,14 @@ const styles = StyleSheet.create({
     letterSpacing: 0.1,
     color: Colors.white,
     maxWidth: 156,
-    fontFamily: 'redhatdisplay-regular',
-    fontWeight: '500'
+    fontFamily: Fonts.redhatRegular,
+    alignSelf: 'center',
   },
   likesContainer: {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 8
+    marginRight: 8,
   },
   likeIcon: {
     height: 24,

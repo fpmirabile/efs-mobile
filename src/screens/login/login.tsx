@@ -53,6 +53,7 @@ export default function Login({
 
   return (
     <View style={styles.container}>
+      <StatusBar hidden />
       <Text style={styles.title}>Ingresá</Text>
       <WhiteBackgroundView viewStyles={styles.whiteBackgroundContainer}>
         <Input

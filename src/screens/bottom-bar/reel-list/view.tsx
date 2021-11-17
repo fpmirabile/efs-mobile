@@ -1,13 +1,11 @@
 import * as React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import RightCarousel from "../../../components/common/carousel/carousel";
 import PageWithScroll from "../../../components/common/page-with-scroll/page-with-scroll";
 import FilterItem from "./components/filter-item/filter-item";
 import MostPopularItem from "./components/most-popular/most-popular";
 import VideoItem from "./components/video-item/video-item";
 import SectionReel from "./components/section/section";
-import { Grupo, Reel, ReelPopular, Seccion } from "../../../api/models/reels";
-import LoadingBanner from "../../../components/common/loading-banner/loading-banner";
+import { Grupo, ReelPopular, Seccion } from "../../../api/models/reels";
 import LoadingPage from "../../../components/common/loading-page/loading-page";
 
 interface Props {
@@ -44,12 +42,18 @@ const renderSection = (
         containerStyle={styles.sectionContainer}
         key={seccion.seccionId}
       >
-        <RightCarousel
+        <FlatList
           data={seccion.reels}
-          onRenderItem={VideoItem({ onImageLoadError, onPressVideo })}
-          onKeyExtractor={(item: Reel, _: number) => item.reelId.toString()}
-          separatorWidth={15}
-          itemWidth={140}
+          keyExtractor={(item) => item.reelId.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <VideoItem
+              onImageLoadError={onImageLoadError}
+              onPressVideo={onPressVideo}
+              item={item}
+            />
+          )}
         />
       </SectionReel>
     );
@@ -77,25 +81,38 @@ export default function ReelsView({
         <FlatList
           ref={filterRef}
           data={filters}
-          renderItem={FilterItem({ currentIndex, onPressedItem })}
           keyExtractor={(item) => item.grupoId.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
+          renderItem={({ item, index }) => (
+            <FilterItem
+              onPressedItem={onPressedItem}
+              index={index}
+              isActive={index === currentIndex}
+              item={item}
+            />
+          )}
         />
-        <SectionReel
-          title="Los más populares"
-          containerStyle={styles.sectionContainer}
-        >
-          <RightCarousel
-            data={popularReels}
-            onRenderItem={MostPopularItem({ onImageLoadError, onPressVideo })}
-            onKeyExtractor={(item: ReelPopular, _: number) =>
-              item.reelId.toString()
-            }
-            separatorWidth={15}
-            itemWidth={276}
-          />
-        </SectionReel>
+        {popularReels.length && (
+          <SectionReel
+            title="Los más populares"
+            containerStyle={styles.sectionContainer}
+          >
+            <FlatList
+              data={popularReels}
+              keyExtractor={(item) => item.reelId.toString()}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <MostPopularItem
+                  onImageLoadError={onImageLoadError}
+                  onPressVideo={onPressVideo}
+                  item={item}
+                />
+              )}
+            />
+          </SectionReel>
+        )}
         {renderSection(seccionReels, { onImageLoadError, onPressVideo })}
       </PageWithScroll>
     </LoadingPage>

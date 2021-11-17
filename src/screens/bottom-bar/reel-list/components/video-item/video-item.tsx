@@ -7,6 +7,7 @@ import {
   ViewStyle,
   TextStyle,
   Text,
+  Image,
 } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Reel } from "../../../../../api/models/reels";
@@ -55,15 +56,28 @@ export default function (props: Props) {
           </View>
         )}
         {!isLoading && (
-          <View style={[styles.textContainer, props.textContainerStyle]}>
-            <LinearGradient
-              colors={["rgba(22,2,102,0.8)", "transparent"]}
-              style={styles.gradient}
-            >
-              <Text style={[styles.title, props.titleStyle]}>
-                {props.item.titulo}
+          <View style={styles.container}>
+            <View style={styles.continerTop}>
+              <Image
+                style={styles.coinsImg}
+                source={require("../../../../../../assets/images/misc/coin.png")}
+              />
+              <Text style={styles.textFCSCoin}>
+                {!props.item.coins ? "25" : props.item.coins}
               </Text>
-            </LinearGradient>
+            </View>
+            <View style={styles.containerButtom}>
+              <View style={[styles.textContainer, props.textContainerStyle]}>
+                <LinearGradient
+                  colors={["rgba(22,2,102,0.8)", "transparent"]}
+                  style={styles.gradient}
+                >
+                  <Text style={[styles.title, props.titleStyle]}>
+                    {props.item.titulo}
+                  </Text>
+                </LinearGradient>
+              </View>
+            </View>
           </View>
         )}
       </ImageBackground>
@@ -72,10 +86,20 @@ export default function (props: Props) {
 }
 
 const styles = StyleSheet.create({
+  container: { flex: 1 },
   image: {
     width: "100%",
     height: "100%",
     borderRadius: 8,
+  },
+  continerTop: {
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+  },
+  containerButtom: {
+    alignItems: "flex-start",
+    justifyContent: "flex-end",
+    flex: 1,
   },
   imageBackground: {
     flex: 1,
@@ -92,7 +116,7 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
     padding: 10,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   textContainer: {
     flexDirection: "row",
@@ -107,5 +131,14 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontFamily: Fonts.redhatRegular,
     fontWeight: "bold",
+  },
+  coinsImg: {
+    width: 18,
+    height: 22,
+  },
+  textFCSCoin: {
+    color: Colors.blue,
+    fontWeight: "bold",
+    fontFamily: Fonts.redhatRegular,
   },
 });

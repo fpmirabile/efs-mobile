@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import PageWithScroll from "../../../components/common/page-with-scroll/page-with-scroll";
 import FilterItem from "./components/filter-item/filter-item";
 import MostPopularItem from "./components/most-popular/most-popular";
@@ -19,6 +19,7 @@ interface Props {
   seccionReels: Seccion[];
   filterRef: React.LegacyRef<FlatList>;
   isLoading: boolean;
+  coins: string;
 }
 
 const renderSection = (
@@ -70,11 +71,13 @@ export default function ReelsView({
   popularReels,
   filterRef,
   isLoading,
+  coins,
 }: Props) {
   return (
     <LoadingPage isLoading={isLoading}>
       <PageWithScroll
         title="Reels"
+        coins={coins}
         viewStyles={styles.page}
         titleStyles={{ title: styles.title }}
       >
@@ -125,7 +128,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   title: {
-    marginBottom: 15,
+    marginBottom: 0,
   },
   sectionContainer: {
     marginVertical: 6,

@@ -19,6 +19,7 @@ interface State {
   filterGroups: Grupo[];
   popularReels: ReelPopular[];
   reels: Seccion[];
+  coins: string;
 }
 
 class ReelsController extends React.PureComponent<Props, State> {
@@ -30,6 +31,7 @@ class ReelsController extends React.PureComponent<Props, State> {
     filterGroups: [],
     popularReels: [],
     reels: [],
+    coins: '10.000'
   };
 
   async componentDidMount() {
@@ -122,7 +124,7 @@ class ReelsController extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { currentIndex, filterGroups, reels, popularReels, isLoading } =
+    const { currentIndex, filterGroups, reels, popularReels, isLoading, coins } =
       this.state;
     return (
       <ReelsView
@@ -138,6 +140,7 @@ class ReelsController extends React.PureComponent<Props, State> {
         seccionReels={reels}
         popularReels={popularReels}
         isLoading={isLoading}
+        coins={coins}
       />
     );
   }

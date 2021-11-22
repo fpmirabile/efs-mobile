@@ -139,7 +139,6 @@ class LoginController extends React.PureComponent<Props, State> {
   handleRegisterPress = () => {
     const { navigation } = this.props;
     navigation.navigate("Register");
-    //navigation.navigate("Profile");
   };
 
   render() {

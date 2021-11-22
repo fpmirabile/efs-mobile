@@ -23,11 +23,13 @@ import Profile from "../screens/profile-test";
 import Register from "../screens/registration";
 import Reels from "../screens/bottom-bar/reel-list";
 import Simulador from "../screens/bottom-bar/simulator";
+import Setting from "../screens/setting"
 import VideoPlayer from "../screens/video-player";
 import StonksAndCrypto from "../screens/invest-crypto-stonks";
 import StonksAndCryptoHeader from "./custom-header/invest-crypto-stonks/header";
 import { HeaderBackButtonProps } from "@react-navigation/native-stack/lib/typescript/src/types";
 import { TouchableOpacity } from "react-native-gesture-handler";
+
 
 export default function Navigation() {
   return (
@@ -78,6 +80,11 @@ function RootNavigator() {
       <Stack.Screen
         name="Profile"
         component={Profile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Setting"
+        component={Setting}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -172,7 +179,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Configuracion"
-        component={Reels}
+        component={Setting}
         options={{
           title: "Configuración",
           tabBarIcon: ({ color }) => (

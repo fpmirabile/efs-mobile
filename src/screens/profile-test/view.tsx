@@ -136,7 +136,7 @@ export default function RenderQuiz({
           (renderBeginProfile({ onSkipProfilePress, onContinuePress }))}
         {questions.length > 0 && isContinue && score===0 && (
           <>
-            <View style={{ margin: 19 }}>
+            <View style={styles.continerTitle}>
               <Text style={styles.title}>
                 {questions[currentIndex].question}
               </Text>
@@ -260,7 +260,12 @@ const styles = StyleSheet.create({
     marginBottom: 9,
     fontFamily: "redhatdisplay-regular",
   },
+  continerTitle:{ 
+    flex:1,
+    margin: 19 
+  },
   whiteBox: {
+    flex: 1,
     marginLeft: 15,
     marginRight: 15,
     paddingVertical: 80,
@@ -306,7 +311,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  ermsAndCondsContainer: {
+  termsAndCondsContainer: {
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 10,

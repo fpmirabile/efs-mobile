@@ -65,7 +65,7 @@ const renderBeginProfile = ({
         />
         <TextButton
           textStyle={styles.termsAndCondButtonText}
-          containerStyle={styles.termsAndCondButtonContainer}
+          buttonContainerStyle={styles.termsAndCondButtonContainer}
           text="Omitir perfil de inversor"
           onPress={onSkipProfilePress}
         />

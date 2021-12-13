@@ -10,7 +10,7 @@ import {
 import Colors from "../../../constants/colors";
 import Button from "../../common/button";
 import PageTitle, { Props as PageTitleProps } from "../page-title/page-title";
-import ButtonWithLoading from "../button-with-loading/button-with-loading";
+
 
 interface Props {
   viewStyles?: View["props"]["style"];
@@ -18,18 +18,14 @@ interface Props {
   title?: string;
   text?: string;
   img1Url?: any;
-  id: number;
   onPress?: () => void;
-  onTouch?: () => void;
 }
 
 export default function Onboarding({
   title,
   text,
   img1Url,
-  id,
   onPress,
-  onTouch,
   imageStyles,
 }: Props) {
   const { width } = useWindowDimensions();
@@ -55,9 +51,6 @@ export default function Onboarding({
           </View>
         </View>
       </View>
-      {id==3 && (<View>
-        <ButtonWithLoading text="EMPECEMOS" onPress={onTouch} />
-      </View>)}
     </ScrollView>
   );
 }

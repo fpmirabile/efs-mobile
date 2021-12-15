@@ -11,7 +11,6 @@ import { Image, ImageSourcePropType, Text } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 
 import Colors from "../constants/colors";
-import Login from "../screens/login";
 import NotFoundScreen from "../screens/common/NotFoundScreen";
 import {
   RootStackParamList,
@@ -27,8 +26,10 @@ import Setting from "../screens/bottom-bar/setting";
 import VideoPlayer from "../screens/video-player";
 import StonksAndCrypto from "../screens/invest-crypto-stonks";
 import StonksAndCryptoHeader from "./custom-header/invest-crypto-stonks/header";
+import Onboarding from "../screens/onboarding";
 import { HeaderBackButtonProps } from "@react-navigation/native-stack/lib/typescript/src/types";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Login from "../screens/login";
 
 export default function Navigation() {
   return (
@@ -57,8 +58,30 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen
         name="Root"
-        component={Login}
+        component={Onboarding}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Onboarding"
+        component={Onboarding}
+        options={{
+          headerBackButtonMenuEnabled: true,
+          headerTitle: "",
+          headerTintColor: Colors.blue,
+          headerShadowVisible: false,
+          headerTransparent: true,
+        }}
+      />
+       <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          headerBackButtonMenuEnabled: true,
+          headerTitle: "",
+          headerTintColor: Colors.blue,
+          headerShadowVisible: false,
+          headerTransparent: true,
+        }}
       />
       <Stack.Screen
         name="Register"
@@ -113,9 +136,6 @@ function RootNavigator() {
         component={NotFoundScreen}
         options={{ title: "Oops!" }}
       />
-      {/* <Stack.Group screenOptions={{ presentation: "modal" }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group> */}
     </Stack.Navigator>
   );
 }

@@ -5,7 +5,7 @@
 
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NativeStackHeaderProps, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Reel } from './src/api/models/reels';
 
 declare global {
@@ -21,7 +21,7 @@ export type RootStackParamList = {
   Profile: undefined;
   Setting: undefined;
   Video: { reelId: number, sectionReels: Reel[], groupTitle: string };
-  StonksAndCrypto: undefined;
+  StonksAndCrypto: { userCoins?: number };
   TermsAndConditions: undefined;
   NotFound: undefined;
 };

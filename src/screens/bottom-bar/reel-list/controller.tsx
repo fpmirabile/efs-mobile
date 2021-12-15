@@ -2,6 +2,8 @@ import * as React from "react";
 import { FlatList } from "react-native";
 import { BasicStackComponentProps } from "../../../../types";
 import { Grupo, Reel, ReelPopular, Seccion } from "../../../api/models/reels";
+import { User } from "../../../api/models/user";
+import { formatNumberToLocaleString } from "../../../helper/string";
 import ReelsView from "./view";
 
 export interface Props extends BasicStackComponentProps {
@@ -10,6 +12,7 @@ export interface Props extends BasicStackComponentProps {
   onGetPopularReels: (groupId: number) => Promise<ReelPopular[]>;
   onFavoriteReel: (reelId: number) => Promise<void>;
   onLikeReel: (reelId: number, liked: boolean) => Promise<void>;
+  currentUser?: User;
 }
 
 interface State {
@@ -19,7 +22,8 @@ interface State {
   filterGroups: Grupo[];
   popularReels: ReelPopular[];
   reels: Seccion[];
-  coins: string;
+  showNotAvailableModal: boolean;
+  nextGroupTitle: string;
 }
 
 class ReelsController extends React.PureComponent<Props, State> {
@@ -31,7 +35,8 @@ class ReelsController extends React.PureComponent<Props, State> {
     filterGroups: [],
     popularReels: [],
     reels: [],
-    coins: '10.000'
+    showNotAvailableModal: false,
+    nextGroupTitle: '',
   };
 
   async componentDidMount() {
@@ -65,6 +70,15 @@ class ReelsController extends React.PureComponent<Props, State> {
     this.setState({ isLoading: false, showRetry });
   };
 
+  openNotAvailableGroupModal = (nextGroupTitle: string) => {
+    this.setState({
+      ...this.state,
+      showNotAvailableModal: true,
+      nextGroupTitle: nextGroupTitle,
+      isLoading: false,
+    });
+  }
+
   handleFilterChanged = async (index: number) => {
     this.setState({
       isLoading: true,
@@ -72,18 +86,28 @@ class ReelsController extends React.PureComponent<Props, State> {
 
     const { filterGroups } = this.state;
     const { onGetReelsByGroup } = this.props;
+    const nextGroup = filterGroups[index];
     try {
-      const groupReels = await onGetReelsByGroup(filterGroups[index].grupoId);
-
+      const groupReels = await onGetReelsByGroup(nextGroup.grupoId);
+      if (!groupReels) {
+        this.openNotAvailableGroupModal(nextGroup.titulo);
+        return;
+      }
       this.setState({
         currentIndex: index,
         reels: groupReels,
         isLoading: false,
         showRetry: false,
       });
-    } catch (exception) {
-      this.showRetry(true);
+    } catch {
+      this.openNotAvailableGroupModal(nextGroup.titulo);
     }
+  };
+
+  handleCloseAvailableModal = () => {
+    this.setState({
+      showNotAvailableModal: false,
+    });
   };
 
   handleFilterScrollEnd = (data: any, index: number) => {
@@ -124,10 +148,22 @@ class ReelsController extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { currentIndex, filterGroups, reels, popularReels, isLoading, coins } =
-      this.state;
+    const {
+      currentIndex,
+      filterGroups,
+      reels,
+      popularReels,
+      isLoading,
+      showNotAvailableModal,
+      nextGroupTitle
+    } = this.state;
+    const { currentUser } = this.props;
     return (
       <ReelsView
+        userName={currentUser?.nombre || ''}
+        pretendedSectionName={nextGroupTitle}
+        showModal={showNotAvailableModal}
+        onCloseModal={this.handleCloseAvailableModal}
         filterRef={this.filterRef}
         currentIndex={currentIndex}
         onFilterScrollEnd={this.handleFilterScrollEnd}
@@ -140,7 +176,7 @@ class ReelsController extends React.PureComponent<Props, State> {
         seccionReels={reels}
         popularReels={popularReels}
         isLoading={isLoading}
-        coins={coins}
+        coins={formatNumberToLocaleString(currentUser?.monedas || 0)}
       />
     );
   }

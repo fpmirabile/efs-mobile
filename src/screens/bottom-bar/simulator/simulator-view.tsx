@@ -1,23 +1,40 @@
 import * as React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { MyInvestment } from "../../../api/models/invest";
 import Indicator from "../../../components/common/indicator/indicator";
 import PageWithScroll from "../../../components/common/page-with-scroll/page-with-scroll";
 import TextButtonWithIcon from "../../../components/common/text-button-with-icon/text-button-with-icon";
 import WhiteBackgroundView from "../../../components/common/white-background-view/white-background-view";
 import Colors from "../../../constants/colors";
 import Fonts from "../../../constants/fonts";
+import ReferModal from "../../modals/refer/refer-modal";
+import YouAreBigModal from "../../modals/you-are-big/you-are-big";
 
 interface PropTypes {
   userName: string;
   onStonksAndCryptoPress: () => void;
-  performance: string;
+  userSimulatorInformation: MyInvestment;
+  showReferModal: boolean;
+  onReferModalClose: () => void;
+  onReferModalOpen: () => void;
+  onCloseYouAreBigModal: () => void;
+  onOpenYouAreBigModal: () => void;
+  showYouAreBigModal: boolean;
 }
 
 export default function SimulatorView(props: PropTypes) {
-  const performanceAmountStyles = props.performance.includes("+")
-    ? styles.goodPerformance
-    : styles.badPerformance;
+  const performanceAmountStyles =
+    props.userSimulatorInformation?.rendimiento &&
+    props.userSimulatorInformation.rendimiento.includes("-")
+      ? styles.badPerformance
+      : styles.goodPerformance;
+  const performanceDecorator =
+    props.userSimulatorInformation?.rendimiento &&
+    props.userSimulatorInformation.rendimiento.includes("-")
+      ? ""
+      : "+";
 
+  const availableMoney = Number(props.userSimulatorInformation?.total || 0);
   return (
     <PageWithScroll
       title="Simulador"
@@ -39,13 +56,13 @@ export default function SimulatorView(props: PropTypes) {
             <Indicator
               title="Valor de portfolio"
               viewStyles={styles.indicatorView}
-              value="$1000,43"
+              value={`$${props.userSimulatorInformation?.portfolio || 0}`}
               icon={require("../../../../assets/images/simulator/maletin.png")}
             />
             <Indicator
               title="Dinero disponible"
               viewStyles={styles.indicatorView}
-              value="$9000,43"
+              value={`$${availableMoney.toFixed(2)}`}
               icon={require("../../../../assets/images/simulator/money.png")}
             />
           </View>
@@ -55,13 +72,17 @@ export default function SimulatorView(props: PropTypes) {
               title="Rendimiento"
               viewStyles={styles.indicatorView}
               amountStyles={performanceAmountStyles}
-              value={props.performance}
+              value={`${performanceDecorator}${
+                props.userSimulatorInformation?.rendimiento || 0
+              }%`}
               icon={require("../../../../assets/images/simulator/stroke.png")}
             />
             <Indicator
               title="Clasificación"
               viewStyles={styles.indicatorView}
-              value="15° Lugar"
+              value={`${
+                props.userSimulatorInformation?.clasificacion || 0
+              }° Lugar`}
               icon={require("../../../../assets/images/simulator/ranking.png")}
             />
           </View>
@@ -83,6 +104,7 @@ export default function SimulatorView(props: PropTypes) {
             textStyle={styles.simulatorTextButton}
             iconStyles={styles.simulatorIcon}
             viewStyles={styles.simulatorTextButtonContainer}
+            onPress={props.onOpenYouAreBigModal}
           />
           <TextButtonWithIcon
             text="Simulador de Fondo Comun de Inversion"
@@ -98,8 +120,18 @@ export default function SimulatorView(props: PropTypes) {
           text="Invita un amigo y gana 500 FCS coins"
           icon={require("../../../../assets/images/efs-coin.png")}
           textStyle={styles.inviteAFriendButton}
+          onPress={props.onReferModalOpen}
         />
       </View>
+      <ReferModal
+        isVisible={props.showReferModal}
+        onClose={props.onReferModalClose}
+      />
+      <YouAreBigModal
+        isVisible={props.showYouAreBigModal}
+        onClose={props.onCloseYouAreBigModal}
+        username={props.userName}
+      />
     </PageWithScroll>
   );
 }

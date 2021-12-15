@@ -15,7 +15,6 @@ export type DeleteResponse = {
   operation: boolean;
 };
 
-
 export type ResponseHandler = (response: Response) => Promise<Response>;
 export const getHeaders = {
   Accept: "application/json",
@@ -36,7 +35,10 @@ const formatResponse = (response: Response) => {
   return response;
 };
 
-const withAuthenticationToken = async (headers: HeadersInit, token?: string) => {
+const withAuthenticationToken = async (
+  headers: HeadersInit,
+  token?: string
+) => {
   const session = await getSession();
   const jwt = token || (session && session.jwt);
   if (!jwt) {
@@ -81,7 +83,9 @@ export const api = (
     .then(checkTokenExpirationFn)
     .then(formatResponse)
     .catch((error) => {
-      console.log("Hubo un problema con la petición Fetch:" + error.message);
+      console.log(
+        `Hubo un problema con la petición Fetch a ${finalUrl}. Error: ${error.message}`
+      );
       throw error;
     });
 };

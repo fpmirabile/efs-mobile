@@ -1,26 +1,109 @@
 import * as React from "react";
 import { BasicStackComponentProps } from "../../../types";
-import InvestView, {
-  CandleStickChartData,
-  LineChartData,
-  ViewValue as Value,
-} from "./view";
+import investApi, {
+  Investment,
+  MyInvestment,
+  ViewChart,
+} from "../../api/models/invest";
+import { transformToViewChart } from "../../helper/chart-helper";
+import InvestView, { ViewValue as Value } from "./view";
 
-export interface PropTypes extends BasicStackComponentProps {}
+export interface PropTypes extends BasicStackComponentProps {
+  myInvestments?: MyInvestment;
+  userCoins: number;
+  reloadUserInvestments: () => void;
+}
 
 interface StateType {
+  isLoading: boolean;
   value: Value;
 }
 
 class Controller extends React.PureComponent<PropTypes, StateType> {
   state: StateType = {
+    isLoading: true,
     value: {
-      lineData: lineChartData,
-      data: data,
+      currentStonk: companyLogos[0],
+      data: [],
       chartType: "candle",
       companiesStonks: companyLogos,
       isBuySellOpen: false,
+      showBuyButton: false,
+      todayPerformance: "",
+      winLoseQty: 0,
+      isSellLoading: false,
     },
+  };
+
+  getStonkValues = async (nextStonk?: string): Promise<ViewChart[]> => {
+    const {
+      value: { currentStonk: currentStock },
+    } = this.state;
+
+    const stonkOptionsInfo = await investApi.getStonk(
+      nextStonk ? nextStonk : currentStock.code
+    );
+    return transformToViewChart(stonkOptionsInfo);
+  };
+
+  getInvestment = async (stonkCode: string): Promise<Investment | null> => {
+    const myInvestments = await investApi.myInvestments();
+    const investments = myInvestments?.inversiones;
+    const currentInvestmet = investments?.find(
+      (i) => i.codigo.toLowerCase() === stonkCode.toLowerCase()
+    );
+
+    return currentInvestmet ? currentInvestmet : null;
+  };
+
+  async componentDidMount() {
+    const {
+      value: { currentStonk: currentStock },
+    } = this.state;
+
+    const currentStonkData = await this.getStonkValues();
+    if (!currentStonkData.length) {
+      return;
+    }
+
+    const investment = await this.getInvestment(currentStock.code);
+    this.setState({
+      isLoading: false,
+      value: {
+        ...this.state.value,
+        data: currentStonkData,
+        showBuyButton: !investment?.rendimiento,
+        todayPerformance: investment?.rendimiento ?? "",
+        winLoseQty:
+          (investment?.total || 0) - (investment?.inversionInicial || 0),
+      },
+    });
+  }
+
+  handleClickOnStonks = async (nextStonk: string) => {
+    const nextSelectedStonk = companyLogos.find((i) => i.code === nextStonk);
+    if (!nextSelectedStonk) {
+      return;
+    }
+
+    this.setState({
+      isLoading: true,
+    });
+
+    const currentStonkData = await this.getStonkValues(nextSelectedStonk.code);
+    const investment = await this.getInvestment(nextStonk);
+    this.setState({
+      isLoading: false,
+      value: {
+        ...this.state.value,
+        currentStonk: nextSelectedStonk,
+        data: currentStonkData,
+        showBuyButton: !investment?.rendimiento,
+        todayPerformance: investment?.rendimiento ?? "",
+        winLoseQty:
+          (investment?.total || 0) - (investment?.inversionInicial || 0),
+      },
+    });
   };
 
   handleOpenBuySellModal = () => {
@@ -67,16 +150,92 @@ class Controller extends React.PureComponent<PropTypes, StateType> {
     this.handleCloseBuySellModal();
   };
 
+  handleEnterOrder = async (coins: number) => {
+    const {
+      value: { currentStonk: currentStock },
+    } = this.state;
+    const { navigation, userCoins } = this.props;
+
+    try {
+      await investApi.invest(currentStock.code, coins);
+      const myInvest = await this.getInvestment(currentStock.code);
+      const currentCoins = userCoins - coins;
+      navigation.setParams({ userCoins: currentCoins });
+      this.setState({
+        isLoading: false,
+        value: {
+          ...this.state.value,
+          isBuySellOpen: false,
+          showBuyButton: !myInvest?.rendimiento,
+          todayPerformance: myInvest?.rendimiento ?? "",
+          winLoseQty:
+            (myInvest?.total || 0) - (myInvest?.inversionInicial || 0),
+        },
+      });
+    } catch {}
+  };
+
+  handleSellEverything = async () => {
+    const {
+      value: { currentStonk },
+    } = this.state;
+    const { reloadUserInvestments, navigation } = this.props;
+    const stonkCode = currentStonk.code;
+
+    this.setState({
+      ...this.state,
+      value: {
+        ...this.state.value,
+        isSellLoading: true,
+      },
+    });
+
+    try {
+      const sellResponse = await investApi.sell(stonkCode);
+      if (sellResponse) {
+        reloadUserInvestments();
+        this.setState((state) => {
+          const currentCoins = sellResponse.total;
+          navigation.setParams({ userCoins: currentCoins });
+          return {
+            ...state,
+            value: {
+              ...state.value,
+              showBuyButton: true,
+              todayPerformance: "",
+              winLoseQty: 0,
+              isSellLoading: false,
+            },
+          };
+        });
+      }
+    } catch {
+      console.log("couldn't sell " + stonkCode);
+      this.setState({
+        ...this.state,
+        value: {
+          ...this.state.value,
+          isSellLoading: false,
+        },
+      });
+    }
+  };
+
   render() {
-    const { value } = this.state;
+    const { value, isLoading } = this.state;
+    const { userCoins } = this.props;
     return (
       <InvestView
         value={value}
+        userCoins={userCoins}
         onBuyPress={this.handleOpenBuySellModal}
         onSellPress={this.handleOpenBuySellModal}
         onBuySellDone={this.handleBuySellDone}
         onGraphChange={this.handleGraphChange}
-        isLoading={false}
+        onTapStonk={this.handleClickOnStonks}
+        onEnterOrder={this.handleEnterOrder}
+        isLoading={isLoading}
+        onSellEverything={this.handleSellEverything}
       />
     );
   }
@@ -87,111 +246,58 @@ export default Controller;
 const companyLogos = [
   {
     id: 1,
-    enableImg: require("../../../assets/images/temp/invest-logos/icon-amd.png"),
-    disableImg: require("../../../assets/images/temp/disabled-logos/amd.png"),
-    name: "AMD",
-    isSelected: false,
-  },
-  {
-    id: 2,
+    code: "AAPL",
     enableImg: require("../../../assets/images/temp/invest-logos/icon-apple.png"),
     disableImg: require("../../../assets/images/temp/disabled-logos/Apple.png"),
     name: "Apple",
-    isSelected: false,
+  },
+  {
+    id: 2,
+    code: "GOLD",
+    enableImg: require("../../../assets/images/temp/invest-logos/icon-barrick.png"),
+    disableImg: require("../../../assets/images/temp/disabled-logos/Gold.png"),
+    name: "Oro",
   },
   {
     id: 3,
-    enableImg: require("../../../assets/images/temp/invest-logos/icon-barrick.png"),
-    disableImg: require("../../../assets/images/temp/disabled-logos/Gold.png"),
-    name: "Barrick",
-    isSelected: false,
-  },
-  {
-    id: 4,
+    code: "BTC-USD",
     enableImg: require("../../../assets/images/temp/invest-logos/icon-btc.png"),
     disableImg: require("../../../assets/images/temp/disabled-logos/BTC.png"),
     name: "Bitcoin",
-    isSelected: true,
   },
   {
-    id: 5,
+    id: 4,
+    code: "ETH-USD",
     enableImg: require("../../../assets/images/temp/invest-logos/icon-eth.png"),
     disableImg: require("../../../assets/images/temp/disabled-logos/ETH.png"),
     name: "ETH",
-    isSelected: false,
   },
   {
-    id: 6,
+    id: 5,
+    code: "MCD",
     enableImg: require("../../../assets/images/temp/invest-logos/icon-mc.png"),
     disableImg: require("../../../assets/images/temp/disabled-logos/MC.png"),
     name: "McDonalds",
-    isSelected: false,
   },
   {
-    id: 7,
+    id: 6,
+    code: "TSLA",
     enableImg: require("../../../assets/images/temp/invest-logos/icon-tesla.png"),
     disableImg: require("../../../assets/images/temp/disabled-logos/Tesla.png"),
     name: "Tesla",
-    isSelected: false,
   },
   {
-    id: 8,
+    id: 7,
+    code: "WMT",
     enableImg: require("../../../assets/images/temp/invest-logos/icon-walt.png"),
     disableImg: require("../../../assets/images/temp/disabled-logos/wallmart.png"),
     name: "Waltmart",
-    isSelected: false,
   },
-];
-
-const data: CandleStickChartData[] = [
   // {
-  //   x: 1625529600000,
-  //   open: 33575.25,
-  //   high: 33600.52,
-  //   low: 33475.12,
-  //   close: 33520.11,
+  //   id: 8,
+  //   code: "AMDC",
+  //   enableImg: require("../../../assets/images/temp/invest-logos/icon-amd.png"),
+  //   disableImg: require("../../../assets/images/temp/disabled-logos/amd.png"),
+  //   name: "AMD",
   // },
-  {
-    x: 1625616000000,
-    open: 33545.25,
-    high: 33560.52,
-    low: 33510.12,
-    close: 33520.11,
-  },
-  {
-    x: 1625702400000,
-    open: 33510.25,
-    high: 33515.52,
-    low: 33250.12,
-    close: 33250.11,
-  },
-  {
-    x: 1625788800000,
-    open: 33215.25,
-    high: 33430.52,
-    low: 33215.12,
-    close: 33420.11,
-  },
-  {
-    x: 1625875200000,
-    open: 34215.25,
-    high: 33430.52,
-    low: 31215.12,
-    close: 33420.11,
-  },
-  {
-    x: 1625961600000,
-    open: 38215.25,
-    high: 41430.52,
-    low: 31215.12,
-    close: 40420.11,
-  },
-];
-
-const lineChartData: LineChartData[] = [
-  { x: 1625616000000, y: 33520 },
-  { x: 1625702400000, y: 33250 },
-  { x: 1625788800000, y: 33215 },
-  { x: 1625875200000, y: 33420 },
-  { x: 1625961600000, y: 40420 },
 ];

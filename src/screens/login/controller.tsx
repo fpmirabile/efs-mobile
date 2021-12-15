@@ -105,7 +105,7 @@ class LoginController extends React.PureComponent<Props, State> {
     }
 
     if (this.handleFormValidation()) {
-      const { navigation, onLoginUser } = this.props;
+      const { onLoginUser } = this.props;
       this.setState({
         loading: true,
       });

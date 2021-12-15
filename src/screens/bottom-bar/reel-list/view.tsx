@@ -5,10 +5,15 @@ import FilterItem from "./components/filter-item/filter-item";
 import MostPopularItem from "./components/most-popular/most-popular";
 import VideoItem from "./components/video-item/video-item";
 import SectionReel from "./components/section/section";
-import { Grupo, ReelPopular, Seccion } from "../../../api/models/reels";
+import { Grupo, Reel, ReelPopular, Seccion } from "../../../api/models/reels";
 import LoadingPage from "../../../components/common/loading-page/loading-page";
+import BuyModuleModal from "../../modals/buy-module/buy-module";
 
 interface Props {
+  showModal: boolean;
+  userName: string;
+  pretendedSectionName: string;
+  onCloseModal: () => void;
   currentIndex: number;
   onFilterScrollEnd: (data: any, index: number) => void;
   onPressedItem: (index: number) => () => void;
@@ -21,6 +26,24 @@ interface Props {
   isLoading: boolean;
   coins: string;
 }
+
+const sectionItem =
+  ({
+    onImageLoadError,
+    onPressVideo,
+  }: {
+    onImageLoadError: Props["onImageLoadError"];
+    onPressVideo: Props["onPressVideo"];
+  }) =>
+  ({ item }: { item: Reel }) =>
+    (
+      <VideoItem
+        onImageLoadError={onImageLoadError}
+        onPressVideo={onPressVideo}
+        item={item}
+        key={item.reelId}
+      />
+    );
 
 const renderSection = (
   sectionReels: Seccion[],
@@ -48,20 +71,54 @@ const renderSection = (
           keyExtractor={(item) => item.reelId.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <VideoItem
-              onImageLoadError={onImageLoadError}
-              onPressVideo={onPressVideo}
-              item={item}
-            />
-          )}
+          renderItem={sectionItem({ onImageLoadError, onPressVideo })}
         />
       </SectionReel>
     );
   });
 };
 
+const filterItem =
+  ({
+    currentIndex,
+    onPressedItem,
+  }: {
+    currentIndex: number;
+    onPressedItem: (index: number) => () => void;
+  }) =>
+  ({ item, index }: { item: Grupo; index: number }) =>
+    (
+      <FilterItem
+        onPressedItem={onPressedItem}
+        index={index}
+        isActive={index === currentIndex}
+        item={item}
+        key={item.grupoId}
+      />
+    );
+
+const mostPopular =
+  ({
+    onImageLoadError,
+    onPressVideo,
+  }: {
+    onImageLoadError: Props["onImageLoadError"];
+    onPressVideo: Props["onPressVideo"];
+  }) =>
+  ({ item }: { item: ReelPopular }) =>
+    (
+      <MostPopularItem
+        onImageLoadError={onImageLoadError}
+        onPressVideo={onPressVideo}
+        item={item}
+      />
+    );
+
 export default function ReelsView({
+  showModal,
+  onCloseModal,
+  userName,
+  pretendedSectionName,
   currentIndex,
   onPressedItem,
   onPressVideo,
@@ -87,14 +144,7 @@ export default function ReelsView({
           keyExtractor={(item) => item.grupoId.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
-          renderItem={({ item, index }) => (
-            <FilterItem
-              onPressedItem={onPressedItem}
-              index={index}
-              isActive={index === currentIndex}
-              item={item}
-            />
-          )}
+          renderItem={filterItem({ currentIndex, onPressedItem })}
         />
         {popularReels.length && (
           <SectionReel
@@ -106,17 +156,17 @@ export default function ReelsView({
               keyExtractor={(item) => item.reelId.toString()}
               horizontal
               showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <MostPopularItem
-                  onImageLoadError={onImageLoadError}
-                  onPressVideo={onPressVideo}
-                  item={item}
-                />
-              )}
+              renderItem={mostPopular({ onImageLoadError, onPressVideo })}
             />
           </SectionReel>
         )}
         {renderSection(seccionReels, { onImageLoadError, onPressVideo })}
+        <BuyModuleModal
+          isVisible={showModal}
+          sectionName={pretendedSectionName}
+          userName={userName}
+          onClose={onCloseModal}
+        />
       </PageWithScroll>
     </LoadingPage>
   );

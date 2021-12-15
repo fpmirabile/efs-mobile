@@ -20,7 +20,8 @@ const Colors = {
   grayAlmostBlack: '#979797',
   disabledGray: '#F3F3F3',
   red: '#ED2939',
-  sellRed: '#D83C40'
+  sellRed: '#D83C40',
+  transparent: 'transparent'
 };
 
 

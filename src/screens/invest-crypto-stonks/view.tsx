@@ -1,5 +1,12 @@
 import * as React from "react";
-import { StyleSheet, Text, View, FlatList, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+  TouchableWithoutFeedback,
+} from "react-native";
 import {
   VictoryChart,
   VictoryCandlestick,
@@ -16,59 +23,87 @@ import Fonts from "../../constants/fonts";
 import LoadingPage from "../../components/common/loading-page/loading-page";
 import EnterOrder from "./components/enter-order";
 import { StatusBar } from "expo-status-bar";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { ViewChart } from "../../api/models/invest";
+import ButtonWithLoading from "../../components/common/button-with-loading/button-with-loading";
 
 interface PropTypes {
   isLoading: boolean;
+  userCoins: number;
   value: ViewValue;
   onBuyPress: () => void;
   onSellPress: () => void;
   onBuySellDone: () => void;
   onGraphChange: () => void;
+  onTapStonk: (nextStonk: string) => void;
+  onEnterOrder: (coins: number) => void;
+  onSellEverything: () => void;
 }
 
 export interface ViewValue {
+  currentStonk: CompanyStonks;
   chartType: "candle" | "line";
-  data: CandleStickChartData[];
-  lineData: LineChartData[];
+  data: ViewChart[];
   companiesStonks: CompanyStonks[];
   isBuySellOpen: boolean;
-}
-
-export interface LineChartData {
-  x: number;
-  y: number;
-  label?: string;
-  symbol?: string;
-  fill?: string;
-  opacity?: number;
-}
-
-export interface CandleStickChartData {
-  x: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
+  showBuyButton: boolean;
+  todayPerformance: string;
+  winLoseQty: number;
+  isSellLoading: boolean;
 }
 
 export interface CompanyStonks {
   id: number;
+  code: string;
   enableImg: any;
   disableImg: any;
   name: string;
-  isSelected: boolean;
 }
 
+const StonkItem =
+  (props: PropTypes) =>
+  ({ item }: { item: CompanyStonks }) => {
+    return (
+      <StonkList
+        key={item.id}
+        isSelected={item.code === props.value.currentStonk.code}
+        enableImg={item.enableImg}
+        disableImg={item.disableImg}
+        name={item.name}
+        code={item.code}
+        onPress={props.onTapStonk}
+      />
+    );
+  };
+
+const winOrLoseStyle = (performance: string) => {
+  return performance && performance.includes && performance?.includes("-")
+    ? styles.lose
+    : styles.win;
+};
+
+const winOrLoseBackground = (performance: string) => {
+  return performance && performance.includes && performance?.includes("-")
+    ? styles.loseBackground
+    : styles.winBackground;
+};
+
 export default function InvestView(props: PropTypes) {
+  const data = props.value.data;
+  const todayData = data[data.length - 1];
+  const stonkPrice = Number(todayData?.close || 0).toFixed(2);
+  const investmentTitle: string = props.value.todayPerformance?.includes("-")
+    ? "Perdida"
+    : "Ganancia";
+  const winLoseQuantity = props.value.winLoseQty.toFixed(2).replace("-", "");
+  const stonkTodayPerformance = todayData?.variacion || "0";
   return (
     <LoadingPage isLoading={props.isLoading}>
-      <PageWithScroll scrollViewContainerStyles={{ flex: 1 }}>
+      <PageWithScroll>
         <StatusBar hidden />
         <View style={styles.stonkTypeContainer}>
           <FlatList
             data={props.value.companiesStonks}
-            renderItem={StonkList({})}
+            renderItem={StonkItem(props)}
             keyExtractor={(item) => item.id.toString()}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -77,33 +112,50 @@ export default function InvestView(props: PropTypes) {
         </View>
         <View style={styles.graphContainer}>
           <View style={styles.costsTextsContainer}>
-            <Text style={styles.costText}>1 BITCOIN = 60614.73</Text>
-            <Text style={styles.todayCostText}>HOY -2.58%</Text>
+            <Text style={styles.costText}>
+              1 {props.value.currentStonk.name.toUpperCase()} = ${stonkPrice}
+            </Text>
+            {!!props.value.todayPerformance && (
+              <Text
+                style={[
+                  styles.todayCostText,
+                  winOrLoseStyle(props.value.todayPerformance),
+                ]}
+              >
+                {investmentTitle.toUpperCase()} ${winLoseQuantity} /{" "}
+                {`${!props.value.todayPerformance?.includes("-") ? "+" : ""}${
+                  props.value.todayPerformance
+                }`}
+                %
+              </Text>
+            )}
+            {props.value.showBuyButton && (
+              <Text
+                style={[
+                  styles.todayCostText,
+                  winOrLoseStyle(stonkTodayPerformance),
+                ]}
+              >
+                HOY {stonkTodayPerformance}%
+              </Text>
+            )}
           </View>
           <View>
             <VictoryChart
               theme={VictoryTheme.material}
-              domainPadding={{ x: 25 }}
+              domainPadding={{ x: 15 }}
               padding={{
-                left: 0,
+                left: 20,
                 right: 60,
                 top: 30,
                 bottom: 40,
               }}
-              height={404}
+              height={330}
               scale={{ x: "time" }}
-              containerComponent={
-                <VictoryZoomContainer
-                  allowZoom={false}
-                  zoomDomain={{
-                    x: [props.value.data[0].x, props.value.data[4].x],
-                    y: [30000, props.value.data[4].close],
-                  }}
-                />
-              }
+              containerComponent={<VictoryZoomContainer downsample />}
             >
               <VictoryAxis
-                tickFormat={(t) => `${t.getDate()}/${t.getMonth()}`}
+                tickFormat={(t: Date) => `${t.getDate()}/${t.getMonth() + 1}`}
               />
               <VictoryAxis dependentAxis orientation="right" />
               {props.value.chartType === "candle" && (
@@ -116,10 +168,7 @@ export default function InvestView(props: PropTypes) {
                 />
               )}
               {props.value.chartType === "line" && (
-                <VictoryLine
-                  interpolation="natural"
-                  data={props.value.lineData}
-                />
+                <VictoryLine interpolation="natural" data={props.value.data} />
               )}
             </VictoryChart>
             <View style={styles.graphButtonContainer}>
@@ -135,20 +184,58 @@ export default function InvestView(props: PropTypes) {
               </TouchableWithoutFeedback>
             </View>
           </View>
-          <View style={styles.buySellContainer}>
-            <Button
-              text="Comprar 60614.98"
-              style={{
-                container: styles.buyButtonContainer,
-                text: styles.sellAndBuyButtonText,
-              }}
-              onPress={props.onBuyPress}
-            />
-          </View>
+          {props.value.showBuyButton && (
+            <View style={styles.buySellContainer}>
+              <Button
+                text={`Comprar ${stonkPrice}`}
+                style={{
+                  container: styles.buyButtonContainer,
+                  text: styles.BuyButtonText,
+                }}
+                onPress={props.onBuyPress}
+              />
+            </View>
+          )}
+          {!props.value.showBuyButton && (
+            <View style={styles.alreadyBoughtView}>
+              <Button
+                text="Stop Lose"
+                icon={
+                  <Image
+                    source={require("../../../assets/images/simulator/stroke.png")}
+                    style={styles.stopLoseIcon}
+                  />
+                }
+                style={{
+                  container: [
+                    styles.buyButtonContainer,
+                    styles.stopLoseButtonContainer,
+                  ],
+                  text: styles.BuyButtonText,
+                }}
+                upperCase
+                onPress={() => {}}
+              />
+              <ButtonWithLoading
+                text="Vender"
+                style={{
+                  container: [
+                    styles.sellButtonContainer,
+                    winOrLoseBackground(props.value.todayPerformance),
+                  ],
+                  text: styles.sellButtonText,
+                }}
+                onPress={props.onSellEverything}
+                isLoading={props.value.isSellLoading}
+              />
+            </View>
+          )}
         </View>
         <EnterOrder
+          currentCoins={props.userCoins}
           isVisible={props.value.isBuySellOpen}
           onCloseModal={props.onBuySellDone}
+          onEnterOrder={props.onEnterOrder}
         />
       </PageWithScroll>
     </LoadingPage>
@@ -192,6 +279,7 @@ const styles = StyleSheet.create({
     bottom: 95,
     left: 10,
     zIndex: 100,
+    maxWidth: 60,
   },
   graphButton: {},
   buySellContainer: {
@@ -201,16 +289,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 16,
   },
-  sellButtonContainer: {
-    backgroundColor: Colors.sellRed,
-    borderRadius: 4,
-    minHeight: 59,
-    maxWidth: 159,
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginRight: 13,
-  },
-  sellAndBuyButtonText: {
+  BuyButtonText: {
     fontFamily: Fonts.redhatRegular,
     fontWeight: "bold",
     fontSize: 14,
@@ -227,5 +306,47 @@ const styles = StyleSheet.create({
   },
   sellAndBuyIcon: {
     marginRight: 16,
+  },
+  alreadyBoughtView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
+  },
+  sellButtonContainer: {
+    backgroundColor: Colors.secondaryLightBlue,
+    borderRadius: 4,
+    minWidth: 222,
+    height: 59,
+    marginLeft: 9,
+  },
+  sellButtonText: {
+    color: Colors.white,
+    letterSpacing: 1.25,
+    fontFamily: Fonts.redhatRegular,
+    fontWeight: "bold",
+    fontSize: 14,
+    lineHeight: 16,
+  },
+  stopLoseButtonContainer: {
+    width: 93,
+  },
+  stopLoseIcon: {
+    height: 24,
+    width: 24,
+    tintColor: Colors.white,
+    marginRight: 5,
+  },
+  lose: {
+    color: Colors.red,
+  },
+  win: {
+    color: Colors.lightGreen,
+  },
+  winBackground: {
+    backgroundColor: Colors.lightGreen,
+  },
+  loseBackground: {
+    backgroundColor: Colors.red,
   },
 });

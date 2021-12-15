@@ -23,13 +23,12 @@ import Profile from "../screens/profile-test";
 import Register from "../screens/registration";
 import Reels from "../screens/bottom-bar/reel-list";
 import Simulador from "../screens/bottom-bar/simulator";
-import Setting from "../screens/setting"
+import Setting from "../screens/bottom-bar/setting";
 import VideoPlayer from "../screens/video-player";
 import StonksAndCrypto from "../screens/invest-crypto-stonks";
 import StonksAndCryptoHeader from "./custom-header/invest-crypto-stonks/header";
 import { HeaderBackButtonProps } from "@react-navigation/native-stack/lib/typescript/src/types";
 import { TouchableOpacity } from "react-native-gesture-handler";
-
 
 export default function Navigation() {
   return (
@@ -101,10 +100,12 @@ function RootNavigator() {
       <Stack.Screen
         name="StonksAndCrypto"
         component={StonksAndCrypto}
-        options={{
-          header: (props: NativeStackHeaderProps) => {
-            return <StonksAndCryptoHeader {...props} />;
-          },
+        options={({ route }) => {
+          return {
+            header: (props: NativeStackHeaderProps) => {
+              return <StonksAndCryptoHeader {...props} />;
+            },
+          };
         }}
       />
       <Stack.Screen
@@ -132,7 +133,7 @@ function BottomTabNavigator() {
       screenOptions={{
         tabBarActiveTintColor: Colors.lightGreen,
         tabBarActiveBackgroundColor: Colors.blue,
-        tabBarInactiveBackgroundColor: Colors.blue
+        tabBarInactiveBackgroundColor: Colors.blue,
       }}
     >
       <BottomTab.Screen

@@ -180,7 +180,6 @@ class RegisterController extends React.PureComponent<Props, State> {
         setSession({ jwt: token.token, refresh: token.refreshToken });
         navigation.navigate("Profile");
       } catch (exception) {
-        console.log(exception)
         navigation.navigate("NotFound");
       } finally {
         this.setState({

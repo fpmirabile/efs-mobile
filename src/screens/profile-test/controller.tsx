@@ -63,12 +63,10 @@ class ProfileController extends React.PureComponent<Props, State> {
     });
     if (!surveyOver) {
       questions[currentIndex].answer = status;
-      if(currentIndex===0 && questions[currentIndex].answer == 1){
-        console.log(status)
-        const resp = await this.handleEnd();
+      if (currentIndex === 0 && questions[currentIndex].answer == 1) {
+        await this.handleEnd();
       }
     }
-
   };
 
   handlePrevQuestion = () => {
@@ -76,11 +74,11 @@ class ProfileController extends React.PureComponent<Props, State> {
     //move on to the next question if not the last question
     if (currentIndex <= 0) {
       this.setState({
-        currentIndex:0,
+        currentIndex: 0,
         status: 0,
         isContinue: false,
         surveyOver: false,
-        score:0
+        score: 0,
       });
     } else {
       const nextQ = currentIndex - 1;
@@ -94,7 +92,7 @@ class ProfileController extends React.PureComponent<Props, State> {
     //move on to the next question if not the last question
     const { questions, currentIndex, surveyOver } = this.state;
     const nextQ = currentIndex + 1;
-    if (nextQ == questions.length-1) {
+    if (nextQ == questions.length - 1) {
       this.setState({
         surveyOver: true,
         status: 0,
@@ -112,21 +110,22 @@ class ProfileController extends React.PureComponent<Props, State> {
     const { onPostScore } = this.props;
     const { questions, surveyOver } = this.state;
     let score: number = 0;
-    let prof: string = 'Principiante';
+    let prof: string = "Principiante";
 
     questions.forEach((question) => {
       score = score + question.answer;
     });
-    if ( score === 0 ) { score = 1 ;}
+    if (score === 0) {
+      score = 1;
+    }
     const resp = await onPostScore(score);
-    // console.log(resp);
     //TODO Set variable profile with the resp
-    prof = calculateProfile(score)
+    prof = calculateProfile(score);
     this.setState({
-           score:score,
-           surveyOver:true,
-           profile: prof
-         }); 
+      score: score,
+      surveyOver: true,
+      profile: prof,
+    });
   };
   handleContinuePress = () => {
     this.setState({
@@ -175,22 +174,20 @@ class ProfileController extends React.PureComponent<Props, State> {
   }
 }
 
-const calculateProfile = (score:number)=>{
-  if( score > 7 && score <= 15 ){
+const calculateProfile = (score: number) => {
+  if (score > 7 && score <= 15) {
     return "Conservador";
-  } else{
-    if( score > 15 && score <= 24 ){
+  } else {
+    if (score > 15 && score <= 24) {
       return "Moderado";
-    } else{
-      if(score > 24 && score <= 33){
-        return "Agresivo"
-      } else{
-        return "Principiante"
+    } else {
+      if (score > 24 && score <= 33) {
+        return "Agresivo";
+      } else {
+        return "Principiante";
       }
     }
   }
-  
-  
-}
+};
 
 export default ProfileController;

@@ -33,6 +33,8 @@ interface Props {
   errorText?: string;
   showError?: boolean;
   disabled?: boolean;
+  button?: JSX.Element;
+  leftIcon?: JSX.Element;
 }
 
 export default function Input(props: Props) {
@@ -46,12 +48,14 @@ export default function Input(props: Props) {
   return (
     <View>
       <View style={[styles.container, viewStyles]}>
+        {!!props.leftIcon && props.leftIcon}
         <TextInput
           style={inputStyles}
           placeholderTextColor={placeholderColor}
           editable={!props.disabled}
           {...props}
         />
+        {!!props.button && props.button}
       </View>
       {props.showError && props.errorText && (
         <ErrorText textStyles={props.errorStyles} errorText={props.errorText} />
@@ -65,6 +69,9 @@ const styles = StyleSheet.create({
     borderWidth: 0.3,
     borderColor: Colors.black,
     borderRadius: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   input: {
     height: 48,

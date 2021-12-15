@@ -1,30 +1,46 @@
 import * as React from "react";
-import { Image, ListRenderItem, StyleSheet, Text } from "react-native";
+import { Image, StyleSheet, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Colors from "../../../constants/colors";
 import Fonts from "../../../constants/fonts";
-import { CompanyStonks } from "../view";
 
-interface PropTypes {}
+interface PropTypes {
+  isSelected: boolean;
+  enableImg: any;
+  disableImg: any;
+  name: string;
+  code: string;
+  onPress: (nextStonk: string) => void;
+}
 
-export default (props: PropTypes): ListRenderItem<CompanyStonks> =>
-  ({ item }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {}}
-        style={[
-          styles.logoContainer,
-          item.isSelected ? styles.selectedLogo : undefined,
-        ]}
-      >
-        <Image
-          source={item.isSelected ? item.enableImg : item.disableImg}
-          style={item.isSelected ? undefined : styles.noSelectedLogo}
-        />
-        <Text style={styles.logoName}>{item.name}</Text>
-      </TouchableOpacity>
-    );
+export default function StonkIcons({
+  isSelected,
+  disableImg,
+  code,
+  enableImg,
+  name,
+  onPress,
+}: PropTypes) {
+  const onTap = () => {
+    onPress(code);
   };
+
+  return (
+    <TouchableOpacity
+      onPress={onTap}
+      style={[
+        styles.logoContainer,
+        isSelected ? styles.selectedLogo : undefined,
+      ]}
+    >
+      <Image
+        source={isSelected ? enableImg : disableImg}
+        style={isSelected ? undefined : styles.noSelectedLogo}
+      />
+      <Text style={styles.logoName}>{name}</Text>
+    </TouchableOpacity>
+  );
+}
 
 const styles = StyleSheet.create({
   logoContainer: {

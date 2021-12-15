@@ -4,8 +4,17 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Colors from "../../../constants/colors";
 import Fonts from "../../../constants/fonts";
+import { formatNumberToLocaleString } from "../../../helper/string";
 
-export default function InvestViewHeader(props: NativeStackHeaderProps) {
+interface Props extends NativeStackHeaderProps {
+}
+
+interface Route {
+  params: {userCoins: number};
+}
+
+export default function InvestViewHeader(props: Props) {
+  const userCoins = props.route.params && (props.route as Route).params.userCoins || 0
   const goBack = () => {
     props.navigation.goBack();
   };
@@ -23,7 +32,7 @@ export default function InvestViewHeader(props: NativeStackHeaderProps) {
       <View style={styles.coinsContainer}>
         <Image source={require('../../../../assets/images/efs-coin.png')} style={styles.efsCoinImage} />
         <View style={styles.efsCoinContainer}>
-          <Text style={styles.efsCoinAmount}>10.000</Text>
+          <Text style={styles.efsCoinAmount}>{formatNumberToLocaleString(userCoins)}</Text>
           <Text style={styles.efsCoinTitle}>FCS coins</Text>
         </View>
       </View>

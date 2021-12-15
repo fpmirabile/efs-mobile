@@ -1,35 +1,57 @@
 import * as React from "react";
-import { ResizeMode } from "expo-av";
-import { View, StyleSheet, Text, Image } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import Modal from "react-native-modal";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import Button from "../../../components/common/button";
 import Input from "../../../components/common/input/input";
 import Colors from "../../../constants/colors";
 import Fonts from "../../../constants/fonts";
+import ButtonWithLoading from "../../../components/common/button-with-loading/button-with-loading";
 
 interface PropTypes {
   isVisible: boolean;
+  currentCoins: number;
   onCloseModal: () => void;
+  onEnterOrder: (coins: number) => void;
 }
 
 export default function EnterOrder(props: PropTypes) {
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
-  const [buySellQuantity, setBuySellQuantity] = React.useState<
-    number | undefined
-  >(undefined);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [buyQuantity, setBuyQuantity] = React.useState<number | undefined>(
+    undefined
+  );
 
   const handleInputChanged = (text: string) => {
-    if (!text.length || isNaN(Number(text))) {
+    const textAsNumber = Number(text);
+    if (!text.length || isNaN(textAsNumber)) {
       setEnableButton(false);
-      setBuySellQuantity(undefined);
+      setBuyQuantity(undefined);
+      return;
+    }
+
+    if (props.currentCoins < textAsNumber) {
+      setBuyQuantity(Number(text));
+      setEnableButton(false);
       return;
     }
 
     // Validate coins quantity
-    setBuySellQuantity(Number(text));
+    setBuyQuantity(Number(text));
     setEnableButton(true);
   };
+
+  const applyInvestment = () => {
+    setIsLoading(true);
+    if (!buyQuantity) {
+      setIsLoading(false);
+      return;
+    }
+
+    props.onEnterOrder(buyQuantity);
+  };
+
+  React.useEffect(() => {
+    setIsLoading(false);
+  }, [props.isVisible])
 
   return (
     <Modal
@@ -38,35 +60,35 @@ export default function EnterOrder(props: PropTypes) {
       onBackdropPress={props.onCloseModal}
       animationIn="slideInUp"
       animationOut="slideOutDown"
-			backdropOpacity={0}
+      backdropOpacity={0}
     >
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>
             Ingreso de orden
-            <TouchableWithoutFeedback>
-              <Image
-                resizeMode={ResizeMode.CONTAIN}
-                style={styles.tooltip}
-                source={require("../../../../assets/images/misc/tooltip.png")}
-              />
-            </TouchableWithoutFeedback>
           </Text>
         </View>
         <View style={styles.inputContainerParent}>
           <Input
             viewStyles={styles.inputView}
+            inputStyles={{ flex: 1 }}
             placeholder="Dinero a invertir"
             keyboardType="numeric"
             onChangeText={handleInputChanged}
-            value={buySellQuantity?.toString()}
+            value={buyQuantity?.toString()}
           />
         </View>
         <View>
-          <Button
+          <ButtonWithLoading
+            isLoading={isLoading}
+            onPress={applyInvestment}
             style={{
-              container: styles.buttonContainer,
-              text: styles.buttonText,
+              container: enableButton
+                ? styles.buttonContainer
+                : [styles.buttonContainer, styles.disabledButton],
+              text: enableButton
+                ? [styles.buttonText]
+                : [styles.buttonText, styles.disabledTextButton],
             }}
             text="Ingresar Orden"
             disabled={!enableButton}
@@ -91,9 +113,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
     justifyContent: "center",
-		elevation: 5
+    elevation: 5,
   },
   titleContainer: {
+    justifyContent: 'center',
     marginVertical: 8,
     marginHorizontal: 8,
   },
@@ -131,7 +154,7 @@ const styles = StyleSheet.create({
   },
   infoMessageContainer: {
     marginBottom: 12,
-		marginHorizontal: 8,
+    marginHorizontal: 8,
   },
   infoMessage: {
     color: Colors.lightGray,
@@ -147,5 +170,13 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     letterSpacing: 0.15,
     fontWeight: "bold",
+  },
+  disabledButton: {
+    borderWidth: 1,
+    borderColor: Colors.gray,
+    backgroundColor: Colors.transparent,
+  },
+  disabledTextButton: {
+    color: Colors.gray,
   },
 });
